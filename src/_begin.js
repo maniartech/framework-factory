@@ -18,7 +18,7 @@
     * @field Version of the framework factory.
     *
     * */
-    FrameworkFactory.version = '1.0.0';
+    FrameworkFactory.version = '1.0.0 alpha';
 
     /*
     * @function A factory function to create framework root based on spplied options.

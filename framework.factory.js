@@ -18,7 +18,7 @@
     * @field Version of the framework factory.
     *
     * */
-    FrameworkFactory.version = '1.0.0';
+    FrameworkFactory.version = '1.0.0 alpha';
 
     /*
     * @function A factory function to create framework root based on spplied options.
@@ -46,6 +46,9 @@
 
     var _framework = FrameworkFactory.prototype;
 
+    /*
+     * @function Registeres a new member to the framework factory;
+     * */
     FrameworkFactory.register = function (memberName, member) {
         if (_framework[memberName] !== undefined) {
             throw new Error ('Member already registered.');
@@ -255,6 +258,14 @@
 
     _framework.TypeHandlers = new _framework.Register();
 
+    /*
+     * @function Registers a new type handler.
+     * @param The the which need to be registered.
+     * @param Handler for the specified type.
+     * */
+    FrameworkFactory.registerTypeHandler = function(type, handler) {
+        _framework.TypeHandlers.register(type, Handler);
+    };
 
     global.$event = function() {
         return {
