@@ -10,6 +10,53 @@
             return '__' + key;
         },
         
+        /**
+         * Checks whether both the objects are equals. Iterates through all the
+         * members to check equality.
+         * @param o1 The first object
+         * @param o2 The second object
+         * @returns True if both the objects are equal, false if they are not.
+         **/
+        equals: function(o1, o2) {
+            
+            var key;
+            
+            //True if both objects are same.
+            if (o1 === o2) {
+                return true;
+            }
+            
+            for(key in o1) {
+                
+                //If key exists in o1 but not in o2, return false.
+                if (o2[key] === undefined) {
+                    return false;
+                }
+                
+                var v1 = o1[key];
+                var v2 = o2[key];
+                
+                //If values in a given key not matches return false.
+                if (v1 !== v2) {
+                    return false;
+                }
+            }
+            
+            //If key exists in o2 but not in o1, returns false.
+            for (key in o2) {
+                if (o1[key] === undefined) {
+                    return false;
+                }
+            }
+            
+            //Return true, becuase no differences found.
+            return true;
+            
+        },
+                
+        /**
+         * 
+         **/
         clone: function(o, deep) {
             deep = deep || false;
             throw new Error ('Not implemented error.');
