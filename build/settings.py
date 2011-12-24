@@ -13,11 +13,11 @@ SCRIPTS = [
     'string.js',
     'utils.js',
     'core.js',
-    'register.js',
+    #'register.js',
     'events.js',
-    'fields.js',
+    'attributes.js',
     #'components.js',
-    #'collections.js',
+    'collections.js',
     '_end.js',
     ];
 

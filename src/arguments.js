@@ -54,5 +54,4 @@ function test(name, abc, xyz) {
 
     var args = new ArgumentParser(arguments),
         n = args.check(name, "name");
-
 }

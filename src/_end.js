@@ -1,5 +1,8 @@
 
-
+    FrameworkFactory.plugin = function(fn) {
+        fn.call(global, $f);
+    }
+    
     return FrameworkFactory;
 
 })(this);

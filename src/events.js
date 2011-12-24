@@ -1,5 +1,5 @@
 
-    global.$event = function() {
+    $f.event = function() {
         return {
             type: 'framework.event'
         }
@@ -9,7 +9,7 @@
 
         var proto = Class.prototype;
         var __super__ = Class.__super__;
-        var privKey = getPrivateKey(key);
+        var privKey = $f.utils.getPrivateKey(key);
         //var eventName = key;
 
         var eventFn;
@@ -52,7 +52,7 @@
             };
 
             proto.off = function(eventName, handler) {
-                var arr = this[getPrivateKey(eventName)];
+                var arr = this[$f.utils.getPrivateKey(eventName)];
                 var index = arr.indexOf(handler);
                 if (index !== -1) {
                     arr.splice(index, 1);
@@ -62,4 +62,4 @@
         }
     };
 
-    _framework.TypeHandlers.register("framework.event", eventHandler);
+    $f.TypeHandlers["framework.event"] = eventHandler;

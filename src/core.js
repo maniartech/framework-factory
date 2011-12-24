@@ -1,5 +1,5 @@
 
-    _framework.Class = function (prop, parent) {
+    $f.Class = function (prop, parent) {
         //Checks if _super exists in overriden function, inspired by John Resig.
         var fnTest = /xyz/.test(function (){xyz;}) ? /\$\bsuper\b/ : /.*/,
             hasProp = Object.prototype.hasOwnProperty,
@@ -59,7 +59,7 @@
 
                 if (type === 'object' && item.type !== undefined) {
 
-                    var typeHandler = _framework.TypeHandlers.get(item.type);
+                    var typeHandler = _framework.TypeHandlers[item.type];
                     if (typeHandler !== undefined) {
                         typeHandler(Class, key, item);
                         processed = true;
@@ -92,20 +92,6 @@
             }
         };
 
-        if (proto['set'] === undefined) {
-            proto.set = function(o) {
-                if (typeof o !== 'object') { return; }
-                for(var key in o) {
-                    if (o.hasOwnProperty(key) === true) {
-                        if (this[key] !== undefined) {
-                            this[key] = o[key];
-                        }
-                    }
-                }
-
-            };
-        }
-
         Class.__meta__ = {};
 
         Class.attach(prop);
@@ -114,3 +100,5 @@
         return Class;
 
     };
+    
+    $f.TypeHandlers = {};

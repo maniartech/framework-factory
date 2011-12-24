@@ -1,19 +1,38 @@
 
     _framework.Register = _framework.Class({
+        
+        init: function() {
+            
+            
+            
+            this._register = {};
+            this.keys = [];
+        },
 
-        register: function (type, handler) {
-            if (this[type] !== undefined) {
-                throw new Error('TypeHandler ' + type + ' already registered.');
-            }
-            this[type] = handler;
+        register: function (type, handler) {            
+            var register = this._register;
+            if (register[key] !== undefined) {
+                throw new Error('Key ' + key + ' already registered.');
+            }            
+            register[type] = handler;
         },
 
         unregister: function (type) {
-            delete this[type];
+            var register = this._register;
+            delete register[type];
         },
 
         get: function (type) {
-            return this[type];
+            var register = this._register;
+            return register[type];
+        },
+        
+        set: function(key, type) {
+            var register = this._register;
+            if (register[type] === undefined) {
+                throw new Error('Key not found.')
+            }
+            register[key] = type;
         }
 
     }, Object);

@@ -34,6 +34,6 @@
                 if (typeof o[keys] === 'number') keys.push(key);
             }
             return keys;
-        },
+        }
 
     };

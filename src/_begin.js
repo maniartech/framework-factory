@@ -45,6 +45,8 @@
     };
 
     var _framework = FrameworkFactory.prototype;
+    var $f = _framework;
+    
 
     /*
      * @function Registeres a new member to the framework factory;
