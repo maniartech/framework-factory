@@ -13,6 +13,7 @@
         /**
          * Checks whether both the objects are equals. Iterates through all the
          * members to check equality.
+         * @function framework.utils.equals
          * @param o1 The first object
          * @param o2 The second object
          * @returns True if both the objects are equal, false if they are not.

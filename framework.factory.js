@@ -10,8 +10,8 @@
 (function(global, undefined) {
 
     /**
-     * A factory class which creates the base framworks for you.
      * @class FrameworkFactory
+     * A factory class which creates the base framworks for you.
      * */
     var FrameworkFactory = function FrameworkFactory() {};
 
