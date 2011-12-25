@@ -4,7 +4,7 @@ COMPRESSOR_TYPE = 'yui' # yui or closure
 COMPRESSOR = 'yuicompressor-2.4.7.jar'
 
 #Scripts
-SCRIPTS_ROOT = path.realpath('../src/')
+SCRIPTS_ROOT = path.realpath('../../src/')
 
 SCRIPTS = [
     '_begin.js',
@@ -21,6 +21,6 @@ SCRIPTS = [
     '_end.js',
     ];
 
-OUTPUT_PATH = path.realpath("../")
+OUTPUT_PATH = path.realpath("../../")
 
 OUTPUT_NAME = 'framework.factory'

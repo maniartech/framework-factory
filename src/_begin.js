@@ -9,19 +9,21 @@
 
 (function(global, undefined) {
 
-    /*
-     * @class A factory class which creates the base framworks for you.
+    /**
+     * A factory class which creates the base framworks for you.
+     * @class FrameworkFactory
      * */
     var FrameworkFactory = function FrameworkFactory() {};
 
-    /*
-    * @field Version of the framework factory.
-    *
-    * */
+    /**
+     * FrameworkFactory version: 1.0.0
+     * @field FrameworkFactory.version
+     **/
     FrameworkFactory.version = '1.0.0 alpha';
 
     /*
-    * @function A factory function to create framework root based on spplied options.
+    * A factory function to create framework root based on spplied options.
+    * @function FrameworkFactory.create
     * @param options which help define the behaviour of the framework.
     *
     * */
@@ -43,9 +45,8 @@
         return framework;
 
     };
-
-    var _framework = FrameworkFactory.prototype;
-    var $f = _framework;
+    
+    var $f = FrameworkFactory.prototype;
     
 
     /*
