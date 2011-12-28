@@ -1,28 +1,28 @@
 
-    
+
     $f.collections = {};
     var collections = $f.collections;
-    
+
     collections.ObservableList = $f.Class({
-        
+
     }, Object);
-    
+
 
     /**
-     * @class framework.collection.MapList
      * A collection class which stores both indexes as well as keys.
-     * @constructor
-     * 
+     * @class framework.collection.MapList
+     * @name framework.collections.MapList.prototype
      **/
     collections.MapList = $f.Class({
 
         /**
-         * @field Represents total number of items in the list.
+         * Represents total number of items in the list.
          **/
         length          : 0,
-        
+
         /**
-         * @field Key identifier in the item object.
+         * Key identifier in the item object.
+         * @lends framework.collections.MapList
          **/
         keyName         : 'id',
 
@@ -30,15 +30,15 @@
             this._items = [];
             this._keys = [];
             this._map = {};
-            
+
             if (arguments.length > 0) {
                 this.add.apply(this, arguments);
             }
         },
-        
+
         /**
          * Add one or more items into the list.
-         * @function add
+         * @function MapList.add
          * @param Variable number of items to be added to the list.
          **/
         add: function() {
@@ -53,56 +53,56 @@
                 item = arguments[i];
                 //check if key available.
                 if (typeof item === 'object' && item[keyName] !== undefined) {
-                    
+
                     key = item[keyName];
-                    
+
                     //TODO:verify this code
                     if (typeof key === 'function') {
                         key = key();
                     }
                     //key identified, map it.
                     if (key !== undefined) {
-                        
+
                         //Check  if key already exists.
                         if (map[key] !== undefined) {
                             throw new Error('Item with this key already exists.');
                         }
-                        
+
                         keys.push(key);
                         map[key] = item;
                     }
                 }
-                
-                //Add item to an array.                
+
+                //Add item to an array.
                 this.length = items.push(item);;
             }
             return this;
         },
-        
+
         /**
          * Appends a list or an array to the current list.
          **/
         addList: function() {
             var item = arguments[0];
-            
+
             if (item instanceof Array) {
                 this.add.apply(this, item);
             }
-            
+
             var items = [];
             for (var i=0, len = arguments.length; i<len; i++) {
                 items.push(item[i].get(i));
             }
             this.add.apply(this, items);
         },
-        
+
         get: function(indexOrKey){
             if (typeof indexOrKey === 'number') {
                 return this._items[indexOrKey];
             }
             return this._map[indexOrKey];
         },
-        
+
         replace: function(indexOrKey, item) {
             var index, key, indexKey;
             indexKey = this.findIndexKey(indexOrKey);
@@ -115,7 +115,7 @@
                 this.map[key] = item;
             }
         },
-        
+
         findIndexKey: function(indexOrKey) {
             var index, key;
             if (typeof indexOrKey === 'number') {
@@ -131,14 +131,14 @@
             }
             return [index, key];
         },
-        
+
         findIndexKeyByItem: function(item) {
             var index = this._items.indexOf(item);
             return findIndexKey(index);
         },
 
         remove: function(indexOrKey) {
-            
+
             var indexKey = this.findIndexKey(indexOrKey),
                 index = indexKey[0],
                 key = indexKey [1];
@@ -148,22 +148,22 @@
                 this._items.splice(index, 1); //delete array item
                 this._keys.splice(index, 1); //delete key item
             }
-            
+
             //Key found
             if (key !== undefined) {
                 delete this._map[key]; //delete key mapping
             }
-            
+
             return this;
         },
-        
+
         findKeyOrIndex: function(indexOrKey) {
             if (typeof indexOrKey === 'number'){
                 return this.keys[this.keyName];
             }
             return this._keys.indexOf(indexOrKey);
         },
-        
+
         clear: function() {
             this._items = [];
             this._keys = [];
@@ -179,7 +179,7 @@
         },
 
         each: function(callback) {
-            var items, i, len;            
+            var items, i, len;
             items = this._items;
             for(i=0, len = items.length; i<len; i++){
                 callback(items[i]);
@@ -188,52 +188,61 @@
         }
 
     }, Object);
-    
+
     /**
      * Sets the value into collection
      **/
-    collections.MapList.set = function set(colObj, value) {
-        
+    collections.MapList.loadFromJSON = function set(colObj, value) {
         if (colObj instanceof collections.MapList === false) {
             throw new Error('Operation "set" not supported on this object.');
         }
-        
         //Clear the collection
         colObj.clear();
         if (value instanceof Array || value instanceof collections.MapList) {
-            
             colObj.add.apply(colObj, value);
         }
         else {
+            if (value.$type !== undefined) {
+            }
             colObj.add(value);
         }
     };
-    
+
+    collections.MapList.exportToJSON = function toJson(colObj) {
+        var items = [];
+        var colItems = colObj.toArray();
+        for (var i=0, len=colObj.length; i<len; i++) {
+            var item = colItems[i];
+            items.push($f.utils.toJson(item));
+        }
+        return items;
+    };
+
     collections.ObservableMapList = $f.Class({
-        
+
         itemBeforeAdd   : $f.event(),
         itemAdded       : $f.event(),
         itemBeforeRemove: $f.event(),
         itemRemoved     : $f.event(),
         itemBeforeSet   : $f.event(),
         itemSet         : $f.event(),
-        
+
         init: function() {
             this._list = new collections.MapList();
             _list.add.apply(_list, arguments);
         }
     }, Object);
-    
-    
-    
+
+
+
     //$f.Register = _framework.Class({
-    //    
-    //    init: function() {            
+    //
+    //    init: function() {
     //        this._register = new collections.MapList();
     //    },
     //
-    //    register: function (type, handler) {            
-    //        
+    //    register: function (type, handler) {
+    //
     //    },
     //
     //    unregister: function (type) {
@@ -245,7 +254,7 @@
     //        var register = this._register;
     //        return register[type];
     //    },
-    //    
+    //
     //    set: function(key, type) {
     //        var register = this._register;
     //        if (register[type] === undefined) {
@@ -255,11 +264,11 @@
     //    }
     //
     //}, Object);
-    
-    
-    
-    
-    
+
+
+
+
+
 //    collections.CollectionWithEvent = _framework.Class({
 //
 //        keyName         : $property('name'),
@@ -416,15 +425,15 @@
 //        }
 //
 //    }, _framework.Component);
-//    
+//
 //    var styles = [];
-//    
+//
 //    function attachFinder(arr, keyName) {
 //        var foundKey, obj;
 //        arr.find = function(key, cache) {
-//            
+//
 //            cache = cache || true;
-//            
+//
 //            if (cache === true) {
 //                if (arr._keys === undefined) {
 //                    arr._keys = {};
@@ -436,7 +445,7 @@
 //                            arr._keys[foundKey] = arr[i];
 //                            obj = arr[i];
 //                            break;
-//                        } 
+//                        }
 //                    }
 //                    if (foundKey === undefined) {
 //                        throw new Error('key not found.');
@@ -450,21 +459,19 @@
 //            for (var i=0; i<arr.length; i++) {
 //                if (arr[i][keyName] === key) {
 //                    return arr[i];
-//                } 
+//                }
 //            }
 //            throw new Error('key not found.');
 //        };
 //    }
-//    
-//    
+//
+//
 //    styles[0] = new Style({
 //        name: 'wow',
 //        style: 'red'
 //    });
-//    
+//
 //    var wow = style.find('wow');
 //    styles[0] = new Style({
 //        name: 'great'
 //    });
-    
-    

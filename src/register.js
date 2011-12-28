@@ -1,19 +1,16 @@
 
     _framework.Register = _framework.Class({
-        
+
         init: function() {
-            
-            
-            
             this._register = {};
             this.keys = [];
         },
 
-        register: function (type, handler) {            
+        register: function (type, handler) {
             var register = this._register;
             if (register[key] !== undefined) {
                 throw new Error('Key ' + key + ' already registered.');
-            }            
+            }
             register[type] = handler;
         },
 
@@ -26,7 +23,7 @@
             var register = this._register;
             return register[type];
         },
-        
+
         set: function(key, type) {
             var register = this._register;
             if (register[type] === undefined) {

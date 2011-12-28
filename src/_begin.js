@@ -5,18 +5,37 @@
  *
  * */
 
-"use strict";
-
+/**
+ * A factory class which creates the base framworks for you.
+ * @name FrameworkFactory
+ * @class FrameworkFactory
+ **/
 (function(global, undefined) {
 
-    /**
-     * @class FrameworkFactory
-     * A factory class which creates the base framworks for you.
-     * */
-    var FrameworkFactory = function FrameworkFactory() {};
+    "use strict";
 
     /**
-     * FrameworkFactory version: 1.0.0
+     * @lends FrameworkFactory
+     * */
+    var Framework = function Framework(options) {
+
+        options = options || {};
+
+        this.version = options.version || '1.0.0';
+        this.rootNamespace = options.root || 'framework';
+        this.fullName = options.fullName || 'framework';
+
+        //framework.defaultPropertyType = options.defaultPropertyType || ProertyTypes.STANDARD;
+        this.privateMemberPrefix = options.privateMemberPrifix || '_';
+        this.protectedMemberPrifix = options.protectedMemberPrifix || '__';
+        this.defaultBaseClass = options.defaultBaseClass || Object;
+
+    };
+
+    var FrameworkFactory = {};
+
+    /**
+     * Specifies the current version of FrameworkFactory
      * @field FrameworkFactory.version
      **/
     FrameworkFactory.version = '1.0.0 alpha';
@@ -25,29 +44,18 @@
     * A factory function to create framework root based on spplied options.
     * @function FrameworkFactory.create
     * @param options which help define the behaviour of the framework.
-    *
     * */
     FrameworkFactory.create = function create(options) {
 
-        options = options || {};
-
-        var rootNamespace = options.root || 'framework';
-        var framework = new FrameworkFactory();
-
-        framework.version = options.version || '1.0.0';
-        framework.fullName = options.fullName || 'framework';
-        //framework.defaultPropertyType = options.defaultPropertyType || ProertyTypes.STANDARD;
-
-        framework.privateMemberPrefix = options.privateMemberPrifix || '_';
-
-        framework.defaultBaseClass = options.defaultBaseClass || Object;
+        var framework = new Framework(options);
 
         return framework;
 
     };
-    
-    var $f = FrameworkFactory.prototype;
-    
+
+    var $f = Framework.prototype;
+    var _framework = $f;
+
 
     /*
      * @function Registeres a new member to the framework factory;

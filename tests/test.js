@@ -15,7 +15,7 @@ module("Framework Tests");
             neq (ns, undefined, 'The namespace ns must not be undefined.');
             neq (ns, null, 'The namespace ns must not be null.');
         },
-        
+
         defaultOptions: function() {
             var ns = FrameworkFactory.create();
             eq (ns.version, '1.0.0', "Default version must be 1.0.0");
@@ -23,7 +23,7 @@ module("Framework Tests");
             eq (ns.privateMemberPrefix, '_', 'The default private member prefix is "_"');
             eq(ns.defaultBaseClass, Object, 'The default base class must be Object');
         },
-        
+
         optionsChanged: function(){
 
             function BaseObject() {}
@@ -57,7 +57,7 @@ module("Class Tests");
             p1.age = 30
             eq (p1.age, 30, 'Value of p1.age must be 30');
         },
-        
+
         attachMembers: function() {
 
             var Class = framework.Class();
@@ -85,7 +85,7 @@ module("Class Tests");
             eq(c1.getName(), 'abc');
 
         },
-        
+
         setValues: function() {
             Employee.attach({
                 empCode: 1,
@@ -137,7 +137,7 @@ module("Class Tests");
 module('TypeHandler Tests');
 
     var typeHandlerTests = {
-            
+
         events: function(){
 
             var btn = new Button("Button1");
@@ -215,31 +215,31 @@ module('TypeHandler Tests');
             //console.log(btn2, new btn2.constructor('wow'));
 
         },
-        
+
         attributes: function() {
-            
+
             var b1 = new Button();
             var b2 = new Button('Button2');
-            
+
             eq(b1.caption, 'Button');
-            eq(b2.caption, 'Button2');            
+            eq(b2.caption, 'Button2');
             b1.clickCount++;
             b1.clickCount++;
             eq (b1.clickCount, 2);
             eq(b1.isDefault, false);
             b1.isDefault = true;
             eq(b1.isDefault, true);
-            
+
         }
     };
-    
+
     test ('Event Tests', typeHandlerTests.events);
     test ('Attribute Tests', typeHandlerTests.attributes);
 
 module('Plugins Tests');
 
     var pluginTests = {
-        
+
         basic: function() {
             FrameworkFactory.plugin(function($f){
                 $f.myPlugin = {
@@ -247,14 +247,14 @@ module('Plugins Tests');
                         return message;
                     }
                 }
-                
+
                 $f.myPlugin.Test = $f.Class({
                     echo: function(message) {
                         return message;
                     }
                 }, Object);
             });
-            
+
             neq(undefined, framework.myPlugin);
             eq('wow', framework.myPlugin.echo('wow'));
             eq('function', typeof framework.myPlugin.Test);
@@ -263,41 +263,41 @@ module('Plugins Tests');
             console.log(t.echo);
         }
     };
-    
+
     test ('Plugins Tests', pluginTests.basic);
 
 module('framework.collections Tests');
 
     var maplistTests = {
         basic: function() {
-            
+
             var list = new framework.collections.MapList();
-            
+
             eq (0, list.length, 'New list should have length = 0');
             list.add({
                 id: 'wow',
                 value: 10
             });
-            eq(1, list.length, 'One item added so length should be 1');            
+            eq(1, list.length, 'One item added so length should be 1');
             var exceptionCount = 0;
             try { list.add({ id: 'wow' }); } catch (error) { exceptionCount++; }
-            
+
             eq(1, exceptionCount, 'Exception cound should have been increased by 1.');
             eq(1, list.length, 'Since no new item is added, count should remain the same as earlier.');
-            
+
             list.add({ id: 'a', val: 1 }, { id: 'b', val: 2});
             eq(3, list.length, 'List length should have been increased by 2.');
-            
+
             var o = list.get('wow');
             neq (undefined, o);
             eq (10, o.value, 'Reading value from the object with id "wow".');
             console.log(list);
-            
+
         }
     };
-    
+
     test('MapList Tests', maplistTests.basic);
-    
+
 
 module('framework.utils Tests');
 
@@ -305,14 +305,14 @@ module('framework.utils Tests');
 
     utilsTests = {
         basic: function() {
-            
+
             eq ('_key', utils.getPrivateKey('key'));
             eq ('__key', utils.getProtectedKey('key'));
             var b = new Button();
             //var b2 = utils.clone(b);
         },
-        set: function() {
-            
+        json: function() {
+
             var s = new Shape({
                 id: 'main',
                 x: 10,
@@ -324,7 +324,7 @@ module('framework.utils Tests');
                     new Shape({ id: 'b' })
                 ]
             });
-            
+
             eq('main', s.id);
             eq(10, s.x);
             eq(20, s.y);
@@ -332,17 +332,17 @@ module('framework.utils Tests');
             eq(250, s.height);
             eq(2, s.children.length);
             eq('a', s.children.get(0).id);
-            eq('a', s.children.get('a').id);            
+            eq('a', s.children.get('a').id);
             eq('b', s.children.get(1).id);
             eq('b', s.children.get('b').id);
         }
-    
+
     };
-    
+
     test('Basic Tests', utilsTests.basic);
-    test('Set Tests', utilsTests.set);
-    
-    
+    test('JSON Tests', utilsTests.json);
+
+
 
 
 

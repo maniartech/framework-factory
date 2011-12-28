@@ -5,18 +5,37 @@
  *
  * */
 
-"use strict";
-
+/**
+ * A factory class which creates the base framworks for you.
+ * @name FrameworkFactory
+ * @class FrameworkFactory
+ **/
 (function(global, undefined) {
 
-    /**
-     * @class FrameworkFactory
-     * A factory class which creates the base framworks for you.
-     * */
-    var FrameworkFactory = function FrameworkFactory() {};
+    "use strict";
 
     /**
-     * FrameworkFactory version: 1.0.0
+     * @lends FrameworkFactory
+     * */
+    var Framework = function Framework(options) {
+
+        options = options || {};
+
+        this.version = options.version || '1.0.0';
+        this.rootNamespace = options.root || 'framework';
+        this.fullName = options.fullName || 'framework';
+
+        //framework.defaultPropertyType = options.defaultPropertyType || ProertyTypes.STANDARD;
+        this.privateMemberPrefix = options.privateMemberPrifix || '_';
+        this.protectedMemberPrifix = options.protectedMemberPrifix || '__';
+        this.defaultBaseClass = options.defaultBaseClass || Object;
+
+    };
+
+    var FrameworkFactory = {};
+
+    /**
+     * Specifies the current version of FrameworkFactory
      * @field FrameworkFactory.version
      **/
     FrameworkFactory.version = '1.0.0 alpha';
@@ -25,29 +44,18 @@
     * A factory function to create framework root based on spplied options.
     * @function FrameworkFactory.create
     * @param options which help define the behaviour of the framework.
-    *
     * */
     FrameworkFactory.create = function create(options) {
 
-        options = options || {};
-
-        var rootNamespace = options.root || 'framework';
-        var framework = new FrameworkFactory();
-
-        framework.version = options.version || '1.0.0';
-        framework.fullName = options.fullName || 'framework';
-        //framework.defaultPropertyType = options.defaultPropertyType || ProertyTypes.STANDARD;
-
-        framework.privateMemberPrefix = options.privateMemberPrifix || '_';
-
-        framework.defaultBaseClass = options.defaultBaseClass || Object;
+        var framework = new Framework(options);
 
         return framework;
 
     };
-    
-    var $f = FrameworkFactory.prototype;
-    
+
+    var $f = Framework.prototype;
+    var _framework = $f;
+
 
     /*
      * @function Registeres a new member to the framework factory;
@@ -98,104 +106,105 @@
         return s.replace(/^\s\s*/, '').replace(/\s\s*$/, '')
     };
 
-    
+
     _framework.utils = {
-        
+
         getPrivateKey: function (key) {
-            return '_' + key;
+            return _framework.privateMemberPrefix + key;
         },
-        
+
         getProtectedKey: function(key) {
-            return '__' + key;
+            return framework.protectedMemberPrifix + key;
         },
-        
+
         /**
          * Checks whether both the objects are equals. Iterates through all the
          * members to check equality.
+         * @function framework.utils.equals
          * @param o1 The first object
          * @param o2 The second object
          * @returns True if both the objects are equal, false if they are not.
          **/
         equals: function(o1, o2) {
-            
+
             var key;
-            
+
             //True if both objects are same.
             if (o1 === o2) {
                 return true;
             }
-            
+
             for(key in o1) {
-                
+
                 //If key exists in o1 but not in o2, return false.
                 if (o2[key] === undefined) {
                     return false;
                 }
-                
+
                 var v1 = o1[key];
                 var v2 = o2[key];
-                
+
                 //If values in a given key not matches return false.
                 if (v1 !== v2) {
                     return false;
                 }
             }
-            
+
             //If key exists in o2 but not in o1, returns false.
             for (key in o2) {
                 if (o1[key] === undefined) {
                     return false;
                 }
             }
-            
+
             //Return true, becuase no differences found.
             return true;
-            
+
         },
-                
+
         /**
-         * 
+         *
          **/
         clone: function(o, deep) {
             deep = deep || false;
             throw new Error ('Not implemented error.');
         },
-        
-        set: function(o, props, options) {
-            
+
+        loadFromJSON: function(o, json, options) {
+
             options = options || {};
             var setFunctions = options.setFunctions || false;
-            
-            for (var key in props) {
-                
-                //Check props object owns the member
-                if (props.hasOwnProperty[key] === false) {
+
+            for (var key in json) {
+
+                //Check json object owns the member
+                if (json.hasOwnProperty[key] === false) {
                     continue;
                 }
-                
+
                 //Check the member exists in object to set.
-                if (o[key] === undefined) {
-                    continue;
-                }
-                
+                //if (o[key] === undefined) {
+                //    continue;
+                //}
+
                 //var propMemberType = typeof prop[key];
                 var oMemberType = typeof o[key];
-                var val = props[key];
-                
+                var val = json[key];
+
                 switch (oMemberType) {
-                    
+
                     case 'object': {
-                        
-                        if (o[key].constructor.set !== undefined) {
-                            o[key].constructor.set(o[key], props[key]);
+
+                        if (o[key].constructor.loadFromJSON !== undefined) {
+                            o[key].constructor.loadFromJSON(o[key], json[key]);
                         }
-                        else if (o[key] instanceof Array) {                            
+                        else if (o[key] instanceof Array) {
                             //Push the val to o[key].
                             o[key].push.apply(o[key], val);
                         }
                         else {
-                            _framework.Utils.set(o[key], val);
-                        }                        
+                            _framework.Utils.loadFromJSON(o[key], val);
+                        }
                         break;
                     }
                     case 'function': {
@@ -205,46 +214,79 @@
                     }
                     default: {
                         o[key] = val;
-                    }                        
-                }                
+                    }
+                }
             }
         },
-        
+
+        exportToJSON: function exportToJSON(o) {
+            var json = {};
+            for (key in o) {
+
+            }
+        },
+
         //Validation
         isFunction: function(fn) {
             return typeof fn === 'function';
         },
-        
+
         isNumber: function(num) {
-            return typeof num === 'number'; 
+            return typeof num === 'number';
         },
-        
+
         isUndefined: function(val) {
             return typeof val === 'undefined';
         },
-        
+
         isString: function(str) {
             return typeof val === 'string';
         },
-        
+
         isDate: function(dt) {
-            return (typeof dt === 'object') && 
+            return (typeof dt === 'object') &&
                 (dt instanceof Date === true);
         },
-        
+
         //UUID
-        
+
         simpleGuid: function(sep) {
             function section() {
                 return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
             }
             return (section()+section()+"-"+section()+"-"+section()+"-"+section()+"-"+section()+section()+section());
-        }
-        
-        
-        
+        },
+
+        //Empty
+        emptyFn: function(){},
+
+        'undefined': undefined
+
     };
 
+    //var Options = $f.Class({
+    //
+    //    init: function(options) {
+    //        this._options = options || {};
+    //    },
+    //
+    //    get: function(name, defaultValue, validator) {
+    //        var o = this._options;
+    //        if (name in o) {
+    //            var val = o[name];
+    //            if (validator !== undefined) {
+    //                if (validator(val)) {
+    //                    return val;
+    //                }
+    //                else {
+    //                    throw Error("Error while validating argument '" + name + "'.");
+    //                }
+    //            }
+    //            return val;
+    //        }
+    //        return defaultValue;
+    //    }
+    //});
 
 
     $f.Class = function (prop, parent) {
@@ -348,7 +390,7 @@
         return Class;
 
     };
-    
+
     $f.TypeHandlers = {};
 
 
@@ -443,30 +485,30 @@
     $f.TypeHandlers["framework.attribute"] = attributeHandler;
 
 
-    
+
     $f.collections = {};
     var collections = $f.collections;
-    
+
     collections.ObservableList = $f.Class({
-        
+
     }, Object);
-    
+
 
     /**
-     * @class framework.collection.MapList
      * A collection class which stores both indexes as well as keys.
-     * @constructor
-     * 
+     * @class framework.collection.MapList
+     * @name framework.collections.MapList.prototype
      **/
     collections.MapList = $f.Class({
 
         /**
-         * @field Represents total number of items in the list.
+         * Represents total number of items in the list.
          **/
         length          : 0,
-        
+
         /**
-         * @field Key identifier in the item object.
+         * Key identifier in the item object.
+         * @lends framework.collections.MapList
          **/
         keyName         : 'id',
 
@@ -474,15 +516,15 @@
             this._items = [];
             this._keys = [];
             this._map = {};
-            
+
             if (arguments.length > 0) {
                 this.add.apply(this, arguments);
             }
         },
-        
+
         /**
          * Add one or more items into the list.
-         * @function add
+         * @function MapList.add
          * @param Variable number of items to be added to the list.
          **/
         add: function() {
@@ -497,56 +539,56 @@
                 item = arguments[i];
                 //check if key available.
                 if (typeof item === 'object' && item[keyName] !== undefined) {
-                    
+
                     key = item[keyName];
-                    
+
                     //TODO:verify this code
                     if (typeof key === 'function') {
                         key = key();
                     }
                     //key identified, map it.
                     if (key !== undefined) {
-                        
+
                         //Check  if key already exists.
                         if (map[key] !== undefined) {
                             throw new Error('Item with this key already exists.');
                         }
-                        
+
                         keys.push(key);
                         map[key] = item;
                     }
                 }
-                
-                //Add item to an array.                
+
+                //Add item to an array.
                 this.length = items.push(item);;
             }
             return this;
         },
-        
+
         /**
          * Appends a list or an array to the current list.
          **/
         addList: function() {
             var item = arguments[0];
-            
+
             if (item instanceof Array) {
                 this.add.apply(this, item);
             }
-            
+
             var items = [];
             for (var i=0, len = arguments.length; i<len; i++) {
                 items.push(item[i].get(i));
             }
             this.add.apply(this, items);
         },
-        
+
         get: function(indexOrKey){
             if (typeof indexOrKey === 'number') {
                 return this._items[indexOrKey];
             }
             return this._map[indexOrKey];
         },
-        
+
         replace: function(indexOrKey, item) {
             var index, key, indexKey;
             indexKey = this.findIndexKey(indexOrKey);
@@ -559,7 +601,7 @@
                 this.map[key] = item;
             }
         },
-        
+
         findIndexKey: function(indexOrKey) {
             var index, key;
             if (typeof indexOrKey === 'number') {
@@ -575,14 +617,14 @@
             }
             return [index, key];
         },
-        
+
         findIndexKeyByItem: function(item) {
             var index = this._items.indexOf(item);
             return findIndexKey(index);
         },
 
         remove: function(indexOrKey) {
-            
+
             var indexKey = this.findIndexKey(indexOrKey),
                 index = indexKey[0],
                 key = indexKey [1];
@@ -592,22 +634,22 @@
                 this._items.splice(index, 1); //delete array item
                 this._keys.splice(index, 1); //delete key item
             }
-            
+
             //Key found
             if (key !== undefined) {
                 delete this._map[key]; //delete key mapping
             }
-            
+
             return this;
         },
-        
+
         findKeyOrIndex: function(indexOrKey) {
             if (typeof indexOrKey === 'number'){
                 return this.keys[this.keyName];
             }
             return this._keys.indexOf(indexOrKey);
         },
-        
+
         clear: function() {
             this._items = [];
             this._keys = [];
@@ -623,7 +665,7 @@
         },
 
         each: function(callback) {
-            var items, i, len;            
+            var items, i, len;
             items = this._items;
             for(i=0, len = items.length; i<len; i++){
                 callback(items[i]);
@@ -632,52 +674,61 @@
         }
 
     }, Object);
-    
+
     /**
      * Sets the value into collection
      **/
-    collections.MapList.set = function set(colObj, value) {
-        
+    collections.MapList.loadFromJSON = function set(colObj, value) {
         if (colObj instanceof collections.MapList === false) {
             throw new Error('Operation "set" not supported on this object.');
         }
-        
         //Clear the collection
         colObj.clear();
         if (value instanceof Array || value instanceof collections.MapList) {
-            
             colObj.add.apply(colObj, value);
         }
         else {
+            if (value.$type !== undefined) {
+            }
             colObj.add(value);
         }
     };
-    
+
+    collections.MapList.exportToJSON = function toJson(colObj) {
+        var items = [];
+        var colItems = colObj.toArray();
+        for (var i=0, len=colObj.length; i<len; i++) {
+            var item = colItems[i];
+            items.push($f.utils.toJson(item));
+        }
+        return items;
+    };
+
     collections.ObservableMapList = $f.Class({
-        
+
         itemBeforeAdd   : $f.event(),
         itemAdded       : $f.event(),
         itemBeforeRemove: $f.event(),
         itemRemoved     : $f.event(),
         itemBeforeSet   : $f.event(),
         itemSet         : $f.event(),
-        
+
         init: function() {
             this._list = new collections.MapList();
             _list.add.apply(_list, arguments);
         }
     }, Object);
-    
-    
-    
+
+
+
     //$f.Register = _framework.Class({
-    //    
-    //    init: function() {            
+    //
+    //    init: function() {
     //        this._register = new collections.MapList();
     //    },
     //
-    //    register: function (type, handler) {            
-    //        
+    //    register: function (type, handler) {
+    //
     //    },
     //
     //    unregister: function (type) {
@@ -689,7 +740,7 @@
     //        var register = this._register;
     //        return register[type];
     //    },
-    //    
+    //
     //    set: function(key, type) {
     //        var register = this._register;
     //        if (register[type] === undefined) {
@@ -699,11 +750,11 @@
     //    }
     //
     //}, Object);
-    
-    
-    
-    
-    
+
+
+
+
+
 //    collections.CollectionWithEvent = _framework.Class({
 //
 //        keyName         : $property('name'),
@@ -860,15 +911,15 @@
 //        }
 //
 //    }, _framework.Component);
-//    
+//
 //    var styles = [];
-//    
+//
 //    function attachFinder(arr, keyName) {
 //        var foundKey, obj;
 //        arr.find = function(key, cache) {
-//            
+//
 //            cache = cache || true;
-//            
+//
 //            if (cache === true) {
 //                if (arr._keys === undefined) {
 //                    arr._keys = {};
@@ -880,7 +931,7 @@
 //                            arr._keys[foundKey] = arr[i];
 //                            obj = arr[i];
 //                            break;
-//                        } 
+//                        }
 //                    }
 //                    if (foundKey === undefined) {
 //                        throw new Error('key not found.');
@@ -894,24 +945,22 @@
 //            for (var i=0; i<arr.length; i++) {
 //                if (arr[i][keyName] === key) {
 //                    return arr[i];
-//                } 
+//                }
 //            }
 //            throw new Error('key not found.');
 //        };
 //    }
-//    
-//    
+//
+//
 //    styles[0] = new Style({
 //        name: 'wow',
 //        style: 'red'
 //    });
-//    
+//
 //    var wow = style.find('wow');
 //    styles[0] = new Style({
 //        name: 'great'
 //    });
-    
-    
 
 
     FrameworkFactory.plugin = function(fn) {

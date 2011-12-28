@@ -1,4 +1,12 @@
+
+
 var framework = FrameworkFactory.create();
+
+framework.BaseObject = framework.Class({
+
+}, Object);
+
+framework.defaultBaseClass = framework.BaseObject;
 
 var Person = framework.Class({
 
@@ -18,6 +26,8 @@ var Person = framework.Class({
 
 });
 
+
+
 var Employee = framework.Class({
     init: function(name) {
         this.$super(name);
@@ -34,7 +44,7 @@ var Teacher = framework.Class({
 }, Person);
 
 var Button = framework.Class({
-    
+
     //Attributes
     clickCount: framework.attribute(0, {
         type: 'number'
@@ -45,11 +55,11 @@ var Button = framework.Class({
     isDefault: framework.attribute(false, {
         type: 'boolean'
     }),
-    
+
     //Events
     click: framework.event(),
     mouseMove: framework.event(),
-    
+
     //Constructor
     init: function(caption) {
         if (caption) {
@@ -67,12 +77,14 @@ var Shape = framework.Class({
     init: function() {
         this.children = new framework.collections.MapList();
         if (arguments.length > 0) {
-            framework.utils.set(this, arguments[0]);
+            framework.utils.loadFromJSON(this, arguments[0]);
         }
     }
 });
 
 var p1 = new Person("abc");
 var p2 = new Person("xyz");
+
+console.log(p1 instanceof framework.BaseObject);
 
 var e1 = new Employee("abc1");

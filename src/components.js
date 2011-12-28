@@ -104,14 +104,7 @@
 
         };
 
-    _framework.TypeHandlers.register("framework.property", propertyHandler);
-
-    _framework.Component = _framework.Class ({
-
-        //propertyChanging: $event(),
-        //propertyChanged: $event()
-
-    });
+    _framework.TypeHandlers['framework.property'] = propertyHandler;
 
     //Globals
     global.$property        = property;

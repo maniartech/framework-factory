@@ -6,7 +6,8 @@ jsbuild.py is a simple python based commandline utility which help build modular
 javascript files into one. Is also minifies and obfuscate final javascript into
 its minified version.
 
-For minification jsbuild.py depends upon either
+For minification jsbuild.py depends upon either of the following components
+    -
 
 """
 import os, shutil
@@ -15,6 +16,14 @@ from os import path
 import settings
 
 scripts = []
+
+YUI_COMPRESSOR = 'yuicompressor-2.4.7.jar'
+
+def get_compressor():
+    if settings.COMPRESSOR_TYPE == 'yui':
+        return YUI_COMPRESSOR
+    else:
+        raise Exception('Other compressor currently not supported')
 
 for item in settings.SCRIPTS:
     script = path.join(settings.SCRIPTS_ROOT, item)
@@ -46,7 +55,7 @@ def yui_compress(in_file, out_file, verbose = False):
 
     options = [
         'java -jar',
-        '"%s"' % settings.COMPRESSOR,
+        '"%s"' % get_compressor(),
         '-o "%s"' % out_file,
         '--type js',
         in_file,

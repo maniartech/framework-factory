@@ -1,11 +1,13 @@
 from os import path
 
-COMPRESSOR_TYPE = 'yui' # yui or closure
-COMPRESSOR = 'yuicompressor-2.4.7.jar'
+#COMPRESSOR_TYPE
+#Should be either yui or closure. Compressor type closure is currently not supported
+COMPRESSOR_TYPE = 'yui'
 
-#Scripts
+#Root directory for all the scripts
 SCRIPTS_ROOT = path.realpath('../../src/')
 
+#List of scripts sequencially
 SCRIPTS = [
     '_begin.js',
     'object.js',
@@ -21,6 +23,8 @@ SCRIPTS = [
     '_end.js',
     ];
 
+#Output directory path, where output scripts should be deplyed.
 OUTPUT_PATH = path.realpath("../../")
 
+#Name of the output
 OUTPUT_NAME = 'framework.factory'
