@@ -82,9 +82,21 @@ var Shape = framework.Class({
     }
 });
 
+var Component = framework.Class({
+
+    count: framework.readonly(0),
+
+    name : framework.property(),
+
+    init: function() {
+
+    },
+    click: function() {
+        this._count += 1;
+    }
+});
+
 var p1 = new Person("abc");
 var p2 = new Person("xyz");
-
-console.log(p1 instanceof framework.BaseObject);
 
 var e1 = new Employee("abc1");

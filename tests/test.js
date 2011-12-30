@@ -20,25 +20,28 @@ module("Framework Tests");
             var ns = FrameworkFactory.create();
             eq (ns.version, '1.0.0', "Default version must be 1.0.0");
             eq (ns.fullName, 'framework', 'The default framework full name must be "framework"');
-            eq (ns.privateMemberPrefix, '_', 'The default private member prefix is "_"');
             eq(ns.defaultBaseClass, Object, 'The default base class must be Object');
         },
 
-        optionsChanged: function(){
+        optionsChanged: function() {
 
             function BaseObject() {}
 
             var ns = FrameworkFactory.create({
                 version: '1.0.1',
                 fullName: 'MyFramework',
-                privateMemberPrifix: '__$',
                 defaultBaseClass: BaseObject
             });
+
             eq (ns.version, '1.0.1', "Default version must be 1.0.1");
             eq (ns.fullName, 'MyFramework', 'The default framework full name must be "MyFramework"');
-            eq (ns.privateMemberPrefix, '__$', 'The default private member prefix is "__$"');
+
+            var Cls = ns.Class({});
+            var inst = new Cls(); //Class instance.
             eq(ns.defaultBaseClass, BaseObject, 'The default base class must be BaseObject');
+            eq(inst instanceof BaseObject, true);
         }
+
     };
 
     test("Framework Not Null Test", frameworkTests.notNull);
@@ -230,11 +233,56 @@ module('TypeHandler Tests');
             b1.isDefault = true;
             eq(b1.isDefault, true);
 
+        },
+
+        readonlyAttributes: function() {
+            var c1 = new Component();
+            var errorsCount = 0;
+            eq(c1.count, 0);
+            c1.click();
+            eq(c1.count, 1);
+            count = 100;
+            try { c1.count = 100; } catch (e) { errorsCount++; }
+            eq (c1.count, 1);
+            eq (errorsCount, 1);
+        },
+
+        properties: function() {
+            var c1 = new Component();
+            var changingCount = 0;
+            var changedCount = 0;
+            //c1.name = "great";
+            c1.propertyChanging(function() {
+                changingCount++;
+            });
+
+            c1.propertyChanged(function() {
+                changedCount++;
+            });
+
+            c1.name = "abc";
+            eq (changingCount, 1);
+            eq (changedCount, 1);
+            c1.name = "abc";
+            eq (changingCount, 1, 'Should not trigger an property change events is the new value is same');
+            eq (changedCount, 1, 'Should not trigger an property change events is the new value is same');
+            c1.name = "xyz";
+            eq (changingCount, 2);
+            eq (changedCount, 2);
+
+            var c2 = new Component();
+            neq(c1.name, c2.name, 'Properties of both the object must independently work.');
+            c2.name = "wonderful";
+            eq (changingCount, 2, 'Should not trigger an property change events if an another object is changed.');
+            eq (changedCount, 2, 'Should not trigger an property change events if an another object is changed.');
+
         }
     };
 
     test ('Event Tests', typeHandlerTests.events);
     test ('Attribute Tests', typeHandlerTests.attributes);
+    test ('Readonly Attribute Tests', typeHandlerTests.readonlyAttributes);
+    test ('Property Tests', typeHandlerTests.properties);
 
 module('Plugins Tests');
 
@@ -260,7 +308,6 @@ module('Plugins Tests');
             eq('function', typeof framework.myPlugin.Test);
             var t = new framework.myPlugin.Test();
             eq('great', t.echo('great'));
-            console.log(t.echo);
         }
     };
 
@@ -291,7 +338,6 @@ module('framework.collections Tests');
             var o = list.get('wow');
             neq (undefined, o);
             eq (10, o.value, 'Reading value from the object with id "wow".');
-            console.log(list);
 
         }
     };
@@ -306,8 +352,8 @@ module('framework.utils Tests');
     utilsTests = {
         basic: function() {
 
-            eq ('_key', utils.getPrivateKey('key'));
-            eq ('__key', utils.getProtectedKey('key'));
+            //eq ('_key', utils.getPrivateKey('key'));
+            //eq ('__key', utils.getProtectedKey('key'));
             var b = new Button();
             //var b2 = utils.clone(b);
         },

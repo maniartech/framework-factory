@@ -16,8 +16,7 @@
     var attributeHandler = function(Class, key, options) {
 
         var proto = Class.prototype;
-        var __super__ = Class.__super__;
-        var privKey = _framework.utils.getPrivateKey(key);
+        var privKey = '_' + key;
         proto[key] = options.defaultValue;
     };
 

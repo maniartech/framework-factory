@@ -2,14 +2,6 @@
 
     _framework.utils = {
 
-        getPrivateKey: function (key) {
-            return _framework.privateMemberPrefix + key;
-        },
-
-        getProtectedKey: function(key) {
-            return framework.protectedMemberPrifix + key;
-        },
-
         /**
          * Checks whether both the objects are equals. Iterates through all the
          * members to check equality.
@@ -156,5 +148,3 @@
         'undefined': undefined
 
     };
-
-    

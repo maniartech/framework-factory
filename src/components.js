@@ -37,7 +37,7 @@
 
             var proto = classFunction.prototype;
             var __super__ = classFunction.__super__;
-            var privKey = getPrivateKey(key);
+            var privKey = '_' + key;
 
             proto[privKey] = options.defaultValue;
 

@@ -24,10 +24,6 @@
         this.version = options.version || '1.0.0';
         this.rootNamespace = options.root || 'framework';
         this.fullName = options.fullName || 'framework';
-
-        //framework.defaultPropertyType = options.defaultPropertyType || ProertyTypes.STANDARD;
-        this.privateMemberPrefix = options.privateMemberPrifix || '_';
-        this.protectedMemberPrifix = options.protectedMemberPrifix || '__';
         this.defaultBaseClass = options.defaultBaseClass || Object;
 
     };

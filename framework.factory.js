@@ -24,10 +24,6 @@
         this.version = options.version || '1.0.0';
         this.rootNamespace = options.root || 'framework';
         this.fullName = options.fullName || 'framework';
-
-        //framework.defaultPropertyType = options.defaultPropertyType || ProertyTypes.STANDARD;
-        this.privateMemberPrefix = options.privateMemberPrifix || '_';
-        this.protectedMemberPrifix = options.protectedMemberPrifix || '__';
         this.defaultBaseClass = options.defaultBaseClass || Object;
 
     };
@@ -108,14 +104,6 @@
 
 
     _framework.utils = {
-
-        getPrivateKey: function (key) {
-            return _framework.privateMemberPrefix + key;
-        },
-
-        getProtectedKey: function(key) {
-            return framework.protectedMemberPrifix + key;
-        },
 
         /**
          * Checks whether both the objects are equals. Iterates through all the
@@ -264,30 +252,6 @@
 
     };
 
-    //var Options = $f.Class({
-    //
-    //    init: function(options) {
-    //        this._options = options || {};
-    //    },
-    //
-    //    get: function(name, defaultValue, validator) {
-    //        var o = this._options;
-    //        if (name in o) {
-    //            var val = o[name];
-    //            if (validator !== undefined) {
-    //                if (validator(val)) {
-    //                    return val;
-    //                }
-    //                else {
-    //                    throw Error("Error while validating argument '" + name + "'.");
-    //                }
-    //            }
-    //            return val;
-    //        }
-    //        return defaultValue;
-    //    }
-    //});
-
 
     $f.Class = function (prop, parent) {
         //Checks if _super exists in overriden function, inspired by John Resig.
@@ -394,70 +358,102 @@
     $f.TypeHandlers = {};
 
 
-    $f.event = function() {
-        return {
-            type: 'framework.event'
-        }
-    };
+    (function($f, global, undefined) {
 
-    var eventHandler = function(Class, key, options) {
-
-        var proto = Class.prototype;
-        var __super__ = Class.__super__;
-        var privKey = $f.utils.getPrivateKey(key);
-        //var eventName = key;
-
-        var eventFn;
-
-        var eventFn = function eventFn(handler) {
-
-            if (this[privKey] === undefined) {
-                this[privKey] = [];
+        $f.event = function() {
+            return {
+                type: 'framework.event'
             }
-            this[privKey].push(handler);
         };
 
-        proto[key] = eventFn;
+        var eventHandler = function(Class, key, options) {
 
-        //Handle Prototypes
-        if (proto['on'] === undefined) {
-            proto.on = function(eventNames, eventHandler) {
-                var names = eventNames.split(',');
-                for(var i=0, length=names.length; i<length; i++) {
-                    var eventName = String.trim(names[i]);
-                    if (this[eventName] !== undefined) {
-                        //Event found, now register handler
-                        this[eventName](eventHandler);
+            var proto = Class.prototype;
+            //var eventName = key;
+
+
+            /**
+             * Registers the event for particular event.
+             * @example
+             * var btn = new Button();
+             * btn.mouseMove(function(){
+             *  console.log('mouse is moving');
+             * });
+             **/
+            proto[key] = function (handler) {
+                var privKey = '_' + key;
+                if (this[privKey] === undefined) {
+                    this[privKey] = [];
+                }
+                this[privKey].push(handler);
+            };
+
+
+            if (proto.on === undefined) {
+
+                /**
+                 * Registers the event handler for one or more events.
+                 * This function is similar to obj.eventName except it accepts more then one events.
+                 * @example
+                 * var btn = new Button();
+                 * btn.on('mousemove, mouseout, mouseup', function() {});
+                 **/
+                proto.on = function(eventNames, eventHandler) {
+                    var names = eventNames.split(',');
+                    for(var i=0, length=names.length; i<length; i++) {
+                        var eventName = String.trim(names[i]);
+                        if (this[eventName] !== undefined) {
+                            //Event found, now register handler
+                            this[eventName](eventHandler);
+                        }
                     }
-                }
-            };
+                };
 
-            proto.trigger = function(eventName, args) {
-                var s = this[privKey];
-                args = args || {};
-                args["eventName"] = eventName;
-                for(var i=0, len=s.length; i<len ; i++) {
-                    var ret = s[i](this, args);
-                    if (ret === false) {
-                        //no more firing, if handler returns falses
-                        break;
+                /**
+                 * Triggers an event causes all the hander associated with the event
+                 * to be invoked.
+                 * @param evantName The name of the event to be triggered.
+                 * @param args arguments to be supplied to event handler. The args must be
+                 * derived from an Object. This is an optional parameter if it is not supplied
+                 * it will be created having a field 'eventName' which will help identify
+                 * the name of the event which triggered.
+                 **/
+                proto.trigger = function(eventName, args) {
+
+                    var s = this['_' + eventName];
+                    //console.log(eventName, s);
+                    if (s === undefined || s.length === 0) {
+                        return this; //No need to fire event, sicne there is no subscriber.
                     }
-                }
-                return this;
-            };
+                    args = args || {};
+                    args["eventName"] = eventName;
+                    for(var i=0, len=s.length; i<len ; i++) {
+                        var ret = s[i](this, args);
+                        if (ret === false) {
+                            //no more firing, if handler returns falses
+                            break;
+                        }
+                    }
+                    return this;
+                };
 
-            proto.off = function(eventName, handler) {
-                var arr = this[$f.utils.getPrivateKey(eventName)];
-                var index = arr.indexOf(handler);
-                if (index !== -1) {
-                    arr.splice(index, 1);
-                }
-            };
+                /**
+                 * Disassociate the handler from the trigger.
+                 **/
+                proto.off = function(eventName, handler) {
+                    var arr = this['_' + eventName];
+                    var index = arr.indexOf(handler);
+                    if (index !== -1) {
+                        arr.splice(index, 1);
+                    }
+                };
 
-        }
-    };
+            }
+        };
 
-    $f.TypeHandlers["framework.event"] = eventHandler;
+        $f.TypeHandlers["framework.event"] = eventHandler;
+
+    })(_framework, global);
 
 
     _framework.attribute = function(defaultValue, options) {
@@ -477,12 +473,108 @@
     var attributeHandler = function(Class, key, options) {
 
         var proto = Class.prototype;
-        var __super__ = Class.__super__;
-        var privKey = _framework.utils.getPrivateKey(key);
+        var privKey = '_' + key;
         proto[key] = options.defaultValue;
     };
 
     $f.TypeHandlers["framework.attribute"] = attributeHandler;
+
+
+    (function($f, global, undefined) {
+
+        /*
+        * @function: $property
+        * @description: While defining class, this function sets the member as
+        * a property.
+        * @param: defaultValue, the default value of property
+        * @param: firePropertyChanged, if true,
+        * */
+        var property = function property(defaultValue) {
+                return {
+                    type: 'framework.property',
+                    defaultValue: defaultValue,
+                    readonly: false
+                };
+            },
+
+            readonly = function readonly(defaultValue) {
+                return {
+                    type: 'framework.readonly',
+                    defaultValue: defaultValue,
+                    readonly: true
+                };
+            },
+
+            handler = function(Class, key, options) {
+
+                var proto = Class.prototype,
+                    privKey = '_' + key;
+
+                proto[privKey] = options.defaultValue;
+
+                if (options.readonly == false) {
+
+                    //Attach property change events to the proto of the Class
+                    if (proto['propertyChanged'] === undefined) {
+                        Class.attach({
+                            propertyChanging: $f.event(),
+                            propertyChanged : $f.event()
+                        });
+                    }
+                }
+
+                var _get = function get () {
+                        return this[privKey];
+                    },
+                    _set = function set (v) {
+
+                        var oldVal = this[privKey];
+
+                        if (oldVal === v) {
+                            return; //Property not changed.
+                        }
+
+                        var args = {
+                            propertyName: key,
+                            oldValue: oldVal,
+                            newValue: v
+                        };
+                        this.trigger('propertyChanging', args);
+                        this[privKey] = v;
+                        this.trigger('propertyChanged', args);
+
+                    },
+                    _readonlySet = function readonlySet() {
+                        throw new Error('You are not allowed to write to readonly attribute "' + key + '".');
+                    };
+
+                if (Object.defineProperty) {
+                    if (!options.readonly) {
+                        Object.defineProperty (proto, key, {
+                            get: _get,
+                            set: _set
+                        });
+                    }
+                    else {
+                       Object.defineProperty (proto, key, {
+                            get: _get,
+                            set: _readonlySet
+                        });
+                    }
+                }
+                else if (proto.__defineGetter__ !== undefined) {
+                    proto.__defineGetter__(key, _get);
+                    proto.__defineSetter__(key, _readonlySet);
+                }
+            };
+
+        $f.TypeHandlers['framework.property'] = handler;
+        $f.TypeHandlers['framework.readonly'] = handler;
+
+        $f.property     = property;
+        $f.readonly     = readonly;
+
+    })(_framework, global);
 
 
 

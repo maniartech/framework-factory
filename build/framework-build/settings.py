@@ -18,6 +18,7 @@ SCRIPTS = [
     #'register.js',
     'events.js',
     'attributes.js',
+    'properties.js',
     #'components.js',
     'collections.js',
     '_end.js',
