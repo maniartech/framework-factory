@@ -1,7 +1,7 @@
 
     $f.Class = function (prop, parent) {
         //Checks if _super exists in overriden function, inspired by John Resig.
-        var fnTest = /xyz/.test(function (){xyz;}) ? /\$\bsuper\b/ : /.*/,
+        var fnTest = /xyz/.test(function (){xyz;}) ? /\bbase\b/ : /.*/,
             hasProp = Object.prototype.hasOwnProperty,
             initializing, proto, key, Class, __super__, framework;
 
@@ -71,12 +71,12 @@
                     proto[key] = (function(key, fn){
                         return function() {
 
-                            this.$super =  function() {
+                            this.base =  function() {
                                 __super__[key].apply(this, arguments);
                             };
                             var ret = fn.apply(this, arguments);
                             //this._super = tmp;
-                            delete this.$super;
+                            delete this.base;
                             return ret;
                         };
                     })(key, item);

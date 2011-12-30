@@ -30,7 +30,7 @@ var Person = framework.Class({
 
 var Employee = framework.Class({
     init: function(name) {
-        this.$super(name);
+        this.base(name);
     },
 
     info: function() {
