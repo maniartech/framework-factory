@@ -596,13 +596,22 @@
         /**
          * Represents total number of items in the list.
          **/
-        length          : 0,
+        length          : $f.readonly(0),
 
         /**
          * Key identifier in the item object.
          * @lends framework.collections.MapList
          **/
         keyName         : 'id',
+
+        validator       : undefined,
+
+        itemBeforeAdd   : $f.event(),
+        itemAdd         : $f.event(),
+        itemBeforeRemove: $f.event(),
+        itemRemoved     : $f.event(),
+        itemBeforeSet   : $f.event(),
+        itemSet         : $f.event(),
 
         init: function() {
             this._items = [];
@@ -629,6 +638,9 @@
 
             for (var i=0, len=arguments.length; i<len; i++) {
                 item = arguments[i];
+                this.trigger('itemBeforeAdd', {
+                    item: item
+                });
                 //check if key available.
                 if (typeof item === 'object' && item[keyName] !== undefined) {
 
@@ -645,14 +657,18 @@
                         if (map[key] !== undefined) {
                             throw new Error('Item with this key already exists.');
                         }
-
                         keys.push(key);
                         map[key] = item;
                     }
                 }
 
                 //Add item to an array.
-                this.length = items.push(item);;
+                this._length = items.push(item);;
+
+                this.trigger('itemAdd', {
+                    item: item
+                });
+
             }
             return this;
         },
@@ -666,7 +682,6 @@
             if (item instanceof Array) {
                 this.add.apply(this, item);
             }
-
             var items = [];
             for (var i=0, len = arguments.length; i<len; i++) {
                 items.push(item[i].get(i));
@@ -808,8 +823,15 @@
         init: function() {
             this._list = new collections.MapList();
             _list.add.apply(_list, arguments);
+        },
+
+        add: function() {
+
         }
-    }, Object);
+
+
+
+    }, collections.MapList);
 
 
 
