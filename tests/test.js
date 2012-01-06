@@ -276,6 +276,12 @@ module('TypeHandler Tests');
             eq (changingCount, 2, 'Should not trigger an property change events if an another object is changed.');
             eq (changedCount, 2, 'Should not trigger an property change events if an another object is changed.');
 
+            eq(c1.width, 0);
+            c1.width = 10;
+            eq(c1.width, 10);
+            eq(c1.width, c1.widthCount);
+            
+
         }
     };
 
