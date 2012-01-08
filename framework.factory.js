@@ -184,7 +184,7 @@
                     case 'object': {
 
                         if (o[key].constructor.loadFromJSON !== undefined) {
-                            o[key].constructor.loadFromJSON(o[key], json[key]);
+                            o[key].constructor.loadFromJSON(o, key, val);
                         }
                         else if (o[key] instanceof Array) {
                             //Push the val to o[key].
@@ -196,9 +196,13 @@
                         break;
                     }
                     case 'function': {
-                        if (setFunctions === true) {
+                        if (o[key].loadFromJSON !== undefined) {
+                            o[key].loadFromJSON(o, key, val);
+                        }
+                        else {
                             o[key] = val;
                         }
+                        break;
                     }
                     default: {
                         o[key] = val;
@@ -386,6 +390,10 @@
                     this[privKey] = [];
                 }
                 this[privKey].push(handler);
+            };
+
+            proto[key].loadFromJSON = function(o, k, v) {
+                o[k].call(o, v);
             };
 
 
@@ -828,7 +836,8 @@
     /**
      * Sets the value into collection
      **/
-    collections.MapList.loadFromJSON = function set(colObj, value) {
+    collections.MapList.loadFromJSON = function set(o, key, value) {
+        var colObj = o[key];
         if (colObj instanceof collections.MapList === false) {
             throw new Error('Operation "set" not supported on this object.');
         }
@@ -1123,7 +1132,7 @@
     FrameworkFactory.plugin = function(fn) {
         fn.call(global, $f);
     }
-    
+
     return FrameworkFactory;
 
 })(this);

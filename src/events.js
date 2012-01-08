@@ -29,6 +29,10 @@
                 this[privKey].push(handler);
             };
 
+            proto[key].loadFromJSON = function(o, k, v) {
+                o[k].call(o, v);
+            };
+
 
             if (proto.on === undefined) {
 

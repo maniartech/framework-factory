@@ -81,7 +81,7 @@
                     case 'object': {
 
                         if (o[key].constructor.loadFromJSON !== undefined) {
-                            o[key].constructor.loadFromJSON(o[key], json[key]);
+                            o[key].constructor.loadFromJSON(o, key, val);
                         }
                         else if (o[key] instanceof Array) {
                             //Push the val to o[key].
@@ -93,9 +93,13 @@
                         break;
                     }
                     case 'function': {
-                        if (setFunctions === true) {
+                        if (o[key].loadFromJSON !== undefined) {
+                            o[key].loadFromJSON(o, key, val);
+                        }
+                        else {
                             o[key] = val;
                         }
+                        break;
                     }
                     default: {
                         o[key] = val;

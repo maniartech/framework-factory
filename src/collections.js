@@ -212,7 +212,8 @@
     /**
      * Sets the value into collection
      **/
-    collections.MapList.loadFromJSON = function set(colObj, value) {
+    collections.MapList.loadFromJSON = function set(o, key, value) {
+        var colObj = o[key];
         if (colObj instanceof collections.MapList === false) {
             throw new Error('Operation "set" not supported on this object.');
         }
