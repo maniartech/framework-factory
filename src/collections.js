@@ -82,7 +82,7 @@
 
                         //Check  if key already exists.
                         if (map[key] !== undefined) {
-                            throw new Error('Item with this key already exists.');
+                            throw new Error('Item with this key [' + key + '] already exists.');
                         }
                         keys.push(key);
                         map[key] = item;
@@ -147,7 +147,7 @@
                 key = indexOrKey;
             }
             if (index < 0 || index >= this.length) {
-                throw new Error('Index out of range.');
+                throw new Error('Index [' + index.toString() + '] out of range.');
             }
             return [index, key];
         },
@@ -198,11 +198,14 @@
             return this._items;
         },
 
-        each: function(callback) {
+        each: function(callback, scope) {
             var items, i, len;
             items = this._items;
+            if (scope === undefined) {
+                scope = this;
+            }
             for(i=0, len = items.length; i<len; i++){
-                callback(items[i]);
+                callback.call(scope, items[i]);
             }
             return this;
         }

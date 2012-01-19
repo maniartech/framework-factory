@@ -44,7 +44,7 @@
                  * btn.on('mousemove, mouseout, mouseup', function() {});
                  **/
                 proto.on = function(eventNames, eventHandler) {
-                    var names = eventNames.split(',');
+                    var names = eventNames.split(' ');
                     for(var i=0, length=names.length; i<length; i++) {
                         var eventName = String.trim(names[i]);
                         if (this[eventName] !== undefined) {
