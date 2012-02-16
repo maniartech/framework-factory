@@ -36,15 +36,14 @@
      **/
     FrameworkFactory.version = '1.0.0 alpha';
 
-    /*
+    /**
     * A factory function to create framework root based on spplied options.
-    * @function FrameworkFactory.create
+    * @function
     * @param options which help define the behaviour of the framework.
     * */
     FrameworkFactory.create = function create(options) {
 
         var framework = new Framework(options);
-
         return framework;
 
     };
@@ -52,9 +51,9 @@
     var $f = Framework.prototype;
     var _framework = $f;
 
-
-    /*
-     * @function Registeres a new member to the framework factory;
+    /**
+     * Registeres a new member to the framework factory;
+     * @function
      * */
     FrameworkFactory.register = function (memberName, member) {
         if (_framework[memberName] !== undefined) {
@@ -64,7 +63,6 @@
     };
 
     global.FrameworkFactory = FrameworkFactory;
-
 
     Object.create = Object.create || function (o) {
         function F() {}
@@ -102,13 +100,18 @@
         return s.replace(/^\s\s*/, '').replace(/\s\s*$/, '')
     };
 
-
+    /**
+     * Utility module.
+     * @name framework.utils
+     * @namespace
+     * */
     _framework.utils = {
 
         /**
          * Checks whether both the objects are equals. Iterates through all the
          * members to check equality.
-         * @function framework.utils.equals
+         * @name framework.utils.equals
+         * @function
          * @param o1 The first object
          * @param o2 The second object
          * @returns True if both the objects are equal, false if they are not.
@@ -151,9 +154,14 @@
         },
 
         /**
-         *
+         * Clones the object
+         * @name framework.utils.clone
+         * @function
+         * @param o {object} Object to clone
+         * @param deep {bool} true if clonig should be done using deep copy. Default false.
+         * @returns Returns the cloned object.
          **/
-        clone: function(o, deep) {
+        clone: function clone(o, deep) {
             deep = deep || false;
             throw new Error ('Not implemented error.');
         },
@@ -634,24 +642,35 @@
 
     /**
      * A collection class which stores both indexes as well as keys.
-     * @class framework.collection.MapList
-     * @name framework.collections.MapList.prototype
+     * @name framework.collections.MapList
+     * @class
+     * @param One
+     * @param Two
      **/
     collections.MapList = $f.Class({
 
         /**
-         * Represents total number of items in the list.
+         * Readonly property length. returns the length of the items in the list.
+         * @property
+         * @memberOf framework.collections.MapList#
          **/
         length          : $f.readonly(0),
 
         /**
          * Key identifier in the item object.
-         * @lends framework.collections.MapList
+         * @type {string} keyname of the list.
+         * @memberOf framework.collections.MapList#
          **/
         keyName         : 'id',
 
         validator       : undefined,
 
+        /**
+         * Event which gets triggered before an item is added to the collection.
+         * @name itemBeforeAdd
+         * @event
+         * @memberOf framework.collections.MapList#
+         **/
         itemBeforeAdd   : $f.event(),
         itemAdd         : $f.event(),
         itemBeforeRemove: $f.event(),
@@ -671,8 +690,9 @@
 
         /**
          * Add one or more items into the list.
-         * @function MapList.add
+         * @function
          * @param Variable number of items to be added to the list.
+         * @memberOf framework.collections.MapList#
          **/
         add: function() {
 
@@ -726,6 +746,7 @@
 
         /**
          * Appends a list or an array to the current list.
+         * @memberOf framework.collections.MapList#
          **/
         addList: function() {
             var item = arguments[0];
@@ -838,6 +859,7 @@
 
     /**
      * Sets the value into collection
+     * @memberOf framework.collections.MapList
      **/
     collections.MapList.loadFromJSON = function set(o, key, value) {
         var colObj = o[key];
@@ -1135,7 +1157,7 @@
     FrameworkFactory.plugin = function(fn) {
         fn.call(global, $f);
     }
-    
+
     return FrameworkFactory;
 
 })(this);

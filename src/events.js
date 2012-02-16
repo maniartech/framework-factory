@@ -4,7 +4,7 @@
         $f.event = function() {
             return {
                 type: 'framework.event'
-            }
+            };
         };
 
         var eventHandler = function(Class, key, options) {

@@ -85,7 +85,8 @@
                         }
                         else if (o[key] instanceof Array) {
                             //Push the val to o[key].
-                            o[key].push.apply(o[key], val);
+                            //o[key].push.apply(o[key], val);
+                            o[key] = val;
                         }
                         else {
                             _framework.Utils.loadFromJSON(o[key], val);

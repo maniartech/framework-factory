@@ -25,33 +25,34 @@
         this.rootNamespace = options.root || 'framework';
         this.fullName = options.fullName || 'framework';
         this.defaultBaseClass = options.defaultBaseClass || Object;
+        this.privatePrefix = options.privatePrefix || '_';
+        this.protectedPreix = options.privatePrefix || '_';
 
     };
 
     var FrameworkFactory = {};
 
     /**
-     * Specifies the current version of FrameworkFactory
+     * Specifies the current version of FrameworkFactory...
      * @field FrameworkFactory.version
      **/
     FrameworkFactory.version = '1.0.0 alpha';
 
-    /*
+    /**
     * A factory function to create framework root based on spplied options.
     * @function FrameworkFactory.create
     * @param options which help define the behaviour of the framework.
+    * @lends FrameworkFactory.create
     * */
     FrameworkFactory.create = function create(options) {
 
         var framework = new Framework(options);
-
         return framework;
 
     };
 
     var $f = Framework.prototype;
     var _framework = $f;
-
 
     /*
      * @function Registeres a new member to the framework factory;

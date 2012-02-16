@@ -58,7 +58,6 @@
                 var processed = false;
 
                 if (type === 'object' && item.type !== undefined) {
-
                     var typeHandler = _framework.TypeHandlers[item.type];
                     if (typeHandler !== undefined) {
                         typeHandler(Class, key, item);
