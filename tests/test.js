@@ -206,7 +206,8 @@ module('TypeHandler Tests');
 
             eq (btn2._click.length, 0, "Event subsriber count check for button2");
 
-            btn2.on('click, mouseMove', handler1);
+            btn2.on('click mouseMove', handler1);
+
             eq (btn2._click.length, 1, "Event subsriber count check for button2");
             eq (btn2._mouseMove.length, 1, "Event subsriber count check for button2");
 
@@ -280,7 +281,7 @@ module('TypeHandler Tests');
             c1.width = 10;
             eq(c1.width, 10);
             eq(c1.width, c1.widthCount);
-            
+
 
         }
     };
