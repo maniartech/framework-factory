@@ -25,21 +25,24 @@
         this.rootNamespace = options.root || 'framework';
         this.fullName = options.fullName || 'framework';
         this.defaultBaseClass = options.defaultBaseClass || Object;
+        this.privatePrefix = options.privatePrefix || '_';
+        this.protectedPreix = options.privatePrefix || '_';
 
     };
 
     var FrameworkFactory = {};
 
     /**
-     * Specifies the current version of FrameworkFactory
+     * Specifies the current version of FrameworkFactory...
      * @field FrameworkFactory.version
      **/
     FrameworkFactory.version = '1.0.0 alpha';
 
     /**
     * A factory function to create framework root based on spplied options.
-    * @function
+    * @function FrameworkFactory.create
     * @param options which help define the behaviour of the framework.
+    * @lends FrameworkFactory.create
     * */
     FrameworkFactory.create = function create(options) {
 
@@ -51,9 +54,8 @@
     var $f = Framework.prototype;
     var _framework = $f;
 
-    /**
-     * Registeres a new member to the framework factory;
-     * @function
+    /*
+     * @function Registeres a new member to the framework factory;
      * */
     FrameworkFactory.register = function (memberName, member) {
         if (_framework[memberName] !== undefined) {
@@ -63,6 +65,7 @@
     };
 
     global.FrameworkFactory = FrameworkFactory;
+
 
     Object.create = Object.create || function (o) {
         function F() {}
@@ -100,18 +103,13 @@
         return s.replace(/^\s\s*/, '').replace(/\s\s*$/, '')
     };
 
-    /**
-     * Utility module.
-     * @name framework.utils
-     * @namespace
-     * */
+
     _framework.utils = {
 
         /**
          * Checks whether both the objects are equals. Iterates through all the
          * members to check equality.
-         * @name framework.utils.equals
-         * @function
+         * @function framework.utils.equals
          * @param o1 The first object
          * @param o2 The second object
          * @returns True if both the objects are equal, false if they are not.
@@ -154,14 +152,9 @@
         },
 
         /**
-         * Clones the object
-         * @name framework.utils.clone
-         * @function
-         * @param o {object} Object to clone
-         * @param deep {bool} true if clonig should be done using deep copy. Default false.
-         * @returns Returns the cloned object.
+         *
          **/
-        clone: function clone(o, deep) {
+        clone: function(o, deep) {
             deep = deep || false;
             throw new Error ('Not implemented error.');
         },
@@ -196,7 +189,8 @@
                         }
                         else if (o[key] instanceof Array) {
                             //Push the val to o[key].
-                            o[key].push.apply(o[key], val);
+                            //o[key].push.apply(o[key], val);
+                            o[key] = val;
                         }
                         else {
                             _framework.Utils.loadFromJSON(o[key], val);
@@ -324,7 +318,6 @@
                 var processed = false;
 
                 if (type === 'object' && item.type !== undefined) {
-
                     var typeHandler = _framework.TypeHandlers[item.type];
                     if (typeHandler !== undefined) {
                         typeHandler(Class, key, item);
@@ -375,7 +368,7 @@
         $f.event = function() {
             return {
                 type: 'framework.event'
-            }
+            };
         };
 
         var eventHandler = function(Class, key, options) {
@@ -518,109 +511,111 @@
             };
         },
 
-            readonly = function readonly(defaultValue, options) {
-                options = options || {};
-                return {
-                    type: 'framework.readonly',
-                    defaultValue: defaultValue,
-                    readonly: true,
-                    silent: false,
-                    get: options.get
-                };
-            },
+        /**
+         * 
+         */
+        readonly = function readonly(defaultValue, options) {
+            options = options || {};
+            return {
+                type: 'framework.readonly',
+                defaultValue: defaultValue,
+                readonly: true,
+                silent: false,
+                get: options.get
+            };
+        },
 
-            handler = function(Class, key, options) {
+        handler = function(Class, key, options) {
 
-                var proto = Class.prototype, _get, _set,
-                    readonly = options.readonly,
-                    silent = options.silent,
-                    getter = options.get,
-                    setter = options.set,
-                    privKey = '_' + key;
+            var proto = Class.prototype, _get, _set,
+                readonly = options.readonly,
+                silent = options.silent || false,
+                getter = options.get,
+                setter = options.set,
+                privKey = '_' + key;
 
-                proto[privKey] = options.defaultValue;
-                var silent = options.silent || false;
-
-                if (readonly === false && silent === false) {
-                    //Attach property change events to the proto of the Class
-                    if (proto['propertyChanged'] === undefined) {
-                        Class.attach({
-                            propertyChanging: $f.event(),
-                            propertyChanged : $f.event()
-                        });
-                    }
+            proto[privKey] = options.defaultValue;
+            
+            if (readonly === false && silent === false) {
+                //Attach property change events to the proto of the Class
+                if (proto['propertyChanged'] === undefined) {
+                    Class.attach({
+                        propertyChanging: $f.event(),
+                        propertyChanged : $f.event()
+                    });
                 }
+            }
 
-                //console.log('In set', setter);
+            //console.log('In set', setter);
 
 
 
-                _get = getter || function get () {
-                    return this[privKey];
-                };
+            _get = getter || function get () {
+                return this[privKey];
+            };
 
-                if (setter !== undefined) {
-                    if (silent) {
-                        _set = setter;
-                    }
-                    else {
-                        _set = function(v) {
-                            var oldVal = this[key];
-                            if (oldVal === v) {
-                                return; //property not changed.
-                            }
-
-                            var args = {
-                                propertyName: key,
-                                oldValue: oldVal,
-                                newValue: v
-                            };
-                            this.trigger('propertyChanging', args);
-                            setter.call(this, v);
-                            this.trigger('propertyChanged', args);
+            if (setter !== undefined) {
+                if (silent) {
+                    _set = setter;
+                }
+                else {
+                    _set = function(v) {
+                        var oldVal = this[key];
+                        if (oldVal === v) {
+                            return; //property not changed.
                         }
-                    }
+
+                        var args = {
+                            propertyName: key,
+                            oldValue: oldVal,
+                            newValue: v
+                        };
+                        this.trigger('propertyChanging', args);
+                        setter.call(this, v);
+                        this.trigger('propertyChanged', args);
+                    };
                 }
-                else if(readonly === true) {
-                    _set = function readonlySet() {
-                        throw new Error('You are not allowed to write to readonly attribute "' + key + '".');
+            }
+            else if(readonly === true) {
+                _set = function readonlySet() {
+                    throw new Error('You are not allowed to write to readonly attribute "' + key + '".');
+                };
+            }
+            else {
+                if (silent) {
+                    _set = function(v) {
+                        this[privKey] = v;
                     };
                 }
                 else {
-                    if (silent) {
-                        _set = function(v) {
-                            this[privKey] = v;
+                    _set = function set (v) {
+                        var oldVal = this[privKey];
+                        if (oldVal === v) {
+                            return; //Property not changed.
                         }
-                    }
-                    else {
-                        _set = function set (v) {
-                            var oldVal = this[privKey];
-                            if (oldVal === v) {
-                                return; //Property not changed.
-                            }
-                            var args = {
-                                propertyName: key,
-                                oldValue: oldVal,
-                                newValue: v
-                            };
-                            this.trigger('propertyChanging', args);
-                            this[privKey] = v;
-                            this.trigger('propertyChanged', args);
+                        var args = {
+                            propertyName: key,
+                            oldValue: oldVal,
+                            newValue: v
                         };
-                    }
+                        this.trigger('propertyChanging', args);
+                        this[privKey] = v;
+                        this.trigger('propertyChanged', args);
+                    };
                 }
+            }
 
-                if (Object.defineProperty) {
-                    Object.defineProperty (proto, key, {
-                        get: _get,
-                        set: _set
-                    });
-                }
-                else if (proto.__defineGetter__ !== undefined) {
-                    proto.__defineGetter__(key, _get);
-                    proto.__defineSetter__(key, _set);
-                }
-            };
+            if (Object.defineProperty) {
+                Object.defineProperty (proto, key, {
+                    get: _get,
+                    set: _set
+                });
+            }
+            else if (proto.__defineGetter__ !== undefined) {
+                proto.__defineGetter__(key, _get);
+                proto.__defineSetter__(key, _set);
+            }
+        };
 
         $f.TypeHandlers['framework.property'] = handler;
         $f.TypeHandlers['framework.readonly'] = handler;
@@ -642,35 +637,24 @@
 
     /**
      * A collection class which stores both indexes as well as keys.
-     * @name framework.collections.MapList
-     * @class
-     * @param One
-     * @param Two
+     * @class framework.collection.MapList
+     * @name framework.collections.MapList.prototype
      **/
     collections.MapList = $f.Class({
 
         /**
-         * Readonly property length. returns the length of the items in the list.
-         * @property
-         * @memberOf framework.collections.MapList#
+         * Represents total number of items in the list.
          **/
         length          : $f.readonly(0),
 
         /**
          * Key identifier in the item object.
-         * @type {string} keyname of the list.
-         * @memberOf framework.collections.MapList#
+         * @lends framework.collections.MapList
          **/
         keyName         : 'id',
 
         validator       : undefined,
 
-        /**
-         * Event which gets triggered before an item is added to the collection.
-         * @name itemBeforeAdd
-         * @event
-         * @memberOf framework.collections.MapList#
-         **/
         itemBeforeAdd   : $f.event(),
         itemAdd         : $f.event(),
         itemBeforeRemove: $f.event(),
@@ -690,9 +674,8 @@
 
         /**
          * Add one or more items into the list.
-         * @function
+         * @function MapList.add
          * @param Variable number of items to be added to the list.
-         * @memberOf framework.collections.MapList#
          **/
         add: function() {
 
@@ -746,7 +729,6 @@
 
         /**
          * Appends a list or an array to the current list.
-         * @memberOf framework.collections.MapList#
          **/
         addList: function() {
             var item = arguments[0];
@@ -859,7 +841,6 @@
 
     /**
      * Sets the value into collection
-     * @memberOf framework.collections.MapList
      **/
     collections.MapList.loadFromJSON = function set(o, key, value) {
         var colObj = o[key];
@@ -1157,7 +1138,7 @@
     FrameworkFactory.plugin = function(fn) {
         fn.call(global, $f);
     }
-
+    
     return FrameworkFactory;
 
 })(this);
