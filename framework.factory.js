@@ -512,7 +512,7 @@
         },
 
         /**
-         * 
+         *
          */
         readonly = function readonly(defaultValue, options) {
             options = options || {};
@@ -535,7 +535,7 @@
                 privKey = '_' + key;
 
             proto[privKey] = options.defaultValue;
-            
+
             if (readonly === false && silent === false) {
                 //Attach property change events to the proto of the Class
                 if (proto['propertyChanged'] === undefined) {
@@ -684,6 +684,11 @@
                 map = this._map,
                 keyName = this.keyName,
                 item, key;
+
+            if (arguments[0] instanceof Array) {
+                this.add.apply(this, arguments[0]);
+                return;
+            }
 
             for (var i=0, len=arguments.length; i<len; i++) {
                 item = arguments[i];
@@ -1138,7 +1143,7 @@
     FrameworkFactory.plugin = function(fn) {
         fn.call(global, $f);
     }
-    
+
     return FrameworkFactory;
 
 })(this);

@@ -58,6 +58,11 @@
                 keyName = this.keyName,
                 item, key;
 
+            if (arguments[0] instanceof Array) {
+                this.add.apply(this, arguments[0]);
+                return;
+            }
+
             for (var i=0, len=arguments.length; i<len; i++) {
                 item = arguments[i];
                 var args = {
