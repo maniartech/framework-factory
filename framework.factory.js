@@ -259,108 +259,112 @@
     };
 
 
-    $f.Class = function (prop, parent) {
-        //Checks if _super exists in overriden function, inspired by John Resig.
-        var fnTest = /xyz/.test(function (){xyz;}) ? /\bbase\b/ : /.*/,
-            hasProp = Object.prototype.hasOwnProperty,
-            initializing, proto, key, Class, __super__, framework;
+    (function ($f, global, undefined) {
 
-        //console.log(fnTest.toString());
+        var initializing = true,
+            fnTest = /xyz/.test(function (){xyz;}) ? /\bbase\b/ : /.*/;
 
-        framework = this;
+        $f.Class = function (prop, parent) {
+            //Checks if _super exists in overriden function, inspired by John Resig.
+            var hasProp = Object.prototype.hasOwnProperty,
+                proto, key, Class, __super__, framework;
 
-        parent  = parent || framework.defaultBaseClass;
-        prop    = prop || {};
+            //console.log(fnTest.toString());
 
-        //prevents call to
-        initializing = true;
-        proto = new parent;
-        initializing = false;
+            framework = this;
 
-        Class = function Class() {
-            if (!(this instanceof Class)) {
-                throw Error('Class used as function.');
-            }
-            //this.constructor = Class;
-            if (initializing === false && this["init"] !== undefined) {
-                this.init.apply(this, arguments);
-            }
-        };
+            parent  = parent || framework.defaultBaseClass;
+            prop    = prop || {};
 
-        //for each static members in parents, copy'em to child
-        for (key in parent) {
-            //if parent owns the key, set child item = parent item
-            if (hasProp.call(parent, key)) Class[key] = parent[key];
-        }
+            //prevents call to
+            initializing = true;
+            proto = new parent;
+            initializing = false;
 
-        __super__ = parent.prototype;
-
-        Class.prototype = proto;
-        Class.prototype.constructor = Class;
-        Class.__super__ = __super__;
-
-        Class.attach = function attach (prop) {
-
-            for(key in prop) {
-
-                if (!hasProp.call(prop, key)) {
-                    continue;
+            Class = function Class() {
+                if (!(this instanceof Class)) {
+                    throw new Error('Class used as function.');
                 }
+                //this.constructor = Class;
+                if (initializing === false && this.init !== undefined) {
+                    this.init.apply(this, arguments);
+                }
+            };
 
-                var item = prop[key];
-                var type = typeof item;
-                //var privKey = "_" + key;
+            //for each static members in parents, copy'em to child
+            for (key in parent) {
+                //if parent owns the key, set child item = parent item
+                if (hasProp.call(parent, key)) {
+                    Class[key] = parent[key];
+                }
+            }
 
-                var val = item;
+            __super__ = parent.prototype;
 
-                //console.log([key, item]);
+            Class.prototype = proto;
+            Class.prototype.constructor = Class;
+            Class.__super__ = __super__;
 
-                var processed = false;
+            Class.attach = function attach(prop) {
 
-                if (type === 'object' && item.type !== undefined) {
-                    var typeHandler = _framework.TypeHandlers[item.type];
-                    if (typeHandler !== undefined) {
-                        typeHandler(Class, key, item);
+                var item, type, val, processed,
+                    typeHandler;
+
+                for (key in prop) {
+
+                    if (!hasProp.call(prop, key)) {
+                        continue;
+                    }
+
+                    item = prop[key];
+                    type = typeof item;
+                    val = item;
+                    processed = false;
+
+                    if (type === 'object' && item.type !== undefined) {
+                        typeHandler = $f.TypeHandlers[item.type];
+                        if (typeHandler !== undefined) {
+                            typeHandler(Class, key, item);
+                            processed = true;
+                        }
+                    }
+                    else if (type === 'function' &&
+                            typeof __super__[key] === 'function' &&
+                            fnTest.test(item)) {
+                        proto[key] = (function (key, fn) {
+                            return function () {
+                                this.base =  function () {
+                                    __super__[key].apply(this, arguments);
+                                };
+                                var ret = fn.apply(this, arguments);
+                                delete this.base;
+                                return ret;
+                            };
+                        })(key, item);
                         processed = true;
                     }
-                }
-                else if (type === 'function' &&
-                        typeof __super__[key] === 'function' &&
-                        fnTest.test(item)) {
-                    proto[key] = (function(key, fn){
-                        return function() {
 
-                            this.base =  function() {
-                                __super__[key].apply(this, arguments);
-                            };
-                            var ret = fn.apply(this, arguments);
-                            //this._super = tmp;
-                            delete this.base;
-                            return ret;
-                        };
-                    })(key, item);
-                    processed = true;
-                }
+                    //console.log([key, type == 'function', typeof __super__[key], fnTest.test(item)]);
 
-                //console.log([key, type == 'function', typeof __super__[key], fnTest.test(item)]);
-
-                if (!processed) {
-                    proto[key] = val;
+                    if (!processed) {
+                        proto[key] = val;
+                    }
+                    Class.__meta__[key] = item;
                 }
-                Class.__meta__[key] = item;
-            }
+            };
+
+            Class.__meta__ = {};
+
+            Class.attach(prop);
+
+            //return
+            return Class;
+
         };
 
-        Class.__meta__ = {};
+        $f.TypeHandlers = {};
 
-        Class.attach(prop);
-
-        //return
-        return Class;
-
-    };
-
-    $f.TypeHandlers = {};
+    })(_framework, global);
 
 
     (function($f, global, undefined) {
@@ -465,157 +469,210 @@
     })(_framework, global);
 
 
-    _framework.attribute = function(defaultValue, options) {
-        return {
-            type: 'framework.attribute',
-            defaultValue: defaultValue,
-            options: options
-        };
-    };
-
-    /**
-     * Shortcut to framework.attribute method.
-     * @see Framework#attribute
-     **/
-    $f.attr = _framework.attribute;
-
-    var attributeHandler = function(Class, key, options) {
-
-        var proto = Class.prototype;
-        var privKey = '_' + key;
-        proto[key] = options.defaultValue;
-    };
-
-    $f.TypeHandlers["framework.attribute"] = attributeHandler;
-
-
-    (function($f, global, undefined) {
-
-        /*
-        * @function: $property
-        * @description: While defining class, this function sets the member as
-        * a property.
-        * @param: defaultValue, the default value of property
-        * @param: firePropertyChanged, if true,
-        * */
-        var property = function property(defaultValue, options) {
-
-            options = options || {};
-            return {
-                type: 'framework.property',
-                defaultValue: defaultValue,
-                readonly: false,
-                silent: options.silent || false,
-                get: options.get,
-                set: options.set
-            };
-        },
+    (function ($f, global, undefined) {
 
         /**
-         *
-         */
-        readonly = function readonly(defaultValue, options) {
-            options = options || {};
-            return {
-                type: 'framework.readonly',
-                defaultValue: defaultValue,
-                readonly: true,
-                silent: false,
-                get: options.get
+         * Helper function to create attribute members for class.
+         * @param defaultValue The default value of the attribute.
+         * @option [options] Additional options for attribute member.
+         * @public
+         * @function
+         * @version 1.0.0
+         **/
+        var attribute = function (defaultValue, options) {
+                return {
+                    type: $f.fullName + '.attribute',
+                    defaultValue: defaultValue,
+                    options: options
+                };
+            },
+
+            /**
+             * Handles the attribue member while attaching to the class.
+             * @inner
+             * @function
+             * @version 1.0.0
+             **/
+            attributeHandler = function (Class, key, options) {
+
+                var proto = Class.prototype,
+                    privKey = '_' + key;
+                proto[key] = options.defaultValue;
             };
-        },
 
-        handler = function(Class, key, options) {
+        $f.attribute = attribute;
 
-            var proto = Class.prototype, _get, _set,
-                readonly = options.readonly,
-                silent = options.silent || false,
-                getter = options.get,
-                setter = options.set,
-                privKey = '_' + key;
+        /**
+         * Shortcut to framework.attribute method.
+         * @see Framework#attribute
+         **/
+        $f.attr = attribute;
 
-            proto[privKey] = options.defaultValue;
+        $f.TypeHandlers["framework.attribute"] = attributeHandler;
 
-            if (readonly === false && silent === false) {
-                //Attach property change events to the proto of the Class
-                if (proto['propertyChanged'] === undefined) {
-                    Class.attach({
-                        propertyChanging: $f.event(),
-                        propertyChanged : $f.event()
+    })(_framework, global);
+
+
+
+
+    (function ($f, global, undefined) {
+
+        /**
+         * While defining class, this function sets the member as
+         * a property.
+         * @param: defaultValue, the default value of property
+         * @param: firePropertyChanged, if true,
+         * @function
+         * @public
+         * @version 1.0.0
+         **/
+        var property = function property(defaultValue, options) {
+
+                options = options || {};
+                return {
+                    type: $f.fullName + '.property',
+                    defaultValue: defaultValue,
+                    readonly: false,
+                    silent: options.silent || false,
+                    get: options.get,
+                    set: options.set
+                };
+            },
+
+            /**
+            * While defining class, this function sets the member as
+            * a property.
+            * @param: defaultValue, the default value of property
+            * @param: firePropertyChanged, if true,
+            * @function
+            * @public
+            * @version 1.0.0
+            **/
+            propertyGS = function propertyGS(options) {
+
+                if (options.get === undefined || options.set === undefined) {
+                    throw new Error('Required options missing, please check get and set functions supplied.');
+                }
+
+                return {
+                    type: $f.fullName + '.property',
+                    defaultValue: undefined,
+                    readonly: false,
+                    silent: options.silent || false,
+                    get: options.get,
+                    set: options.set
+                };
+            },
+
+            /**
+             *
+             */
+            readonly = function readonly(defaultValue, options) {
+                options = options || {};
+                return {
+                    type: 'framework.readonly',
+                    defaultValue: defaultValue,
+                    readonly: true,
+                    silent: false,
+                    get: options.get
+                };
+            },
+
+            handler = function (Class, key, options) {
+
+                var proto = Class.prototype, _get, _set,
+                    readonly = options.readonly,
+                    silent = options.silent || false,
+                    getter = options.get,
+                    setter = options.set,
+                    privKey = '_' + key;
+
+                proto[privKey] = options.defaultValue;
+
+                if (readonly === false && silent === false) {
+                    //Attach property change events to the proto of the Class
+                    if (proto.propertyChanged === undefined) {
+                        Class.attach({
+                            propertyChanging: $f.event(),
+                            propertyChanged : $f.event()
+                        });
+                    }
+                }
+
+                //console.log('In set', setter);
+
+
+
+                _get = getter || function get() {
+                    return this[privKey];
+                };
+
+                if (setter !== undefined) {
+                    if (silent) {
+                        _set = setter;
+                    }
+                    else {
+                        _set = function (v) {
+                            var oldVal = this[key],
+                                args;
+
+                            if (oldVal === v) {
+                                return; //property not changed.
+                            }
+
+                            args = {
+                                propertyName: key,
+                                oldValue: oldVal,
+                                newValue: v
+                            };
+                            this.trigger('propertyChanging', args);
+                            setter.call(this, v);
+                            this.trigger('propertyChanged', args);
+                        };
+                    }
+                }
+                else if (readonly === true) {
+                    _set = function readonlySet() {
+                        throw new Error('You are not allowed to write to readonly attribute "' + key + '".');
+                    };
+                }
+                else {
+                    if (silent) {
+                        _set = function (v) {
+                            this[privKey] = v;
+                        };
+                    }
+                    else {
+                        _set = function set(v) {
+                            var oldVal = this[privKey],
+                                args;
+
+                            if (oldVal === v) {
+                                return; //Property not changed.
+                            }
+                            args = {
+                                propertyName: key,
+                                oldValue: oldVal,
+                                newValue: v
+                            };
+                            this.trigger('propertyChanging', args);
+                            this[privKey] = v;
+                            this.trigger('propertyChanged', args);
+                        };
+                    }
+                }
+
+                if (Object.defineProperty) {
+                    Object.defineProperty(proto, key, {
+                        get: _get,
+                        set: _set
                     });
                 }
-            }
-
-            //console.log('In set', setter);
-
-
-
-            _get = getter || function get () {
-                return this[privKey];
+                else if (proto.__defineGetter__ !== undefined) {
+                    proto.__defineGetter__(key, _get);
+                    proto.__defineSetter__(key, _set);
+                }
             };
-
-            if (setter !== undefined) {
-                if (silent) {
-                    _set = setter;
-                }
-                else {
-                    _set = function(v) {
-                        var oldVal = this[key];
-                        if (oldVal === v) {
-                            return; //property not changed.
-                        }
-
-                        var args = {
-                            propertyName: key,
-                            oldValue: oldVal,
-                            newValue: v
-                        };
-                        this.trigger('propertyChanging', args);
-                        setter.call(this, v);
-                        this.trigger('propertyChanged', args);
-                    };
-                }
-            }
-            else if(readonly === true) {
-                _set = function readonlySet() {
-                    throw new Error('You are not allowed to write to readonly attribute "' + key + '".');
-                };
-            }
-            else {
-                if (silent) {
-                    _set = function(v) {
-                        this[privKey] = v;
-                    };
-                }
-                else {
-                    _set = function set (v) {
-                        var oldVal = this[privKey];
-                        if (oldVal === v) {
-                            return; //Property not changed.
-                        }
-                        var args = {
-                            propertyName: key,
-                            oldValue: oldVal,
-                            newValue: v
-                        };
-                        this.trigger('propertyChanging', args);
-                        this[privKey] = v;
-                        this.trigger('propertyChanged', args);
-                    };
-                }
-            }
-
-            if (Object.defineProperty) {
-                Object.defineProperty (proto, key, {
-                    get: _get,
-                    set: _set
-                });
-            }
-            else if (proto.__defineGetter__ !== undefined) {
-                proto.__defineGetter__(key, _get);
-                proto.__defineSetter__(key, _set);
-            }
-        };
 
         $f.TypeHandlers['framework.property'] = handler;
         $f.TypeHandlers['framework.readonly'] = handler;
@@ -1140,14 +1197,27 @@
 //    });
 
 
-    FrameworkFactory.plugin = function(fn) {
+    /**
+     * Associate plugin for the framework to be created.
+     * @param fn Callback which is invoked with praposed framework prototype instance
+     * as an argument. The keyword 'this' refers to the 'global' object. 'HtmlWindow' in
+     * browser based applications.
+     * @public
+     * @function
+     * @example
+     *  FrameworkFactory.plugin(function(framework){
+            var global = this,
+                //The Load plugin function
+                framework.load = framework.load || function() {
+                    //Code to initialize load plugin goes hear.
+                    //...
+                };
+        });
+     **/
+    FrameworkFactory.plugin = function (fn) {
         fn.call(global, $f);
-    }
+    };
 
     return FrameworkFactory;
 
 })(this);
-
-//$class = framework.classCreator;
-//$interface = framework.interfaceCreator;
-//$property = baseObject
