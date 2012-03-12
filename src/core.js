@@ -1,103 +1,107 @@
 
-    $f.Class = function (prop, parent) {
-        //Checks if _super exists in overriden function, inspired by John Resig.
-        var fnTest = /xyz/.test(function (){xyz;}) ? /\bbase\b/ : /.*/,
-            hasProp = Object.prototype.hasOwnProperty,
-            initializing, proto, key, Class, __super__, framework;
+    (function ($f, global, undefined) {
 
-        //console.log(fnTest.toString());
+        var initializing = true,
+            fnTest = /xyz/.test(function (){xyz;}) ? /\bbase\b/ : /.*/;
 
-        framework = this;
+        $f.Class = function (prop, parent) {
+            //Checks if _super exists in overriden function, inspired by John Resig.
+            var hasProp = Object.prototype.hasOwnProperty,
+                proto, key, Class, __super__, framework;
 
-        parent  = parent || framework.defaultBaseClass;
-        prop    = prop || {};
+            //console.log(fnTest.toString());
 
-        //prevents call to
-        initializing = true;
-        proto = new parent;
-        initializing = false;
+            framework = this;
 
-        Class = function Class() {
-            if (!(this instanceof Class)) {
-                throw Error('Class used as function.');
-            }
-            //this.constructor = Class;
-            if (initializing === false && this["init"] !== undefined) {
-                this.init.apply(this, arguments);
-            }
-        };
+            parent  = parent || framework.defaultBaseClass;
+            prop    = prop || {};
 
-        //for each static members in parents, copy'em to child
-        for (key in parent) {
-            //if parent owns the key, set child item = parent item
-            if (hasProp.call(parent, key)) Class[key] = parent[key];
-        }
+            //prevents call to
+            initializing = true;
+            proto = new parent;
+            initializing = false;
 
-        __super__ = parent.prototype;
-
-        Class.prototype = proto;
-        Class.prototype.constructor = Class;
-        Class.__super__ = __super__;
-
-        Class.attach = function attach (prop) {
-
-            for(key in prop) {
-
-                if (!hasProp.call(prop, key)) {
-                    continue;
+            Class = function Class() {
+                if (!(this instanceof Class)) {
+                    throw new Error('Class used as function.');
                 }
+                //this.constructor = Class;
+                if (initializing === false && this.init !== undefined) {
+                    this.init.apply(this, arguments);
+                }
+            };
 
-                var item = prop[key];
-                var type = typeof item;
-                //var privKey = "_" + key;
+            //for each static members in parents, copy'em to child
+            for (key in parent) {
+                //if parent owns the key, set child item = parent item
+                if (hasProp.call(parent, key)) {
+                    Class[key] = parent[key];
+                }
+            }
 
-                var val = item;
+            __super__ = parent.prototype;
 
-                //console.log([key, item]);
+            Class.prototype = proto;
+            Class.prototype.constructor = Class;
+            Class.__super__ = __super__;
 
-                var processed = false;
+            Class.attach = function attach(prop) {
 
-                if (type === 'object' && item.type !== undefined) {
-                    var typeHandler = _framework.TypeHandlers[item.type];
-                    if (typeHandler !== undefined) {
-                        typeHandler(Class, key, item);
+                var item, type, val, processed,
+                    typeHandler;
+
+                for (key in prop) {
+
+                    if (!hasProp.call(prop, key)) {
+                        continue;
+                    }
+
+                    item = prop[key];
+                    type = typeof item;
+                    val = item;
+                    processed = false;
+
+                    if (type === 'object' && item.type !== undefined) {
+                        typeHandler = $f.TypeHandlers[item.type];
+                        if (typeHandler !== undefined) {
+                            typeHandler(Class, key, item);
+                            processed = true;
+                        }
+                    }
+                    else if (type === 'function' &&
+                            typeof __super__[key] === 'function' &&
+                            fnTest.test(item)) {
+                        proto[key] = (function (key, fn) {
+                            return function () {
+                                this.base =  function () {
+                                    __super__[key].apply(this, arguments);
+                                };
+                                var ret = fn.apply(this, arguments);
+                                delete this.base;
+                                return ret;
+                            };
+                        })(key, item);
                         processed = true;
                     }
-                }
-                else if (type === 'function' &&
-                        typeof __super__[key] === 'function' &&
-                        fnTest.test(item)) {
-                    proto[key] = (function(key, fn){
-                        return function() {
 
-                            this.base =  function() {
-                                __super__[key].apply(this, arguments);
-                            };
-                            var ret = fn.apply(this, arguments);
-                            //this._super = tmp;
-                            delete this.base;
-                            return ret;
-                        };
-                    })(key, item);
-                    processed = true;
-                }
+                    //console.log([key, type == 'function', typeof __super__[key], fnTest.test(item)]);
 
-                //console.log([key, type == 'function', typeof __super__[key], fnTest.test(item)]);
-
-                if (!processed) {
-                    proto[key] = val;
+                    if (!processed) {
+                        proto[key] = val;
+                    }
+                    Class.__meta__[key] = item;
                 }
-                Class.__meta__[key] = item;
-            }
+            };
+
+            Class.__meta__ = {};
+
+            Class.attach(prop);
+
+            //return
+            return Class;
+
         };
 
-        Class.__meta__ = {};
+        $f.TypeHandlers = {};
 
-        Class.attach(prop);
-
-        //return
-        return Class;
-
-    };
-
-    $f.TypeHandlers = {};
+    })(_framework, global);
