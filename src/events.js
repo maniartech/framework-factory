@@ -45,7 +45,7 @@
                  * This function is similar to obj.eventName except it accepts more then one events.
                  * @example
                  * var btn = new Button();
-                 * btn.on('mousemove, mouseout, mouseup', function() {});
+                 * btn.on('mousemove mouseout mouseup', function() {});
                  **/
                 proto.on = function (eventNames, eventHandler) {
                     var names = eventNames.split(' '),
