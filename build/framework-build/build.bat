@@ -1,2 +1,0 @@
-python jsbuild.py
-pause
