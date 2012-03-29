@@ -21,7 +21,8 @@
             proto = new parent;
             initializing = false;
 
-            if (prop.type === undefined) {
+            //TODO: Validate prop.type
+            if (prop.type === undefined || typeof prop.type !== 'string') {
                 Class = function Class() {
                     if (!(this instanceof Class)) {
                         throw new Error('Class used as function.');
@@ -33,7 +34,7 @@
                 };
             }
             else {
-                funcString = prop.type + " = function " + prop.type + "() { \
+                funcString = "Class = function " + prop.type + "() { \
                     if (!(this instanceof Class)) { \
                         throw new Error('Class used as function.'); \
                     } \

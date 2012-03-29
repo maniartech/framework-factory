@@ -19,7 +19,7 @@ module("Framework Tests");
         defaultConfig: function() {
             var ns = FrameworkFactory.create();
             eq (ns.version, '1.0.0', "Default version must be 1.0.0");
-            eq (ns.name, 'framework', 'The default framework full name must be "framework"');
+            eq (ns.framework, 'framework', 'The default framework full name must be "framework"');
         },
 
         customConfig: function() {
@@ -28,11 +28,11 @@ module("Framework Tests");
 
             var ns = FrameworkFactory.create({
                 version: '1.0.1',
-                rootName: 'MyFramework'
+                framework: 'MyFramework'
             });
 
             eq (ns.version, '1.0.1', "Default version must be 1.0.1");
-            eq (ns.name, 'MyFramework', 'The default framework full name must be "MyFramework"');
+            eq (ns.framework, 'MyFramework', 'The default framework full name must be "MyFramework"');
 
             var Cls = ns.Class({});
             var inst = new Cls(); //Class instance.
@@ -259,8 +259,8 @@ module('TypeHandler Tests');
         },
 
         readonlyAttributes: function() {
-            var c1 = new Component();
-            var errorsCount = 0;
+            var c1 = new Component(),
+                errorsCount = 0;
             eq(c1.count, 0);
             c1.click();
             eq(c1.count, 1);

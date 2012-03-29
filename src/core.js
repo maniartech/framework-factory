@@ -18,19 +18,17 @@
             plug;
 
         if (typeof c === "string") {
-            _config.rootName = c;
+            _config.framework = c;
             _config.version = '1.0.0';
         }
         else {
             c = c || {};
-            _config.rootName = c.rootName || 'framework';
+            _config.framework = c.framework || 'framework';
             _config.version = c.version || '1.0.0';
         }
 
-
-
         framework.version = _config.version;
-        framework.name = _config.rootName;
+        framework.framework = _config.framework;
         framework.typeHandlers = {};
 
         framework.config = function config(cfg) {
