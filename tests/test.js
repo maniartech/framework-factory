@@ -16,37 +16,57 @@ module("Framework Tests");
             neq (ns, null, 'The namespace ns must not be null.');
         },
 
-        defaultOptions: function() {
+        defaultConfig: function() {
             var ns = FrameworkFactory.create();
             eq (ns.version, '1.0.0', "Default version must be 1.0.0");
-            eq (ns.fullName, 'framework', 'The default framework full name must be "framework"');
-            eq(ns.defaultBaseClass, Object, 'The default base class must be Object');
+            eq (ns.name, 'framework', 'The default framework full name must be "framework"');
         },
 
-        optionsChanged: function() {
+        customConfig: function() {
 
             function BaseObject() {}
 
             var ns = FrameworkFactory.create({
                 version: '1.0.1',
-                fullName: 'MyFramework',
-                defaultBaseClass: BaseObject
+                rootName: 'MyFramework'
             });
 
             eq (ns.version, '1.0.1', "Default version must be 1.0.1");
-            eq (ns.fullName, 'MyFramework', 'The default framework full name must be "MyFramework"');
+            eq (ns.name, 'MyFramework', 'The default framework full name must be "MyFramework"');
 
             var Cls = ns.Class({});
             var inst = new Cls(); //Class instance.
-            eq(ns.defaultBaseClass, BaseObject, 'The default base class must be BaseObject');
-            eq(inst instanceof BaseObject, true);
+        },
+
+        pluginsTests: function() {
+
+            function myPlugin($f, config) {
+                $f.echo = function echo(val) {
+                    return  val;
+                }
+            };
+
+            myPlugin.info = {
+                name: 'myPlugin'
+            };
+
+            FrameworkFactory.plugins.register(myPlugin);
+
+            var myFramework = FrameworkFactory.create('myFramework');
+
+            neq (FrameworkFactory.plugins.getNames().indexOf('myPlugin'), -1);
+            neq (FrameworkFactory.plugins.getAll().indexOf(myPlugin), -1);
+            neq (myFramework.echo, undefined);
+            eq (myFramework.echo('wow'), 'wow');
         }
 
     };
 
     test("Framework Not Null Test", frameworkTests.notNull);
-    test ("Default Options Tests", frameworkTests.defaultOptions);
-    test ('Namespace Options Change Tests', frameworkTests.optionsChanged);
+    test ("Default Config Tests", frameworkTests.defaultConfig);
+    test ('Custom Config Tests', frameworkTests.customConfig);
+    test ('Plugins Tests', frameworkTests.pluginsTests);
+
 
 module("Class Tests");
 
@@ -149,17 +169,19 @@ module('TypeHandler Tests');
 
             var obj, args, val, eventRaised;
 
-            function handler1(o, a) {
-                obj = o;
+            function handler1(a) {
+                obj = this;
                 args = a;
                 val = a.val;
+                console.log(btn.clickCount)
                 btn.clickCount++;
                 eventRaised = a.eventName;
                 //console.log(a);
             }
 
-            function handler2 (o, a) {
+            function handler2 () {
                 btn.clickCount++;
+                //console.log(btn.clickCount)
             }
 
             btn.click(handler1);
@@ -170,8 +192,8 @@ module('TypeHandler Tests');
 
             eq (typeof btn.trigger, 'function', 'Check trigger attached');
 
-            eq (obj, btn, "Event handler must have first argument the object on which event fired.");
-            neq (args, null, "Args can not be null.");
+            eq (obj, btn, "this in event handler must the object which fired the event.");
+            neq (args, null, "Event args can not be null.");
             eq (typeof args, 'object', "Supplied args must be of type object.");
             eq (args.val, 100, "Event handler must receive the values supplied.");
             eq (val, 100, "Event handler must receive the values supplied.");
@@ -290,35 +312,6 @@ module('TypeHandler Tests');
     test ('Attribute Tests', typeHandlerTests.attributes);
     test ('Readonly Attribute Tests', typeHandlerTests.readonlyAttributes);
     test ('Property Tests', typeHandlerTests.properties);
-
-module('Plugins Tests');
-
-    var pluginTests = {
-
-        basic: function() {
-            FrameworkFactory.plugin(function($f){
-                $f.myPlugin = {
-                    echo: function(message) {
-                        return message;
-                    }
-                }
-
-                $f.myPlugin.Test = $f.Class({
-                    echo: function(message) {
-                        return message;
-                    }
-                }, Object);
-            });
-
-            neq(undefined, framework.myPlugin);
-            eq('wow', framework.myPlugin.echo('wow'));
-            eq('function', typeof framework.myPlugin.Test);
-            var t = new framework.myPlugin.Test();
-            eq('great', t.echo('great'));
-        }
-    };
-
-    test ('Plugins Tests', pluginTests.basic);
 
 module('framework.collections Tests');
 

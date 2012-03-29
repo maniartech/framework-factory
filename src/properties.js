@@ -1,5 +1,8 @@
 
-    (function ($f, global, undefined) {
+(function (global, undefined) {
+    "use strict";
+
+    function properties($f, config) {
 
         /**
          * While defining class, this function sets the member as
@@ -14,7 +17,7 @@
 
                 options = options || {};
                 return {
-                    type: $f.fullName + '.property',
+                    type: 'property',
                     defaultValue: defaultValue,
                     readonly: false,
                     silent: options.silent || false,
@@ -39,7 +42,7 @@
                 }
 
                 return {
-                    type: $f.fullName + '.property',
+                    type: 'property',
                     defaultValue: undefined,
                     readonly: false,
                     silent: options.silent || false,
@@ -54,7 +57,7 @@
             readonly = function readonly(defaultValue, options) {
                 options = options || {};
                 return {
-                    type: 'framework.readonly',
+                    type: 'readonly',
                     defaultValue: defaultValue,
                     readonly: true,
                     silent: false,
@@ -73,18 +76,31 @@
 
                 proto[privKey] = options.defaultValue;
 
-                if (readonly === false && silent === false) {
-                    //Attach property change events to the proto of the Class
-                    if (proto.propertyChanged === undefined) {
-                        Class.attach({
-                            propertyChanging: $f.event(),
-                            propertyChanged : $f.event()
-                        });
-                    }
+                if (proto.propertyChanged === undefined) {
+
+                    Class.attach({
+                        propertyChanging: $f.event(),
+                        propertyChanged : $f.event(),
+                        triggerPropertyChanging: function triggerPropertyChanging(oldValue, newValue) {
+                            var args = {
+                                propertyName: key,
+                                oldValue: oldValue,
+                                newValue: newValue
+                            };
+                            this.trigger('propertyChanging', args);
+                        },
+                        triggerPropertyChanged: function triggerPropertyChanged(oldValue, newValue) {
+                            var args = {
+                                propertyName: key,
+                                oldValue: oldValue,
+                                newValue: newValue
+                            };
+                            this.trigger('propertyChanged', args);
+                        }
+                    });
                 }
 
                 //console.log('In set', setter);
-
 
 
                 _get = getter || function get() {
@@ -139,6 +155,7 @@
                                 oldValue: oldVal,
                                 newValue: v
                             };
+
                             this.trigger('propertyChanging', args);
                             this[privKey] = v;
                             this.trigger('propertyChanged', args);
@@ -158,10 +175,24 @@
                 }
             };
 
-        $f.TypeHandlers['framework.property'] = handler;
-        $f.TypeHandlers['framework.readonly'] = handler;
 
         $f.property     = property;
         $f.readonly     = readonly;
 
-    })(_framework, global);
+        $f.typeHandlers.property = handler;
+        $f.typeHandlers.readonly = handler;
+
+    }
+
+    properties.info = {
+        name: 'properties'
+    };
+
+    properties.toString = function toString() {
+        return properties.info.name;
+    };
+
+    FrameworkFactory.plugins.register(properties);
+
+
+})(this);

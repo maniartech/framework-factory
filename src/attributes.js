@@ -1,17 +1,20 @@
 
-    (function ($f, global, undefined) {
+(function (global, undefined) {
+    "use strict";
+
+    function attributes($f, config) {
 
         /**
-         * Helper function to create attribute members for class.
-         * @param defaultValue The default value of the attribute.
-         * @option [options] Additional options for attribute member.
-         * @public
-         * @function
-         * @version 1.0.0
-         **/
+        * Helper function to create attribute members for class.
+        * @param defaultValue The default value of the attribute.
+        * @option [options] Additional options for attribute member.
+        * @public
+        * @function
+        * @version 1.0.0
+        **/
         var attribute = function (defaultValue, options) {
                 return {
-                    type: $f.fullName + '.attribute',
+                    type: 'attribute',
                     defaultValue: defaultValue,
                     options: options
                 };
@@ -24,7 +27,6 @@
              * @version 1.0.0
              **/
             attributeHandler = function (Class, key, options) {
-
                 var proto = Class.prototype,
                     privKey = '_' + key;
                 proto[key] = options.defaultValue;
@@ -37,9 +39,18 @@
          * @see Framework#attribute
          **/
         $f.attr = attribute;
+        $f.typeHandlers.attribute = attributeHandler;
 
-        $f.TypeHandlers["framework.attribute"] = attributeHandler;
+    }
 
-    })(_framework, global);
+    attributes.info = {
+        name: 'attributes'
+    };
 
+    attributes.toString = function () {
+        return attributes.info.name;
+    };
 
+    FrameworkFactory.plugins.register(attributes);
+
+})(this);

@@ -1,13 +1,17 @@
 
-    (function($f, global, undefined) {
+(function(global, undefined) {
+    "use strict";
 
-        $f.event = function() {
+
+    function events($f, config) {
+
+        $f.event = function () {
             return {
-                type: 'framework.event'
+                type: 'event'
             };
         };
 
-        var eventHandler = function(Class, key, options) {
+        var eventHandler = function (Class, key, options) {
 
             var proto = Class.prototype;
             //var eventName = key;
@@ -29,7 +33,7 @@
                 this[privKey].push(handler);
             };
 
-            proto[key].loadFromJSON = function(o, k, v) {
+            proto[key].loadFromJSON = function (o, k, v) {
                 o[k].call(o, v);
             };
 
@@ -43,10 +47,11 @@
                  * var btn = new Button();
                  * btn.on('mousemove, mouseout, mouseup', function() {});
                  **/
-                proto.on = function(eventNames, eventHandler) {
-                    var names = eventNames.split(' ');
-                    for(var i=0, length=names.length; i<length; i++) {
-                        var eventName = String.trim(names[i]);
+                proto.on = function (eventNames, eventHandler) {
+                    var names = eventNames.split(' '),
+                        i, iLen, eventName;
+                    for (i = 0, iLen = names.length; i < iLen; i += 1) {
+                        eventName = String.trim(names[i]);
                         if (this[eventName] !== undefined) {
                             //Event found, now register handler
                             this[eventName](eventHandler);
@@ -63,18 +68,20 @@
                  * it will be created having a field 'eventName' which will help identify
                  * the name of the event which triggered.
                  **/
-                proto.trigger = function(eventName, args) {
+                proto.trigger = function (eventName, args) {
 
-                    var s = this['_' + eventName];
+                    var s = this['_' + eventName],
+                            callback,
+                            i, iLen;
                     //console.log(eventName, s);
                     if (s === undefined || s.length === 0) {
                         return this; //No need to fire event, sicne there is no subscriber.
                     }
                     args = args || {};
-                    args["eventName"] = eventName;
-                    for(var i=0, len=s.length; i<len ; i++) {
-                        var ret = s[i](this, args);
-                        if (ret === false) {
+                    args.eventName = eventName;
+                    for (i = 0, iLen = s.length; i < iLen; i += 1) {
+                        callback = s[i];
+                        if (callback.call(this, args) === false) {
                             //no more firing, if handler returns falses
                             break;
                         }
@@ -85,9 +92,9 @@
                 /**
                  * Disassociate the handler from the trigger.
                  **/
-                proto.off = function(eventName, handler) {
-                    var arr = this['_' + eventName];
-                    var index = arr.indexOf(handler);
+                proto.off = function (eventName, handler) {
+                    var arr = this['_' + eventName],
+                        index = arr.indexOf(handler);
                     if (index !== -1) {
                         arr.splice(index, 1);
                     }
@@ -96,6 +103,18 @@
             }
         };
 
-        $f.TypeHandlers["framework.event"] = eventHandler;
+        $f.typeHandlers.event = eventHandler;
 
-    })(_framework, global);
+    }
+
+    events.info = {
+        name: 'events'
+    };
+
+    events.toString = function () {
+        return events.info.name;
+    };
+
+    FrameworkFactory.plugins.register(events);
+
+})(this);

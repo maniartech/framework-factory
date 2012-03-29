@@ -1,107 +1,95 @@
 
-    (function ($f, global, undefined) {
+(function (global, undefined) {
+    "use strict";
 
-        var initializing = true,
-            fnTest = /xyz/.test(function (){xyz;}) ? /\bbase\b/ : /.*/;
+    var FrameworkFactory = {},
+        plugins = [],
+        typeHandlers = [],
+        i, iLen;
 
-        $f.Class = function (prop, parent) {
-            //Checks if _super exists in overriden function, inspired by John Resig.
-            var hasProp = Object.prototype.hasOwnProperty,
-                proto, key, Class, __super__, framework;
+    FrameworkFactory.version = '1.0.0';
 
-            //console.log(fnTest.toString());
+    FrameworkFactory.create = function create(c) {
 
-            framework = this;
+        var _config = {},
+            framework = {},
+            plugin,
+            name,
+            plug;
 
-            parent  = parent || framework.defaultBaseClass;
-            prop    = prop || {};
+        if (typeof c === "string") {
+            _config.rootName = c;
+            _config.version = '1.0.0';
+        }
+        else {
+            c = c || {};
+            _config.rootName = c.rootName || 'framework';
+            _config.version = c.version || '1.0.0';
+        }
 
-            //prevents call to
-            initializing = true;
-            proto = new parent;
-            initializing = false;
 
-            Class = function Class() {
-                if (!(this instanceof Class)) {
-                    throw new Error('Class used as function.');
-                }
-                //this.constructor = Class;
-                if (initializing === false && this.init !== undefined) {
-                    this.init.apply(this, arguments);
-                }
-            };
 
-            //for each static members in parents, copy'em to child
-            for (key in parent) {
-                //if parent owns the key, set child item = parent item
-                if (hasProp.call(parent, key)) {
-                    Class[key] = parent[key];
-                }
-            }
+        framework.version = _config.version;
+        framework.name = _config.rootName;
+        framework.typeHandlers = {};
 
-            __super__ = parent.prototype;
-
-            Class.prototype = proto;
-            Class.prototype.constructor = Class;
-            Class.__super__ = __super__;
-
-            Class.attach = function attach(prop) {
-
-                var item, type, val, processed,
-                    typeHandler;
-
-                for (key in prop) {
-
-                    if (!hasProp.call(prop, key)) {
-                        continue;
-                    }
-
-                    item = prop[key];
-                    type = typeof item;
-                    val = item;
-                    processed = false;
-
-                    if (type === 'object' && item.type !== undefined) {
-                        typeHandler = $f.TypeHandlers[item.type];
-                        if (typeHandler !== undefined) {
-                            typeHandler(Class, key, item);
-                            processed = true;
-                        }
-                    }
-                    else if (type === 'function' &&
-                            typeof __super__[key] === 'function' &&
-                            fnTest.test(item)) {
-                        proto[key] = (function (key, fn) {
-                            return function () {
-                                this.base =  function () {
-                                    __super__[key].apply(this, arguments);
-                                };
-                                var ret = fn.apply(this, arguments);
-                                delete this.base;
-                                return ret;
-                            };
-                        })(key, item);
-                        processed = true;
-                    }
-
-                    //console.log([key, type == 'function', typeof __super__[key], fnTest.test(item)]);
-
-                    if (!processed) {
-                        proto[key] = val;
-                    }
-                    Class.__meta__[key] = item;
-                }
-            };
-
-            Class.__meta__ = {};
-
-            Class.attach(prop);
-
-            //return
-            return Class;
-
+        framework.config = function config(cfg) {
+            return _config[cfg];
         };
 
-        $f.TypeHandlers = {};
+        //Load plugins
+        for (i = 0, iLen = plugins.length; i < iLen; i += 1) {
 
-    })(_framework, global);
+            plugin = plugins[i];
+            name = plugin.info.name;
+
+            //Checks if plugin loaded
+            if (framework[name] !== undefined) {
+                throw new Error('Plugin with the name "' + plugin.name + '" already loaded.');
+            }
+
+            //If plugin is defined as function, execute it.
+            if (typeof plugin === 'function') {
+                plugin(framework, _config);
+                plugin.initialized = true;
+            }
+        }
+
+        return framework;
+
+    };
+
+    FrameworkFactory.plugins = {};
+
+    FrameworkFactory.plugins.register = function register(p) {
+
+        if (typeof p === 'function' || typeof p === 'object') {
+            plugins.push(p);
+            return;
+        }
+        throw new Error('Invalid plugin type.');
+    };
+
+    FrameworkFactory.plugins.getNames = function getNames() {
+        var names = [],
+            i, iLen;
+        for (i = 0, iLen = plugins.length; i < iLen; i += 1) {
+            names.push(plugins[i].info.name);
+        }
+        return names;
+    };
+
+    FrameworkFactory.plugins.getAll = function getAll() {
+
+        var plugs = [],
+            i, iLen;
+
+        for (i = 0, iLen = plugins.length; i < iLen; i += 1) {
+            plugs.push(plugins[i]);
+        }
+        return plugs;
+    };
+
+    global.FrameworkFactory = FrameworkFactory;
+
+})(this);

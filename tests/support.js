@@ -1,5 +1,4 @@
 
-
 var framework = FrameworkFactory.create();
 
 framework.BaseObject = framework.Class({
@@ -49,6 +48,7 @@ var Button = framework.Class({
     clickCount: framework.attribute(0, {
         type: 'number'
     }),
+
     caption: framework.attribute('Button', {
         type: 'string'
     }),
