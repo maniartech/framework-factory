@@ -13,70 +13,90 @@
          * @public
          * @version 1.0.0
          **/
-        var property = function property(defaultValue, options) {
+        var property = function property(options) {
+            var valueOf,
+                defaultValue,
+                observable,
+                get, set,
+                readonly;
 
-                options = options || {};
-                return {
-                    type: 'property',
-                    defaultValue: defaultValue,
-                    readonly: false,
-                    silent: options.silent || false,
-                    get: options.get,
-                    set: options.set
-                };
-            },
-
-            /**
-            * While defining class, this function sets the member as
-            * a property.
-            * @param: defaultValue, the default value of property
-            * @param: firePropertyChanged, if true,
-            * @function
-            * @public
-            * @version 1.0.0
-            **/
-            propertyGS = function propertyGS(options) {
-
-                if (options.get === undefined || options.set === undefined) {
-                    throw new Error('Required options missing, please check get and set functions supplied.');
+            if (typeof options === 'object') {
+                valueOf = options.valueOf();
+                //Incase of Object based primitive properties like
+                // new String('abc')
+                // new Date('123')
+                if (typeof valueOf !== 'object' && typeof valueOf !== 'function') {
+                    //Set primitive
+                    defaultValue = options.defaultValue;
+                    get = options.get;
                 }
+                else {
+                    //If is object but only getter is found
+                    options.observable = false;
+                    if (options.get !== undefined && options.set === undefined) {
+                        options.readonly = true;
+                        if (arguments[1] === true) {
+                            observable = true;
+                        }
+                    }
+                    else if(options.get === undefined && options.set === undefined) {
+                        throw new Error('Neither get nor set found in property declaration. This type of object is not currently supported.');
+                    }
+                    else {
+                        get = options.get;
+                        set = options.set;
+                    }
+                }
+            }
+            else if (typeof options === 'function') {
+                throw new Error('functions not supported as property default value.');
+            }
+            else {
+                defaultValue = options;
+                if (arguments[1] === true) {
+                    observable = true;
+                }
+            }
+
+            options = options || {};
 
                 return {
-                    type: 'property',
-                    defaultValue: undefined,
-                    readonly: false,
-                    silent: options.silent || false,
-                    get: options.get,
-                    set: options.set
+                    type        : 'property',
+                    defaultValue: defaultValue,
+                    readonly    : false,
+                    observable  : observable || false,
+                    get         : options.get,
+                    set         : options.set
                 };
             },
 
             /**
              *
              */
-            readonly = function readonly(defaultValue, options) {
-                options = options || {};
+            readonly = function readonly(defaultValue) {
+                var options = {};
                 return {
-                    type: 'readonly',
-                    defaultValue: defaultValue,
-                    readonly: true,
-                    silent: false,
-                    get: options.get
+                    type            : 'readonly',
+                    defaultValue    : defaultValue,
+                    readonly        : true,
+                    observable      : false,
+                    get             : undefined,
+                    set             : undefined
                 };
             },
 
             handler = function (Class, key, options) {
 
-                var proto = Class.prototype, _get, _set,
-                    readonly = options.readonly,
-                    silent = options.silent || false,
-                    getter = options.get,
-                    setter = options.set,
-                    privKey = '_' + key;
+                var proto       = Class.prototype, _get, _set,
+                    readonly    = options.readonly,
+                    observable = options.observable || false,
+                    getter      = options.get,
+                    setter      = options.set,
+                    privKey     = '_' + key;
 
                 proto[privKey] = options.defaultValue;
 
-                if (proto.propertyChanged === undefined) {
+                if (proto.propertyChanging === undefined) {
 
                     Class.attach({
                         propertyChanging: $f.event(),
@@ -107,8 +127,16 @@
                     return this[privKey];
                 };
 
-                if (setter !== undefined) {
-                    if (silent) {
+                if (readonly) {
+                    _set = function readonlySet() {
+                        throw new Error('You are not allowed to write to readonly property "' + key + '".');
+                    };
+                }
+                else {
+
+
+                    if (setter !== undefined) {
+                    if (!observable) {
                         _set = setter;
                     }
                     else {
@@ -131,35 +159,32 @@
                         };
                     }
                 }
-                else if (readonly === true) {
-                    _set = function readonlySet() {
-                        throw new Error('You are not allowed to write to readonly attribute "' + key + '".');
-                    };
-                }
                 else {
-                    if (silent) {
-                        _set = function (v) {
-                            this[privKey] = v;
-                        };
-                    }
-                    else {
-                        _set = function set(v) {
-                            var oldVal = this[privKey],
-                                args;
 
-                            if (oldVal === v) {
-                                return; //Property not changed.
-                            }
-                            args = {
-                                propertyName: key,
-                                oldValue: oldVal,
-                                newValue: v
+                    if (!observable) {
+                            _set = function (v) {
+                                this[privKey] = v;
                             };
+                        }
+                        else {
+                            _set = function set(v) {
+                                var oldVal = this[privKey],
+                                    args;
 
-                            this.trigger('propertyChanging', args);
-                            this[privKey] = v;
-                            this.trigger('propertyChanged', args);
-                        };
+                                if (oldVal === v) {
+                                    return; //Property not changed.
+                                }
+                                args = {
+                                    propertyName: key,
+                                    oldValue: oldVal,
+                                    newValue: v
+                                };
+
+                                this.trigger('propertyChanging', args);
+                                this[privKey] = v;
+                                this.trigger('propertyChanged', args);
+                            };
+                        }
                     }
                 }
 

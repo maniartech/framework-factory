@@ -21,7 +21,7 @@
             proto = new parent;
             initializing = false;
 
-            //TODO: Validate prop.type
+            //TODO: Validate & execute prop.type
             if (prop.type === undefined || typeof prop.type !== 'string') {
                 Class = function Class() {
                     if (!(this instanceof Class)) {

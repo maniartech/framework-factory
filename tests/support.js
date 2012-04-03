@@ -86,17 +86,15 @@ var Component = framework.Class({
 
     count: framework.readonly(0),
     widthCount: framework.readonly(0),
-    name : framework.property(),
-    width: framework.property(0, {
+    name : framework.property('', true),
+    width: framework.property({
+        defaultValue: 0,
         get: function() {
             return this._widthCount;
         },
         set: function(v) {
             this._widthCount = v;
-            //alert(this._widthCount);
-            console.log(this);
-        },
-        silent: true
+        }
     }),
 
     init: function() {

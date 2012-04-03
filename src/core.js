@@ -15,7 +15,8 @@
             framework = {},
             plugin,
             name,
-            plug;
+            plug,
+            key;
 
         if (typeof c === "string") {
             _config.framework = c;
@@ -25,6 +26,14 @@
             c = c || {};
             _config.framework = c.framework || 'framework';
             _config.version = c.version || '1.0.0';
+
+            for (key in c) {
+                if (c.hasOwnProperty(key) === true) {
+                    if (key in _config === false) {
+                        _config[key] = c.key;
+                    }
+                }
+            }
         }
 
         framework.version = _config.version;
