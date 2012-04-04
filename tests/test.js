@@ -271,6 +271,8 @@ module('TypeHandler Tests');
         },
 
         properties: function() {
+
+            //Component Tests
             var c1 = new Component();
             var changingCount = 0;
             var changedCount = 0;
@@ -304,7 +306,85 @@ module('TypeHandler Tests');
             eq(c1.width, 10);
             eq(c1.width, c1.widthCount);
 
+            //PropClass Tests
+            var PropClass = framework.Class({
 
+                init: function() {
+                    this._list = [1, 2, 3, 4, 5];
+                },
+
+                length      : framework.property({ //default not observable, but readonly
+                    get: function() {
+                        return this._list.length;
+                    }
+                }),
+
+                name        : framework.property({ //default not observable
+                    defaultValue: "Aamir",
+                    get:  function() {
+                        return this._name;
+                    },
+                    set: function(v) {
+                        if (this._name !== v) {
+                            this._name = v;
+                        }
+                    }
+                }),
+
+                age          : framework.readonly(37), //default observable from settings
+                birthday     : framework.property('1-1', true) //observable false
+
+            });
+
+            var propObj = new PropClass()
+                errors = 0,
+                events = 0;
+
+            function propChanging(args) {
+                eq (args.eventName, 'propertyChanging');
+                eq (propObj, this);
+                eq (this instanceof PropClass, true);
+                neq (args.oldValue, undefined);
+                neq (args.oldVaue, args.newValue);
+                events++;
+            }
+
+            function propChanged(args) {
+                eq (args.eventName, 'propertyChanged');
+                eq (propObj, this);
+                eq (this instanceof PropClass, true);
+                neq (args.oldValue, undefined);
+                neq (args.oldVaue, args.newValue);
+                events++;
+            }
+
+            propObj.propertyChanging(propChanging);
+            propObj.propertyChanged(propChanged);
+
+            eq(propObj.length, 5);
+            eq('_length' in propObj, false);
+            eq (typeof propObj.length, 'number');
+            try { propObj.length = 10; } catch (ex) { errors++; };
+            eq(errors, 1, 'Can not set readonly properties.');
+
+            eq (propObj.name, 'Aamir');
+            eq (propObj._name, 'Aamir');
+            eq (typeof propObj.name, 'string');
+            propObj.name = 'Maniar';
+            eq (propObj.name, 'Maniar');
+            eq (propObj._name, 'Maniar');
+
+            eq (propObj.age, 37);
+            eq (propObj._age, 37);
+            try { propObj.age = 100; } catch (ex) { errors++; };
+            eq(errors, 2, 'Can not set readonly properties.');
+
+            eq (propObj.birthday, '1-1');
+            eq (propObj._birthday, '1-1');
+            propObj.birthday = '21-11'
+            eq (propObj.birthday, '21-11');
+            eq (2, events);
+            eq (propObj._birthday, '21-11');
         }
     };
 

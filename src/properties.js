@@ -32,9 +32,10 @@
                 }
                 else {
                     //If is object but only getter is found
-                    options.observable = false;
+                    observable = false;
+                    defaultValue = options.defaultValue;
                     if (options.get !== undefined && options.set === undefined) {
-                        options.readonly = true;
+                        readonly = true;
                         if (arguments[1] === true) {
                             observable = true;
                         }
@@ -63,7 +64,7 @@
                 return {
                     type        : 'property',
                     defaultValue: defaultValue,
-                    readonly    : false,
+                    readonly    : readonly,
                     observable  : observable || false,
                     get         : options.get,
                     set         : options.set
@@ -94,7 +95,10 @@
                     setter      = options.set,
                     privKey     = '_' + key;
 
-                proto[privKey] = options.defaultValue;
+
+                if (!(getter !== undefined && setter === undefined)) {
+                    proto[privKey] = options.defaultValue;
+                }
 
                 if (proto.propertyChanging === undefined) {
 
