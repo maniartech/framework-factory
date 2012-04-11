@@ -173,7 +173,6 @@ module('TypeHandler Tests');
                 obj = this;
                 args = a;
                 val = a.val;
-                console.log(btn.clickCount)
                 btn.clickCount++;
                 eventRaised = a.eventName;
                 //console.log(a);
@@ -470,8 +469,33 @@ module('framework.utils Tests');
 
 
 
+module('Miscellaneous Tests');
 
+    var utils = framework.utils;
 
+    miscTests = {
+        deepCopy: function() {
+            var a = new Button();
+            a.name = "Maniar";
+            a.ref = new Button();
+
+            var b = utils.deepCopy(a);
+            a.ref.name = "Wow";
+
+            eq(false, a === b);
+            a.name = "Aamir";
+            neq(a.name, b.name);
+
+            neq(a, b.ref);
+            //neq(a.ref, b);
+            //neq(b.ref, a);
+
+            neq(a.ref, b.ref);
+            console.log(a, b);
+        }
+    };
+
+    test('Object.deepCopy Tests', miscTests.deepCopy);
 
 
 

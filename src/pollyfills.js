@@ -5,6 +5,7 @@ Object.create = Object.create || function (o) {
     return new F();
 };
 
+
 Object.getPrototypeOf = Object.getPrototypeOf || function () {
 
     if (typeof "test".__proto__ === "object" ) {
