@@ -475,23 +475,71 @@ module('Miscellaneous Tests');
 
     miscTests = {
         deepCopy: function() {
+
+            //Test with existing Button class
             var a = new Button();
             a.name = "Maniar";
             a.ref = new Button();
-
             var b = utils.deepCopy(a);
             a.ref.name = "Wow";
-
             eq(false, a === b);
             a.name = "Aamir";
             neq(a.name, b.name);
-
             neq(a, b.ref);
-            //neq(a.ref, b);
-            //neq(b.ref, a);
-
+            neq(a.ref, b);
+            neq(b.ref, a);
             neq(a.ref, b.ref);
-            console.log(a, b);
+
+            var BaseClass = framework.Class({
+
+            });
+
+            var RefClass = framework.Class({
+                name: framework.property('RefClass')
+            });
+
+            var RefCollectionClass = framework.Class({
+
+            }, framework.collections.MapList);
+
+            var CopyClass = framework.Class({
+                length: framework.readonly(0),
+                name: framework.property('MyName'),
+                age: framework.property({
+                    defaultValue: 20,
+                    get: function() {
+                        return this._age;
+                    },
+                    set: function(val) {
+                        this._age = val;
+                    }
+                }),
+                items: framework.readonly(),
+                ref: framework.attribute(),
+
+                init: function() {
+                    this._items = new RefCollectionClass();
+                    this.ref = new RefClass();
+                }
+
+            }, BaseClass);
+
+            var a = new CopyClass();
+            a.name = "Great";
+            a.age = 30;
+            var b = utils.deepCopy(a);
+
+            neq(a, b);
+            eq(a.name, b.name);
+            eq(a.age, b.age);
+            neq(a.items, b.items);
+
+            b.items.add("Wow")
+
+
+
+
+
         }
     };
 

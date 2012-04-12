@@ -17,19 +17,16 @@
             equals: function(o1, o2) {
 
                 var key;
-
                 //True if both objects are same.
                 if (o1 === o2) {
                     return true;
                 }
-
                 for(key in o1) {
 
                     //If key exists in o1 but not in o2, return false.
                     if (o2[key] === undefined) {
                         return false;
                     }
-
                     var v1 = o1[key];
                     var v2 = o2[key];
 
@@ -45,7 +42,6 @@
                         return false;
                     }
                 }
-
                 //Return true, becuase no differences found.
                 return true;
 
@@ -58,7 +54,7 @@
             * @ref: http://stackoverflow.com/questions/728360/copying-an-object-in-javascript
             * @remark:
             *  - Modified to handle circular dependencies.
-            *  - Only work if object to be copied accepts non parameterized constructor.
+            *  - May not behave as expected if object consturctor accepts various parameters.
             **/
            deepCopy: function deepCopy(o) {
 
@@ -101,15 +97,7 @@
                        copy = new obj.constructor();
                        for (var attr in obj) {
                            if (obj.hasOwnProperty(attr) === true) {
-                               objVal = obj[attr];
-                               refIndex = objRefs.indexOf(objVal);
-                               if (refIndex >= 0) {
-                                   copy[attr] = objRefs[refIndex];
-                               }
-                               else {
-                                   copy[attr] = doCopy(objVal);
-                                   objRefs.push(copy[attr]);
-                               }
+                               copy[attr] = doCopy(obj[attr]);
                            }
                        }
                        return copy;
