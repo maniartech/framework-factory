@@ -5,37 +5,48 @@ var neq = notStrictEqual;
 //$(function(){
 
 
-module("Framework Tests");
+module("Core Tests");
 
     var frameworkTests = {
-        notNull: function() {
-            var ns = FrameworkFactory.create({
-                    version: '1.0.0'
-                });
+
+        basic: function() {
+
+            eq(typeof FrameworkFactory, 'object');
+            eq(FrameworkFactory.version, '1.0.0');
+            var ns = FrameworkFactory.create();
             neq (ns, undefined, 'The namespace ns must not be undefined.');
             neq (ns, null, 'The namespace ns must not be null.');
-        },
-
-        defaultConfig: function() {
-            var ns = FrameworkFactory.create();
             eq (ns.version, '1.0.0', "Default version must be 1.0.0");
             eq (ns.framework, 'framework', 'The default framework full name must be "framework"');
         },
 
         customConfig: function() {
 
-            function BaseObject() {}
-
             var ns = FrameworkFactory.create({
                 version: '1.0.1',
-                framework: 'MyFramework'
+                framework: 'MyFramework',
+                defaultBaseClass: "BaseObject"
             });
 
+            neq(ns.BaseObject, undefined);
+            eq(new ns.collections.MapList() instanceof ns.BaseObject, true);
+
+            ns.BaseObject.attach({
+                hi: function(msg) {
+                    return 'Hi, ' + msg + '.';
+                }
+            });
+
+
+            neq (ns, undefined, 'The namespace ns must not be undefined.');
+            neq (ns, null, 'The namespace ns must not be null.');
             eq (ns.version, '1.0.1', "Default version must be 1.0.1");
             eq (ns.framework, 'MyFramework', 'The default framework full name must be "MyFramework"');
 
             var Cls = ns.Class({});
             var inst = new Cls(); //Class instance.
+            eq (inst instanceof ns.BaseObject, true);
+            eq(inst.hi('there'), 'Hi, there.');
         },
 
         pluginsTests: function() {
@@ -50,20 +61,18 @@ module("Framework Tests");
                 name: 'myPlugin'
             };
 
+            eq (typeof FrameworkFactory.plugins, 'object');
             FrameworkFactory.plugins.register(myPlugin);
 
             var myFramework = FrameworkFactory.create('myFramework');
-
             neq (FrameworkFactory.plugins.getNames().indexOf('myPlugin'), -1);
             neq (FrameworkFactory.plugins.getAll().indexOf(myPlugin), -1);
             neq (myFramework.echo, undefined);
             eq (myFramework.echo('wow'), 'wow');
         }
-
     };
 
-    test("Framework Not Null Test", frameworkTests.notNull);
-    test ("Default Config Tests", frameworkTests.defaultConfig);
+    test("Framework Basic", frameworkTests.basic);
     test ('Custom Config Tests', frameworkTests.customConfig);
     test ('Plugins Tests', frameworkTests.pluginsTests);
 

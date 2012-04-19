@@ -13,7 +13,18 @@
             var hasProp = Object.prototype.hasOwnProperty,
                 proto, key, Class, __super__, funcString;
 
-            parent  = parent || Object;
+            if (config.defaultBaseClass !== undefined) {
+                //It is a base class
+                if (prop.type === config.defaultBaseClass) {
+                    parent = Object;
+                }
+                else {
+                    parent  = parent || $f[config.defaultBaseClass];
+                }
+            }
+            else {
+                parent = parent || Object;
+            }
             prop    = prop || {};
 
             //prevents call to
@@ -115,6 +126,13 @@
             return Class;
 
         };
+
+        if (config.defaultBaseClass !== undefined) {
+
+            $f[config.defaultBaseClass] = Class({
+                type: config.defaultBaseClass
+            });
+        }
 
         $f.Class = Class;
 

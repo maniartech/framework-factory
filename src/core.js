@@ -7,6 +7,7 @@
         typeHandlers = [],
         i, iLen;
 
+
     FrameworkFactory.version = '1.0.0';
 
     FrameworkFactory.create = function create(c) {
@@ -30,7 +31,7 @@
             for (key in c) {
                 if (c.hasOwnProperty(key) === true) {
                     if (key in _config === false) {
-                        _config[key] = c.key;
+                        _config[key] = c[key];
                     }
                 }
             }
@@ -87,7 +88,6 @@
     };
 
     FrameworkFactory.plugins.getAll = function getAll() {
-
         var plugs = [],
             i, iLen;
 

@@ -214,7 +214,7 @@
                 return this;
             }
 
-        }, Object);
+        });
 
         /**
          * Sets the value into collection
