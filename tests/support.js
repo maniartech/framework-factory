@@ -21,7 +21,7 @@ var Person = framework.Class({
 
         info: function() {
             return 'Person';
-    }
+        }
 
 });
 

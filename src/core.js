@@ -3,10 +3,10 @@
     "use strict";
 
     var FrameworkFactory = {},
+
         plugins = [],
         typeHandlers = [],
         i, iLen;
-
 
     FrameworkFactory.version = '1.0.0';
 
@@ -14,6 +14,7 @@
 
         var _config = {},
             framework = {},
+            otherVersion = null,
             plugin,
             name,
             plug,
@@ -22,17 +23,37 @@
         if (typeof c === "string") {
             _config.framework = c;
             _config.version = '1.0.0';
+            _config.noConflict = false;
         }
         else {
             c = c || {};
-            _config.framework = c.framework || 'framework';
+
+            _config.framework = c.framework;
             _config.version = c.version || '1.0.0';
+            _config.noConflict = (c.noConflict !== undefined === true)? c.noConflict: false;
 
             for (key in c) {
                 if (c.hasOwnProperty(key) === true) {
                     if (key in _config === false) {
                         _config[key] = c[key];
                     }
+                }
+            }
+        }
+
+        if (_config.noConflict === true) {
+            if (_config.framework === undefined) {
+                throw new Error('noConfig functionality is only supported if framework name is supplied.');
+            }
+            otherVersion = global[_config.framework];
+            if (otherVersion === undefined || (otherVersion.version === _config.version)) {
+                framework.noConflict = function noConflict() {
+                    return framework;
+                }
+            }
+            else {
+                framework.noConflict = function noConflict() {
+                    return otherVersion;
                 }
             }
         }
@@ -64,7 +85,6 @@
         }
 
         return framework;
-
     };
 
     FrameworkFactory.plugins = {};

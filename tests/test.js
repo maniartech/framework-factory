@@ -17,7 +17,63 @@ module("Core Tests");
             neq (ns, undefined, 'The namespace ns must not be undefined.');
             neq (ns, null, 'The namespace ns must not be null.');
             eq (ns.version, '1.0.0', "Default version must be 1.0.0");
-            eq (ns.framework, 'framework', 'The default framework full name must be "framework"');
+            //eq (ns.framework, 'framework', 'The default framework full name must be "framework"');
+        },
+
+        noConflict: function() {
+
+
+            //For framework with no version and noConflict = false
+            var ns = FrameworkFactory.create('wonderFramework'), error = 0;
+            eq(ns.version, '1.0.0');
+            eq(ns.config('noConflict'), false);
+
+            //For framework with no name, no version and noConflict = false
+            ns = FrameworkFactory.create();
+            eq(ns.version, '1.0.0');
+            eq(ns.config('noConflict'), false);
+
+            //For framework with no version and noConflict = false passed as config options
+            ns = FrameworkFactory.create({
+                    framework: 'wonderFramework'
+                });
+            eq(ns.version, '1.0.0');
+            eq(ns.config('noConflict'), false);
+
+            //For framework with noConflict = true
+            ns = FrameworkFactory.create({
+                framework: 'wonderFramework',
+                noConflict: true
+            });
+            eq(ns.noConflict(), ns);
+
+            try {
+                FrameworkFactory.create({
+                    noConflict: true
+                });
+            }
+            catch (ex) {
+                error += 1;
+            }
+
+            eq(error, 1);
+
+            window.wonderFramework = ns;
+            ns = FrameworkFactory.create({
+                framework: 'wonderFramework',
+                noConflict: true,
+                version: '2.0.0'
+            });
+
+            neq(ns, window.wonderFramework);
+            eq(ns.noConflict(), window.wonderFramework);
+
+            window.wonderFramework = ns;
+            eq(window.wonderFramework.version, '2.0.0');
+            ns = window.wonderFramework.noConflict();
+            eq(ns.version, '1.0.0');
+            eq(window.wonderFramework.version, '2.0.0');
+
         },
 
         customConfig: function() {
@@ -36,7 +92,6 @@ module("Core Tests");
                     return 'Hi, ' + msg + '.';
                 }
             });
-
 
             neq (ns, undefined, 'The namespace ns must not be undefined.');
             neq (ns, null, 'The namespace ns must not be null.');
@@ -73,6 +128,7 @@ module("Core Tests");
     };
 
     test("Framework Basic", frameworkTests.basic);
+    test("Framework noConflict tests", frameworkTests.noConflict);
     test ('Custom Config Tests', frameworkTests.customConfig);
     test ('Plugins Tests', frameworkTests.pluginsTests);
 
@@ -81,7 +137,6 @@ module("Class Tests");
 
     var classTests = {
         basic: function(){
-
             eq (typeof Person, 'function', 'Person must be of type function');
             eq (p1.name, 'abc', 'Value of p1.name must be "abc"');
             eq (p1.getName(), 'abc', 'Value of p1.getName() must be "abc"');
