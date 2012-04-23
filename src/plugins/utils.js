@@ -168,28 +168,6 @@
                 }
             },
 
-            //Validation
-            isFunction: function(fn) {
-                return typeof fn === 'function';
-            },
-
-            isNumber: function(num) {
-                return typeof num === 'number';
-            },
-
-            isUndefined: function(val) {
-                return typeof val === 'undefined';
-            },
-
-            isString: function(str) {
-                return typeof val === 'string';
-            },
-
-            isDate: function(dt) {
-                return (typeof dt === 'object') &&
-                    (dt instanceof Date === true);
-            },
-
             //UUID
 
             simpleGuid: function(sep) {

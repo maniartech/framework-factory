@@ -34,6 +34,7 @@ FRAMEWORK_ALL_COMPRESSED = path.join (OUTPUT_PATH, 'framework.factory.all.min.js
 SCRIPTS = (
     path.join(SCRIPTS_ROOT, 'pollyfills.js'),
     path.join(SCRIPTS_ROOT, 'core.js'),
+    path.join(SCRIPTS_ROOT, 'is.js'),
     path.join(SCRIPTS_ROOT, 'classes.js'),
     path.join(SCRIPTS_ROOT, 'attributes.js'),
     path.join(SCRIPTS_ROOT, 'events.js'),
