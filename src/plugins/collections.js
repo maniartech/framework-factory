@@ -17,7 +17,11 @@
             /**
              * Represents total number of items in the list.
              **/
-            length          : $f.readonly(0),
+            length          : $f.property({
+                get: function() {
+                    return this._items.length;
+                }
+            }),
 
             /**
              * Key identifier in the item object.
@@ -66,10 +70,10 @@
                     item = arguments[i];
                     var args = {
                         item: item,
-                        act: true
+                        process: true
                     };
                     this.trigger('itemBeforeAdd', args);
-                    if (args.act === false) {
+                    if (args.process === false) {
                         continue;
                     }
                     //check if key available.
@@ -92,9 +96,6 @@
                             map[key] = item;
                         }
                     }
-
-                    //Add item to an array.
-                    this._length = items.push(item);;
 
                     this.trigger('itemAdd', {
                         item: item
@@ -202,14 +203,14 @@
                 return this._items;
             },
 
-            each: function(callback, scope) {
+            each: function(callback, context) {
                 var items, i, len;
                 items = this._items;
-                if (scope === undefined) {
-                    scope = this;
+                if (context === undefined) {
+                    context = this;
                 }
                 for(i=0, len = items.length; i<len; i++){
-                    callback.call(scope, items[i]);
+                    callback.call(context, items[i]);
                 }
                 return this;
             }

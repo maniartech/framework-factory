@@ -31,6 +31,7 @@
                     this[privKey] = [];
                 }
                 this[privKey].push(handler);
+                return this;
             };
 
             proto[key].loadFromJSON = function (o, k, v) {
