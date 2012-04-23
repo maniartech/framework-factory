@@ -42,7 +42,6 @@
                 this._items = [];
                 this._keys = [];
                 this._map = {};
-
                 if (arguments.length > 0) {
                     this.add.apply(this, arguments);
                 }
@@ -67,11 +66,13 @@
                 }
 
                 for (var i=0, len=arguments.length; i<len; i++) {
+
                     item = arguments[i];
                     var args = {
                         item: item,
                         process: true
                     };
+
                     this.trigger('itemBeforeAdd', args);
                     if (args.process === false) {
                         continue;
@@ -96,6 +97,9 @@
                             map[key] = item;
                         }
                     }
+
+                    //Add item to an array.
+                    items.push(item);
 
                     this.trigger('itemAdd', {
                         item: item
@@ -209,6 +213,7 @@
                 if (context === undefined) {
                     context = this;
                 }
+                
                 for(i=0, len = items.length; i<len; i++){
                     callback.call(context, items[i]);
                 }
