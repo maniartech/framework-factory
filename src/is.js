@@ -37,6 +37,10 @@
 
             array: function(val) {
                 return val instanceof Array;
+            },
+
+            inBrowser: function browser() {
+                return window !== undefined && global === window;
             }
         };
     }

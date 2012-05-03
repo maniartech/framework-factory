@@ -132,90 +132,93 @@ module("Core Tests");
             //String tests
             eq(is.string("str"), true);
             eq(is.string(new String("str")), true);
-            neq(is.string(new Number("str")), true);
-            neq(is.string(new Date()), true);
-            neq(is.string(new Function()), true);
-            neq(is.string(), true);
-            neq(is.string(null), true);
-            neq(is.string([]), true);
-            neq(is.string({}), true);
+            eq(is.string(new Number("str")), false);
+            eq(is.string(new Date()), false);
+            eq(is.string(new Function()), false);
+            eq(is.string(), false);
+            eq(is.string(null), false);
+            eq(is.string([]), false);
+            eq(is.string({}), false);
 
             //Number tests
             eq(is.number(0), true);
             eq(is.number(new Number(100)), true);
-            neq(is.number("str"), true);
-            neq(is.number(new Date()), true);
-            neq(is.number(new Function()), true);
-            neq(is.number(), true);
-            neq(is.number(null), true);
-            neq(is.number([]), true);
-            neq(is.number({}), true);
+            eq(is.number("str"), false);
+            eq(is.number(new Date()), false);
+            eq(is.number(new Function()), false);
+            eq(is.number(), false);
+            eq(is.number(null), false);
+            eq(is.number([]), false);
+            eq(is.number({}), false);
 
             //function tests
             eq(is.func(function(){}), true);
             eq(is.func(new Function()), true);
-            neq(is.func("str"), true);
-            neq(is.func(new Date()), true);
-            neq(is.func(0), true);
-            neq(is.func(), true);
-            neq(is.func(null), true);
-            neq(is.func([]), true);
-            neq(is.func({}), true);
+            eq(is.func("str"), false);
+            eq(is.func(new Date()), false);
+            eq(is.func(0), false);
+            eq(is.func(), false);
+            eq(is.func(null), false);
+            eq(is.func([]), false);
+            eq(is.func({}), false);
 
             //undefined tests
             var x;
             eq(is.undef(), true);
             eq(is.undef(x), true);
-            neq(is.undef("str"), true);
-            neq(is.undef(new Date()), true);
-            neq(is.undef(0), true);
-            neq(is.undef(null), true);
-            neq(is.undef([]), true);
-            neq(is.undef({}), true);
+            eq(is.undef("str"), false);
+            eq(is.undef(new Date()), false);
+            eq(is.undef(0), false);
+            eq(is.undef(null), false);
+            eq(is.undef([]), false);
+            eq(is.undef({}), false);
 
             //null or undefined tests
             eq(is.nullOrUndef(null), true);
             eq(is.nullOrUndef(x), true);
             eq(is.nullOrUndef(), true);
-            neq(is.nullOrUndef("str"), true);
-            neq(is.nullOrUndef(new Date()), true);
-            neq(is.nullOrUndef(0), true);
-            neq(is.nullOrUndef([]), true);
-            neq(is.nullOrUndef({}), true);
+            eq(is.nullOrUndef("str"), false);
+            eq(is.nullOrUndef(new Date()), false);
+            eq(is.nullOrUndef(0), false);
+            eq(is.nullOrUndef([]), false);
+            eq(is.nullOrUndef({}), false);
 
             //date tests
             eq(is.date(new Date), true);
-            neq(is.date("str"), true);
-            neq(is.date(0), true);
-            neq(is.date(new Function()), true);
-            neq(is.date(), true);
-            neq(is.date(null), true);
-            neq(is.date([]), true);
-            neq(is.date({}), true);
+            eq(is.date("str"), false);
+            eq(is.date(0), false);
+            eq(is.date(new Function()), false);
+            eq(is.date(), false);
+            eq(is.date(null), false);
+            eq(is.date([]), false);
+            eq(is.date({}), false);
 
             //date tests
             eq(is.plainObject({}), true);
             eq(is.plainObject(new Object), true);
-            neq(is.plainObject("str"), true);
-            neq(is.plainObject(0), true);
-            neq(is.plainObject(new Function()), true);
-            neq(is.plainObject(), true);
-            neq(is.plainObject(null), true);
-            neq(is.plainObject([]), true);
-            neq(is.plainObject(new Date), true);
-            neq(is.plainObject(new Component), true);
+
+            eq(is.plainObject("str"), false);
+            eq(is.plainObject(0), false);
+            eq(is.plainObject(new Function()), false);
+            eq(is.plainObject(), false);
+            eq(is.plainObject(null), false);
+            eq(is.plainObject([]), false);
+            eq(is.plainObject(new Date), false);
+            eq(is.plainObject(new Component), false);
 
             //Array tests
             eq(is.array([]), true);
             eq(is.array(new Array), true);
+            eq(is.array("str"), false);
+            eq(is.array(0), false);
+            eq(is.array(new Function()), false);
+            eq(is.array(), false);
+            eq(is.array(null), false);
+            eq(is.array(new Date), false);
+            eq(is.array(new Component), false);
 
-            neq(is.array("str"), true);
-            neq(is.array(0), true);
-            neq(is.array(new Function()), true);
-            neq(is.array(), true);
-            neq(is.array(null), true);
-            neq(is.array(new Date), true);
-            neq(is.array(new Component), true);
+            //In Browser
+            eq(is.inBrowser(), true);
 
 
         }
@@ -478,7 +481,7 @@ module('TypeHandler Tests');
                 }),
 
                 name        : framework.property({ //default not observable
-                    defaultValue: "Aamir",
+                    value: "Aamir",
                     get:  function() {
                         return this._name;
                     },

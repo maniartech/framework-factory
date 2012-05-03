@@ -14,56 +14,57 @@
          * @version 1.0.0
          **/
         var property = function property(options) {
-            var valueOf,
-                defaultValue,
-                observable,
-                get, set,
-                readonly;
 
-            if (typeof options === 'object') {
-                valueOf = options.valueOf();
-                //Incase of Object based primitive properties like
-                // new String('abc')
-                // new Date('123')
-                if (typeof valueOf !== 'object' && typeof valueOf !== 'function') {
-                    //Set primitive
-                    defaultValue = options.defaultValue;
-                    get = options.get;
-                }
-                else {
-                    //If is object but only getter is found
-                    observable = false;
-                    defaultValue = options.defaultValue;
-                    if (options.get !== undefined && options.set === undefined) {
-                        readonly = true;
-                        if (arguments[1] === true) {
-                            observable = true;
-                        }
-                    }
-                    else if(options.get === undefined && options.set === undefined) {
-                        throw new Error('Neither get nor set found in property declaration. This type of object is not currently supported.');
+                var valueOf,
+                    value,
+                    observable,
+                    get, set,
+                    readonly;
+
+                if (typeof options === 'object') {
+                    valueOf = options.valueOf();
+                    //Incase of Object based primitive properties like
+                    // new String('abc')
+                    // new Date('123')
+                    if (typeof valueOf !== 'object' && typeof valueOf !== 'function') {
+                        //Set primitive
+                        value = options.value;
+                        get = options.get;
                     }
                     else {
-                        get = options.get;
-                        set = options.set;
+                        //If is object but only getter is found
+                        observable  = false;
+                        value       = options.value;
+                        if (options.get !== undefined && options.set === undefined) {
+                            readonly = true;
+                            if (arguments[1] === true) {
+                                observable = true;
+                            }
+                        }
+                        else if(options.get === undefined && options.set === undefined) {
+                            throw new Error('Neither get nor set found in property declaration. This type of object is not currently supported.');
+                        }
+                        else {
+                            get = options.get;
+                            set = options.set;
+                        }
                     }
                 }
-            }
-            else if (typeof options === 'function') {
-                throw new Error('functions not supported as property default value.');
-            }
-            else {
-                defaultValue = options;
-                if (arguments[1] === true) {
-                    observable = true;
+                else if (typeof options === 'function') {
+                    throw new Error('functions not supported as property default value.');
                 }
-            }
+                else {
+                    value = options;
+                    if (arguments[1] === true) {
+                        observable = true;
+                    }
+                }
 
-            options = options || {};
+                options = options || {};
 
                 return {
                     type        : 'property',
-                    defaultValue: defaultValue,
+                    value       : value,
                     readonly    : readonly,
                     observable  : observable || false,
                     get         : options.get,
@@ -74,11 +75,11 @@
             /**
              *
              */
-            readonly = function readonly(defaultValue) {
+            readonly = function readonly(value) {
                 var options = {};
                 return {
                     type            : 'readonly',
-                    defaultValue    : defaultValue,
+                    value           : value,
                     readonly        : true,
                     observable      : false,
                     get             : undefined,
@@ -97,7 +98,7 @@
 
 
                 if (!(getter !== undefined && setter === undefined)) {
-                    proto[privKey] = options.defaultValue;
+                    proto[privKey] = options.value;
                 }
 
                 if (proto.propertyChanging === undefined) {
