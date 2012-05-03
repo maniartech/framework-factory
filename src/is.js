@@ -7,19 +7,23 @@
 
             //Validation
             func: function func(val) {
-                return typeof val === 'function';
+                return typeof val === 'function' || val instanceof Function  === true;
             },
 
             number: function num(val) {
-                return typeof val === 'number';
+                return typeof val === 'number' || val instanceof Number  === true;
             },
 
             undef: function undef(val) {
-                return typeof val === 'undefined';
+                return val === undefined;
             },
 
-            string: function str(val) {
-                return typeof val === 'string';
+            nullOrUndef: function nullOrUndef(val) {
+                return val === undefined || val === null;
+            },
+
+            string: function string(val) {
+                return typeof val === 'string' || val instanceof String === true;
             },
 
             date: function date(val) {
@@ -27,7 +31,12 @@
             },
 
             plainObject: function(val) {
+                if (val === undefined || val === null) return false;
                 return ((typeof val === 'object') && (val.constructor === Object));
+            },
+
+            array: function(val) {
+                return val instanceof Array;
             }
         };
     }

@@ -124,6 +124,100 @@ module("Core Tests");
             neq (FrameworkFactory.plugins.getAll().indexOf(myPlugin), -1);
             neq (myFramework.echo, undefined);
             eq (myFramework.echo('wow'), 'wow');
+        },
+
+        isTests: function() {
+            var is = framework.is;
+
+            //String tests
+            eq(is.string("str"), true);
+            eq(is.string(new String("str")), true);
+            neq(is.string(new Number("str")), true);
+            neq(is.string(new Date()), true);
+            neq(is.string(new Function()), true);
+            neq(is.string(), true);
+            neq(is.string(null), true);
+            neq(is.string([]), true);
+            neq(is.string({}), true);
+
+            //Number tests
+            eq(is.number(0), true);
+            eq(is.number(new Number(100)), true);
+            neq(is.number("str"), true);
+            neq(is.number(new Date()), true);
+            neq(is.number(new Function()), true);
+            neq(is.number(), true);
+            neq(is.number(null), true);
+            neq(is.number([]), true);
+            neq(is.number({}), true);
+
+            //function tests
+            eq(is.func(function(){}), true);
+            eq(is.func(new Function()), true);
+            neq(is.func("str"), true);
+            neq(is.func(new Date()), true);
+            neq(is.func(0), true);
+            neq(is.func(), true);
+            neq(is.func(null), true);
+            neq(is.func([]), true);
+            neq(is.func({}), true);
+
+            //undefined tests
+            var x;
+            eq(is.undef(), true);
+            eq(is.undef(x), true);
+            neq(is.undef("str"), true);
+            neq(is.undef(new Date()), true);
+            neq(is.undef(0), true);
+            neq(is.undef(null), true);
+            neq(is.undef([]), true);
+            neq(is.undef({}), true);
+
+            //null or undefined tests
+            eq(is.nullOrUndef(null), true);
+            eq(is.nullOrUndef(x), true);
+            eq(is.nullOrUndef(), true);
+            neq(is.nullOrUndef("str"), true);
+            neq(is.nullOrUndef(new Date()), true);
+            neq(is.nullOrUndef(0), true);
+            neq(is.nullOrUndef([]), true);
+            neq(is.nullOrUndef({}), true);
+
+            //date tests
+            eq(is.date(new Date), true);
+            neq(is.date("str"), true);
+            neq(is.date(0), true);
+            neq(is.date(new Function()), true);
+            neq(is.date(), true);
+            neq(is.date(null), true);
+            neq(is.date([]), true);
+            neq(is.date({}), true);
+
+            //date tests
+            eq(is.plainObject({}), true);
+            eq(is.plainObject(new Object), true);
+            neq(is.plainObject("str"), true);
+            neq(is.plainObject(0), true);
+            neq(is.plainObject(new Function()), true);
+            neq(is.plainObject(), true);
+            neq(is.plainObject(null), true);
+            neq(is.plainObject([]), true);
+            neq(is.plainObject(new Date), true);
+            neq(is.plainObject(new Component), true);
+
+            //Array tests
+            eq(is.array([]), true);
+            eq(is.array(new Array), true);
+
+            neq(is.array("str"), true);
+            neq(is.array(0), true);
+            neq(is.array(new Function()), true);
+            neq(is.array(), true);
+            neq(is.array(null), true);
+            neq(is.array(new Date), true);
+            neq(is.array(new Component), true);
+
+
         }
     };
 
@@ -131,6 +225,7 @@ module("Core Tests");
     test("Framework noConflict tests", frameworkTests.noConflict);
     test ('Custom Config Tests', frameworkTests.customConfig);
     test ('Plugins Tests', frameworkTests.pluginsTests);
+    test ('Is of Type Tests', frameworkTests.isTests);
 
 
 module("Class Tests");
