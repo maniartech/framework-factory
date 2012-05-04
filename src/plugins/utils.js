@@ -131,8 +131,10 @@
                     switch (oMemberType) {
 
                         case 'object': {
-
-                            if (o[key].constructor.loadFromJSON !== undefined) {
+                            if (o[key] === null) {
+                                o[key] = val;
+                            }
+                            else if (o[key].constructor.loadFromJSON !== undefined) {
                                 o[key].constructor.loadFromJSON(o, key, val);
                             }
                             else if (o[key] instanceof Array) {
