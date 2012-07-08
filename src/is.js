@@ -6,6 +6,14 @@
         $f.is = {
 
             //Validation
+            /**
+             * Checks whether given value is a function or not.
+             * @function
+             * @param {anything} val The val to be checked for function test.
+             * @returns {boolean} ``true`` if parameter val is a valid function, else ``false``.
+             * @public
+             * @
+             **/
             func: function func(val) {
                 return typeof val === 'function' || val instanceof Function  === true;
             },
