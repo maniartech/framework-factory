@@ -16,23 +16,56 @@
              **/
             equals: function(o1, o2) {
 
-                var key;
-                //True if both objects are same.
+                var key, v1, v2, i, iLen,
+                    is = $f.is;
+
+                //True if both objects references are same.
                 if (o1 === o2) {
                     return true;
                 }
-                for(key in o1) {
 
+                for(key in o1) {
                     //If key exists in o1 but not in o2, return false.
                     if (o2[key] === undefined) {
                         return false;
                     }
-                    var v1 = o1[key];
-                    var v2 = o2[key];
 
-                    //If values in a given key not matches return false.
-                    if (v1 !== v2) {
-                        return false;
+                    v1 = o1[key];
+                    v2 = o2[key];
+
+                    //Skip functions
+                    if ($f.is.func(key)) {
+                        continue;
+                    }
+
+                    if ($f.is.primitive(v1)) {
+                        if (v1 instanceof Object) {
+                            if (v1.toString() !== v2.toString()) {
+                                return false;
+                            }
+                        }
+                        else {
+                            if (v1 !== v2) {
+                                return false;
+                            }
+                        }
+                    }
+                    else if ($f.is.date(v1)) {
+                        if (v1.getTime() !== v2.getTime()) {
+                            return false;
+                        }
+                    }
+                    else if ($f.is.array(v1)) {
+                        for(i=0, iLen = v1.length; i<iLen; i += 1) {
+                            if ($f.utils.equals(v1[i], v2[i]) === false) {
+                                return false;
+                            }
+                        }
+                    }
+                    else {
+                        if ($f.utils.equals(v1, v2) === false) {
+                            return false;
+                        }
                     }
                 }
 

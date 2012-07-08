@@ -2,25 +2,25 @@
 (function (global, undefined) {
     "use strict";
 
-    function classes($f, config) {
+    function classes($f) {
 
         var initializing = true,
             fnTest = /xyz/.test(function (){xyz;}) ? /\bbase\b/ : /.*/,
+            defaultBaseClass = $f.config('default-base-class'),
             Class;
+
+
+        $f.setDefaultBaseClass = function setDefaultBaseClass(baseClass) {
+            
+        };
 
         Class = function (prop, parent) {
             //Checks if _super exists in overriden function, inspired by John Resig.
             var hasProp = Object.prototype.hasOwnProperty,
                 proto, key, Class, __super__, funcString;
 
-            if (config.defaultBaseClass !== undefined) {
-                //It is a base class
-                if (prop.type === config.defaultBaseClass) {
-                    parent = Object;
-                }
-                else {
-                    parent  = parent || $f[config.defaultBaseClass];
-                }
+            if (defaultBaseClass !== undefined) {
+                parent  = parent || defaultBaseClass;
             }
             else {
                 parent = parent || Object;
@@ -86,7 +86,7 @@
                     val = item;
                     processed = false;
 
-                    if (type === 'object' && item.type !== undefined) {
+                    if (type === 'object' && item != null && item.type !== undefined) {
                         typeHandler = $f.typeHandlers[item.type];
                         if (typeHandler !== undefined) {
                             typeHandler(Class, key, item);

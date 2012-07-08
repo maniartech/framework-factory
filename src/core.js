@@ -8,8 +8,28 @@
         typeHandlers = [],
         i, iLen;
 
+    /**
+     * The current version of framework factory.
+     * @field
+     * @public
+     * @version 1.0
+     **/
     FrameworkFactory.version = '1.0.0';
 
+    /**
+     * Factory function which creates the core framework based on specified configuration
+     * parameters.
+     * @function
+     * @param {objct} config The configuration object.
+     * @returns {Object} The base framework.
+     * @example
+     *      var framework = FrameworkFactory.create({
+     *          version: '1.2',
+     *          framework: 'xyzjs'
+     *      });
+     * @public
+     * @version 1.0
+     **/
     FrameworkFactory.create = function create(c) {
 
         var _config = {},
@@ -62,8 +82,19 @@
         framework.framework = _config.framework;
         framework.typeHandlers = {};
 
-        framework.config = function config(cfg) {
-            return _config[cfg];
+        /**
+         * Returns the 
+         * @function config
+         **/
+        framework.config = function config(cfg, defaultValue) {
+            if (_config[cfg] !== undefined) {
+                return _config;
+            }
+            return defaultValue;
+        };
+
+        framework.config.set = function set(value) {
+            _config[key] = value;
         };
 
         //Load plugins
@@ -79,7 +110,7 @@
 
             //If plugin is defined as function, execute it.
             if (typeof plugin === 'function') {
-                plugin(framework, _config);
+                plugin(framework);
                 plugin.initialized = true;
             }
         }
@@ -87,8 +118,22 @@
         return framework;
     };
 
+    /**
+     * Represents the plugins registry object.
+     * @field {Object}
+     * @public
+     * @version 1.0
+     **/
     FrameworkFactory.plugins = {};
 
+
+    /**
+     * Registers the new plugin for the framework. Once registered all the frameworks
+     * created henceforth will have specified plugin available.
+     * @param {Object} The plugin object.
+     * @public
+     * @version 1.0
+     **/
     FrameworkFactory.plugins.register = function register(p) {
 
         if (typeof p === 'function' || typeof p === 'object') {
@@ -98,6 +143,12 @@
         throw new Error('Invalid plugin type.');
     };
 
+    /**
+     * Gets the names of all available plugins with FrameworkFactory.
+     * @returns {Array} The plugin names array.
+     * @public
+     * @version 1.0
+     **/
     FrameworkFactory.plugins.getNames = function getNames() {
         var names = [],
             i, iLen;
@@ -107,14 +158,14 @@
         return names;
     };
 
-    FrameworkFactory.plugins.getAll = function getAll() {
-        var plugs = [],
-            i, iLen;
-
-        for (i = 0, iLen = plugins.length; i < iLen; i += 1) {
-            plugs.push(plugins[i]);
-        }
-        return plugs;
+    /**
+     * Gest the array of all the the registered plugins with FramewrokFactory.
+     * @returns {Array} The plugings array.
+     * @public
+     * @version 1.0
+     **/
+    FrameworkFactory.plugins.toArray = function toArray() {
+        return plugins.slice();
     };
 
     global.FrameworkFactory = FrameworkFactory;

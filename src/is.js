@@ -3,15 +3,23 @@
 
     function is($f, config) {
 
-        $f.is = {
+        var is = {
 
             //Validation
             func: function func(val) {
                 return typeof val === 'function' || val instanceof Function  === true;
             },
 
+            string: function string(val) {
+                return typeof val === 'string' || val instanceof String === true;
+            },
+
             number: function num(val) {
                 return typeof val === 'number' || val instanceof Number  === true;
+            },
+
+            primitive: function primitive(val) {
+                return is.string(val) || is.number(val);
             },
 
             undef: function undef(val) {
@@ -20,10 +28,6 @@
 
             nullOrUndef: function nullOrUndef(val) {
                 return val === undefined || val === null;
-            },
-
-            string: function string(val) {
-                return typeof val === 'string' || val instanceof String === true;
             },
 
             date: function date(val) {
@@ -35,6 +39,10 @@
                 return ((typeof val === 'object') && (val.constructor === Object));
             },
 
+            concreteObject: function(val) {
+                return (is.primitive(val) || is.date(val) || is.nullOrUndef(val) || is.array(val)) === false;
+            },
+
             array: function(val) {
                 return val instanceof Array;
             },
@@ -43,6 +51,8 @@
                 return window !== undefined && global === window;
             }
         };
+
+        $f.is = is;
     }
 
     is.info = {

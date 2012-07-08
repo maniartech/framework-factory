@@ -2,7 +2,7 @@
 (function (global, undefined) {
     "use strict";
 
-    function attributes($f, config) {
+    function attributes($f) {
 
         /**
         * Helper function to create attribute members for class.

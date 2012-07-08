@@ -22,7 +22,6 @@ module("Core Tests");
 
         noConflict: function() {
 
-
             //For framework with no version and noConflict = false
             var ns = FrameworkFactory.create('wonderFramework'), error = 0;
             eq(ns.version, '1.0.0');
@@ -591,13 +590,57 @@ module('framework.utils Tests');
     var utils = framework.utils;
 
     utilsTests = {
-        basic: function() {
 
-            //eq ('_key', utils.getPrivateKey('key'));
-            //eq ('__key', utils.getProtectedKey('key'));
-            var b = new Button();
-            //var b2 = utils.clone(b);
+        equals: function() {
+
+
+
+            var o1 = {
+                name: 'abc',
+                age: 20
+            };
+
+            var o2 = {
+                name: 'abc',
+                age: 20
+            };
+
+            eq(o1 === o2, false);
+            eq(framework.utils.equals(o1, o2), true);
+
+            o2.name = "xyz";
+            eq(framework.utils.equals(o1, o2), false);
+
+            o1.name = "xyz";
+            eq(framework.utils.equals(o1, o2), true);
+
+            o2.fav = "red";
+            eq(framework.utils.equals(o1, o2), false);
+
+            o1.fav = "red";
+            eq(framework.utils.equals(o1, o2), true);
+
+            o1.children = {
+                name : "wow"
+            }
+            eq(framework.utils.equals(o1, o2), false);
+
+            o2.children = {
+                name : "wow"
+            }
+
+            o1.time = new Date();
+            o2.time = new Date();
+            eq(o1.time === o2.time, false);
+            eq(framework.utils.equals(o1.time, o2.time), true);
+            eq(framework.utils.equals(o1, o2), true);
+
         },
+
+        equalsAdvanced: function () {
+
+        },
+
         json: function() {
 
             var s = new Shape({
@@ -626,7 +669,7 @@ module('framework.utils Tests');
 
     };
 
-    test('Basic Tests', utilsTests.basic);
+    test('Equals Tests', utilsTests.equals);
     test('JSON Tests', utilsTests.json);
 
 

@@ -2,7 +2,7 @@
 (function (global, undefined) {
     "use strict";
 
-    function properties($f, config) {
+    function properties($f) {
 
         /**
          * While defining class, this function sets the member as
@@ -13,13 +13,14 @@
          * @public
          * @version 1.0.0
          **/
-        var property = function property(options) {
+        var property = function property(options, observable) {
 
                 var valueOf,
                     value,
-                    observable,
                     get, set,
                     readonly;
+
+                observable = observable || config('default-properties-observable', true);
 
                 if (typeof options === 'object') {
                     valueOf = options.valueOf();
