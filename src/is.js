@@ -6,10 +6,26 @@
         var is = {
 
             //Validation
+            /**
+             * Checks whether given value is a function or not.
+             * @function
+             * @param {anything} val The val to be checked for function test.
+             * @returns {boolean} ``true`` if parameter val is a valid function, else ``false``.
+             * @public
+             * @version 1.0
+             **/
             func: function func(val) {
                 return typeof val === 'function' || val instanceof Function  === true;
             },
-
+            
+            /**
+             * Checks whether given value is a number or not.
+             * @function
+             * @param {anything} val The val to be checked for number test.
+             * @returns {boolean} ``true`` if parameter val is a valid number, else ``false``.
+             * @public
+             * @version 1.0
+             **/
             string: function string(val) {
                 return typeof val === 'string' || val instanceof String === true;
             },
@@ -28,6 +44,10 @@
 
             nullOrUndef: function nullOrUndef(val) {
                 return val === undefined || val === null;
+            },
+
+            string: function string(val) {
+                return typeof val === 'string' || val instanceof String === true;
             },
 
             date: function date(val) {
