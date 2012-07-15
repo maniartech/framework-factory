@@ -3,6 +3,36 @@
     "use strict";
 
     function properties($f) {
+			
+		/**
+		 * Attaches the property to the given object. If setter is not specified creates reaonly property.
+		 * @param {Object} obj The object on which property has to be attached.
+		 * @param {string} key The key or name of the property.
+		 * @param {function} getter The getter function, this function will be called whenever get 
+         *        operation is required.
+		 * @param {function} setter The setter function, this function will be called whenever set 
+         *        operation is required. If this setter is missing, it will make the property readonly. 
+         *        And will throw an errror whenever property is set.
+         * @public
+         * @version 1.0
+		 **/
+		function attachProperty(obj, key, getter, setter) {
+					
+			setter = setter || function(v) {
+				throw new Error('You are not allowed to write to readonly property "' + key + '".');
+			};
+		
+			if (Object.defineProperty) {
+				Object.defineProperty(obj, key, {
+					get: geter,
+					set: setter
+				});
+			}
+			else if (proto.__defineGetter__ !== undefined) {
+				proto.__defineGetter__(key, getter);
+				proto.__defineSetter__(key, setter);
+			}
+		}
 
         /**
          * While defining class, this function sets the member as
@@ -206,7 +236,7 @@
                 }
             };
 
-
+		$$.attachProperty = attachProperty;
         $f.property     = property;
         $f.readonly     = readonly;
 
