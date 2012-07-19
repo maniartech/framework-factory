@@ -34,7 +34,7 @@
                 return this;
             };
 
-            proto[key].loadFromJSON = function (o, k, v) {
+            proto[key].importObject = function (o, k, v) {
                 o[k].call(o, v);
             };
 

@@ -77,7 +77,7 @@ var Shape = framework.Class({
     init: function() {
         this.children = new framework.collections.MapList();
         if (arguments.length > 0) {
-            framework.utils.loadFromJSON(this, arguments[0]);
+            framework.utils.importObject(this, arguments[0]);
         }
     }
 });

@@ -140,7 +140,7 @@
                return doCopy(o);
            },
 
-            loadFromJSON: function(o, json, options) {
+            importObject: function(o, json, options) {
 
                 options = options || {};
                 var setFunctions = options.setFunctions || false;
@@ -167,8 +167,8 @@
                             if (o[key] === null) {
                                 o[key] = val;
                             }
-                            else if (o[key].constructor.loadFromJSON !== undefined) {
-                                o[key].constructor.loadFromJSON(o, key, val);
+                            else if (o[key].constructor.importObject !== undefined) {
+                                o[key].constructor.importObject(o, key, val);
                             }
                             else if (o[key] instanceof Array) {
                                 //Push the val to o[key].
@@ -176,13 +176,13 @@
                                 o[key] = val;
                             }
                             else {
-                                _framework.Utils.loadFromJSON(o[key], val);
+                                _framework.Utils.importObject(o[key], val);
                             }
                             break;
                         }
                         case 'function': {
-                            if (o[key].loadFromJSON !== undefined) {
-                                o[key].loadFromJSON(o, key, val);
+                            if (o[key].importObject !== undefined) {
+                                o[key].importObject(o, key, val);
                             }
                             else {
                                 o[key] = val;
