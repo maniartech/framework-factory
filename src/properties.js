@@ -3,36 +3,36 @@
     "use strict";
 
     function properties($f) {
-			
-		/**
-		 * Attaches the property to the given object. If setter is not specified creates reaonly property.
-		 * @param {Object} obj The object on which property has to be attached.
-		 * @param {string} key The key or name of the property.
-		 * @param {function} getter The getter function, this function will be called whenever get 
+            
+        /**
+         * Attaches the property to the given object. If setter is not specified creates reaonly property.
+         * @param {Object} obj The object on which property has to be attached.
+         * @param {string} key The key or name of the property.
+         * @param {function} getter The getter function, this function will be called whenever get 
          *        operation is required.
-		 * @param {function} setter The setter function, this function will be called whenever set 
+         * @param {function} setter The setter function, this function will be called whenever set 
          *        operation is required. If this setter is missing, it will make the property readonly. 
          *        And will throw an errror whenever property is set.
          * @public
          * @version 1.0
-		 **/
-		function attachProperty(obj, key, getter, setter) {
-					
-			setter = setter || function(v) {
-				throw new Error('You are not allowed to write to readonly property "' + key + '".');
-			};
-		
-			if (Object.defineProperty) {
-				Object.defineProperty(obj, key, {
-					get: geter,
-					set: setter
-				});
-			}
-			else if (proto.__defineGetter__ !== undefined) {
-				proto.__defineGetter__(key, getter);
-				proto.__defineSetter__(key, setter);
-			}
-		}
+         **/
+        function attachProperty(obj, key, getter, setter) {
+                    
+            setter = setter || function(v) {
+                throw new Error('You are not allowed to write to readonly property "' + key + '".');
+            };
+        
+            if (Object.defineProperty) {
+                Object.defineProperty(obj, key, {
+                    get: getter,
+                    set: setter
+                });
+            }
+            else if (proto.__defineGetter__ !== undefined) {
+                proto.__defineGetter__(key, getter);
+                proto.__defineSetter__(key, setter);
+            }
+        }
 
         /**
          * While defining class, this function sets the member as
@@ -43,14 +43,13 @@
          * @public
          * @version 1.0.0
          **/
-        var property = function property(options, observable) {
+        var property = function property(options) {
 
                 var valueOf,
                     value,
                     get, set,
-                    readonly;
-
-                observable = observable || config('default-properties-observable', true);
+                    readonly,
+                    observable = true;
 
                 if (typeof options === 'object') {
                     valueOf = options.valueOf();
@@ -107,13 +106,23 @@
              *
              */
             readonly = function readonly(value) {
-                var options = {};
+				var options = {},
+				    getter = undefined;
+				
+				if ($f.is.plainObject(value)) {
+					options = value;
+					value = (options.value !== undefined)? options.value: undefined;
+					if ($f.is.func(options.get)) {
+						getter = options.get;
+					}
+				}
+								
                 return {
                     type            : 'readonly',
                     value           : value,
                     readonly        : true,
                     observable      : false,
-                    get             : undefined,
+                    get             : getter,
                     set             : undefined
                 };
             },
@@ -125,12 +134,17 @@
                     observable = options.observable || false,
                     getter      = options.get,
                     setter      = options.set,
-                    privKey     = '_' + key;
-
-
-                if (!(getter !== undefined && setter === undefined)) {
-                    proto[privKey] = options.value;
+					privKey     = '_' + key,
+					value       = options.value;
+				
+				if (getter !== undefined && setter === undefined) {
+                    if (value !== undefined) {
+						proto[privKey] = options.value;
+					}
                 }
+				else {
+					proto[privKey] = options.value;
+				}
 
                 if (proto.propertyChanging === undefined) {
 
@@ -162,67 +176,65 @@
                 _get = getter || function get() {
                     return this[privKey];
                 };
-
+				
                 if (readonly) {
                     _set = function readonlySet() {
                         throw new Error('You are not allowed to write to readonly property "' + key + '".');
                     };
                 }
                 else {
-
-
                     if (setter !== undefined) {
-                    if (!observable) {
-                        _set = setter;
+	                    if (!observable) {
+	                        _set = setter;
+	                    }
+	                    else {
+	                        _set = function (v) {
+	                            var oldVal = this[key],
+	                                args;
+	
+	                            if (oldVal === v) {
+	                                return; //property not changed.
+	                            }
+	
+	                            args = {
+	                                propertyName: key,
+	                                oldValue: oldVal,
+	                                newValue: v
+	                            };
+	                            this.trigger('propertyChanging', args);
+	                            setter.call(this, v);
+	                            this.trigger('propertyChanged', args);
+	                        };
+	                    }
+	                }
+	                else {
+	
+	                    if (!observable) {
+	                            _set = function (v) {
+	                                this[privKey] = v;
+	                            };
+	                        }
+	                        else {
+	                            _set = function set(v) {
+	                                var oldVal = this[privKey],
+	                                    args;
+	
+	                                if (oldVal === v) {
+	                                    return; //Property not changed.
+	                                }
+	                                args = {
+	                                    propertyName: key,
+	                                    oldValue: oldVal,
+	                                    newValue: v
+	                                };
+	
+	                                this.trigger('propertyChanging', args);
+	                                this[privKey] = v;
+	                                this.trigger('propertyChanged', args);
+	                            };
+	                        }
+	                    }
                     }
-                    else {
-                        _set = function (v) {
-                            var oldVal = this[key],
-                                args;
-
-                            if (oldVal === v) {
-                                return; //property not changed.
-                            }
-
-                            args = {
-                                propertyName: key,
-                                oldValue: oldVal,
-                                newValue: v
-                            };
-                            this.trigger('propertyChanging', args);
-                            setter.call(this, v);
-                            this.trigger('propertyChanged', args);
-                        };
-                    }
-                }
-                else {
-
-                    if (!observable) {
-                            _set = function (v) {
-                                this[privKey] = v;
-                            };
-                        }
-                        else {
-                            _set = function set(v) {
-                                var oldVal = this[privKey],
-                                    args;
-
-                                if (oldVal === v) {
-                                    return; //Property not changed.
-                                }
-                                args = {
-                                    propertyName: key,
-                                    oldValue: oldVal,
-                                    newValue: v
-                                };
-
-                                this.trigger('propertyChanging', args);
-                                this[privKey] = v;
-                                this.trigger('propertyChanged', args);
-                            };
-                        }
-                    }
-                }
 
                 if (Object.defineProperty) {
                     Object.defineProperty(proto, key, {
@@ -236,7 +248,7 @@
                 }
             };
 
-		$$.attachProperty = attachProperty;
+        $f.attachProperty = attachProperty;
         $f.property     = property;
         $f.readonly     = readonly;
 

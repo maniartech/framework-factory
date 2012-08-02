@@ -21,7 +21,6 @@ module("Core Tests");
         },
 
         noConflict: function() {
-
             //For framework with no version and noConflict = false
             var ns = FrameworkFactory.create('wonderFramework'), error = 0;
             eq(ns.version, '1.0.0');
@@ -44,6 +43,7 @@ module("Core Tests");
                 framework: 'wonderFramework',
                 noConflict: true
             });
+            
             eq(ns.noConflict(), ns);
 
             try {
@@ -64,7 +64,7 @@ module("Core Tests");
                 version: '2.0.0'
             });
 
-            neq(ns, window.wonderFramework);
+            neq(ns, window.wonderFramework); 
             eq(ns.noConflict(), window.wonderFramework);
 
             window.wonderFramework = ns;
@@ -82,9 +82,15 @@ module("Core Tests");
                 framework: 'MyFramework',
                 defaultBaseClass: "BaseObject"
             });
-
-            neq(ns.BaseObject, undefined);
-            eq(new ns.collections.MapList() instanceof ns.BaseObject, true);
+			
+			eq(ns.BaseObject, undefined);			
+			ns.BaseObject = ns.Class({
+            });
+			neq(ns.BaseObject, undefined);
+			
+			var ChildClass = ns.Class({
+            });
+            eq(new ChildClass() instanceof ns.BaseObject, true);
 
             ns.BaseObject.attach({
                 hi: function(msg) {
@@ -117,10 +123,10 @@ module("Core Tests");
 
             eq (typeof FrameworkFactory.plugins, 'object');
             FrameworkFactory.plugins.register(myPlugin);
-
+			
             var myFramework = FrameworkFactory.create('myFramework');
             neq (FrameworkFactory.plugins.getNames().indexOf('myPlugin'), -1);
-            neq (FrameworkFactory.plugins.getAll().indexOf(myPlugin), -1);
+            neq (FrameworkFactory.plugins.toArray().indexOf(myPlugin), -1);
             neq (myFramework.echo, undefined);
             eq (myFramework.echo('wow'), 'wow');
         },
@@ -418,16 +424,17 @@ module('TypeHandler Tests');
 
         },
 
-        readonlyAttributes: function() {
+        readonly: function() {
             var c1 = new Component(),
                 errorsCount = 0;
-            eq(c1.count, 0);
+
+			eq(c1.clickCount, 0, "Intial count should be 0.");
             c1.click();
-            eq(c1.count, 1);
+            eq(c1.clickCount, 1, "Count incremented");
             count = 100;
-            try { c1.count = 100; } catch (e) { errorsCount++; }
-            eq (c1.count, 1);
-            eq (errorsCount, 1);
+            try { c1.clickCount = 100; } catch (e) { errorsCount++; }
+            eq (c1.clickCount, 1, "Count didnt increment because it is a readonly.");
+            eq (errorsCount, 1, "While changing readonly, it must throw an error.");
         },
 
         properties: function() {
@@ -464,7 +471,10 @@ module('TypeHandler Tests');
             eq(c1.width, 0);
             c1.width = 10;
             eq(c1.width, 10);
-            eq(c1.width, c1.widthCount);
+			
+			eq(c1.length, 0, "Initial length is zero");
+			
+			
 
             //PropClass Tests
             var PropClass = framework.Class({
@@ -545,45 +555,43 @@ module('TypeHandler Tests');
             eq (propObj.birthday, '21-11');
             eq (2, events);
             eq (propObj._birthday, '21-11');
-        }
+        },
+		
+		attachProperty: function() {
+			var obj = {},
+			    error = 0;
+			framework.attachProperty(obj, "name", 
+			function(){ 
+			     return obj._name
+		    }, function (val) {
+				obj._name = "Name: " + val;
+			});
+			
+			framework.attachProperty(obj, "justName", function() {
+				return obj._name.split(" ")[1];
+			});
+			
+			eq(obj.name, undefined, "Name is undefined initially.");
+			obj.name = "Great";
+			neq(obj.name, undefined, "Name is initialized.");
+			eq(obj.name, "Name: Great", "Name is initialized to Great.");
+			eq(obj.justName, "Great", "Name is initialized to Great.");
+			try {
+				obj.justName = "Another Name";
+			}
+			catch (e) {
+				error += 1;
+			}
+			eq(error, 1, "Just name is a readonly field, hence error count 1;");
+				
+		}
     };
 
     test ('Event Tests', typeHandlerTests.events);
     test ('Attribute Tests', typeHandlerTests.attributes);
-    test ('Readonly Attribute Tests', typeHandlerTests.readonlyAttributes);
+    test ('Readonly Attribute Tests', typeHandlerTests.readonly);
     test ('Property Tests', typeHandlerTests.properties);
-
-module('framework.collections Tests');
-
-    var maplistTests = {
-        basic: function() {
-
-            var list = new framework.collections.MapList();
-
-            eq (0, list.length, 'New list should have length = 0');
-            list.add({
-                id: 'wow',
-                value: 10
-            });
-            eq(1, list.length, 'One item added so length should be 1');
-            var exceptionCount = 0;
-            try { list.add({ id: 'wow' }); } catch (error) { exceptionCount++; }
-
-            eq(1, exceptionCount, 'Exception cound should have been increased by 1.');
-            eq(1, list.length, 'Since no new item is added, count should remain the same as earlier.');
-
-            list.add({ id: 'a', val: 1 }, { id: 'b', val: 2});
-            eq(3, list.length, 'List length should have been increased by 2.');
-
-            var o = list.get('wow');
-            neq (undefined, o);
-            eq (10, o.value, 'Reading value from the object with id "wow".');
-
-        }
-    };
-
-    test('MapList Tests', maplistTests.basic);
-
+	test ('Attach Property Tests', typeHandlerTests.attachProperty);
 
 module('framework.utils Tests');
 
@@ -738,7 +746,6 @@ module('Miscellaneous Tests');
             eq(a.name, b.name);
             eq(a.age, b.age);
             neq(a.items, b.items);
-
             b.items.add("Wow")
 
 

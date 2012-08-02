@@ -6,26 +6,22 @@
 
         var initializing = true,
             fnTest = /xyz/.test(function (){xyz;}) ? /\bbase\b/ : /.*/,
-            defaultBaseClass = $f.config('default-base-class'),
+            defaultBaseClass = $f.config('defaultBaseClass'),
             Class;
-
-
-        $f.setDefaultBaseClass = function setDefaultBaseClass(baseClass) {
-            
-        };
 
         Class = function (prop, parent) {
             //Checks if _super exists in overriden function, inspired by John Resig.
             var hasProp = Object.prototype.hasOwnProperty,
                 proto, key, Class, __super__, funcString;
 
-            if (defaultBaseClass !== undefined) {
-                parent  = parent || defaultBaseClass;
+            if ($f[defaultBaseClass] !== undefined) {
+                parent  = parent || $f[defaultBaseClass];
             }
             else {
                 parent = parent || Object;
             }
             prop    = prop || {};
+			
 
             //prevents call to
             initializing = true;
@@ -126,13 +122,6 @@
             return Class;
 
         };
-
-        if (config.defaultBaseClass !== undefined) {
-
-            $f[config.defaultBaseClass] = Class({
-                type: config.defaultBaseClass
-            });
-        }
 
         $f.Class = Class;
 

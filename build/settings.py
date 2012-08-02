@@ -43,8 +43,7 @@ SCRIPTS = (
 
 ALL_SCRIPTS = (
     FRAMEWORK_FILE,
-    path.join(PLUGIN_ROOT, 'utils.js'),
-    path.join(PLUGIN_ROOT, 'collections.js'),
+    path.join(PLUGIN_ROOT, 'utils.js')
 )
 
 BUILDS = (
@@ -52,13 +51,9 @@ BUILDS = (
     FileMearger(SCRIPTS, FRAMEWORK_FILE),
     ScriptCompressor(FRAMEWORK_FILE, FRAMEWORK_FILE_COMPRESSED),
 
-    FileCopier(path.join(PLUGIN_ROOT, 'collections.js'), path.join(PLUGIN_OUTPUT_PATH, 'collections.js')),
-    ScriptCompressor(path.join(PLUGIN_ROOT, 'collections.js'), path.join(PLUGIN_OUTPUT_PATH, 'collections.min.js')),
-
     FileCopier(path.join(PLUGIN_ROOT, 'utils.js'), path.join(PLUGIN_OUTPUT_PATH, 'utils.js')),
     ScriptCompressor(path.join(PLUGIN_ROOT, 'utils.js'), path.join(PLUGIN_OUTPUT_PATH, 'utils.min.js')),
 
     FileMearger(ALL_SCRIPTS, FRAMEWORK_ALL, False),
     ScriptCompressor(FRAMEWORK_ALL, FRAMEWORK_ALL_COMPRESSED),
-
 )

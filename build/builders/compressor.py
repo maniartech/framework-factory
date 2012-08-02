@@ -3,7 +3,6 @@ from os import path
 from mearger import combine_scripts
 import builders
 
-
 YUI_COMPRESSOR = 'yuicompressor-2.4.7.jar'
 
 

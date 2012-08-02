@@ -46,10 +46,6 @@
                 return val === undefined || val === null;
             },
 
-            string: function string(val) {
-                return typeof val === 'string' || val instanceof String === true;
-            },
-
             date: function date(val) {
                 return val instanceof Date === true;
             },

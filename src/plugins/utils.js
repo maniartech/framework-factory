@@ -196,7 +196,7 @@
                 }
             },
 
-            exportToJSON: function exportToJSON(o) {
+            exportObject: function exportToJSON(o) {
                 var json = {};
                 for (key in o) {
 
