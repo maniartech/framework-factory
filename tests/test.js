@@ -334,7 +334,7 @@ module('TypeHandler Tests');
 
             eq (typeof btn.click, 'function', 'Check event attached');
 
-            var obj, args, val, eventRaised;
+            var obj, args, val, eventRaised, errors = 0;
 
             function handler1(a) {
                 obj = this;
@@ -355,9 +355,9 @@ module('TypeHandler Tests');
             btn.trigger('click', {
                 val: 100
             });
-
+			
             eq (typeof btn.trigger, 'function', 'Check trigger attached');
-
+			
             eq (obj, btn, "this in event handler must the object which fired the event.");
             neq (args, null, "Event args can not be null.");
             eq (typeof args, 'object', "Supplied args must be of type object.");
@@ -399,13 +399,14 @@ module('TypeHandler Tests');
             eq (btn2._click.length, 1, "Event subsriber count check for button2");
             eq (btn2._mouseMove.length, 1, "Event subsriber count check for button2");
 
-            //btn2.set({
-            //    clickCount: 100,
-            //    text: 'Wonderful'
-            //});
-
-            //console.log(btn2, new btn2.constructor('wow'));
-
+            try {
+				btn.click(true)
+			}
+			catch(error) {
+				eq(error.message, 'Only functions can be registered as event handler');
+				errors += 1;
+			}
+            eq(errors, 1, "Value other then function can't be set as event handler.");
         },
 
         attributes: function() {
@@ -441,6 +442,7 @@ module('TypeHandler Tests');
 
             //Component Tests
             var c1 = new Component();
+			
             var changingCount = 0;
             var changedCount = 0;
             //c1.name = "great";
@@ -743,12 +745,10 @@ module('Miscellaneous Tests');
             var b = utils.deepCopy(a);
 
             neq(a, b);
-            eq(a.name, b.name);
-            eq(a.age, b.age);
+            eq(a.name, b.name, "Property value should be same.");
+            eq(a.age, b.age, "Property value should be same.");
             neq(a.items, b.items);
             b.items.add("Wow")
-
-
 
 
 

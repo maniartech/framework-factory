@@ -22,7 +22,6 @@
             }
             prop    = prop || {};
 			
-
             //prevents call to
             initializing = true;
             proto = new parent;

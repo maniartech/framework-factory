@@ -26,7 +26,12 @@
              * });
              **/
             proto[key] = function (handler) {
-                var privKey = '_' + key;
+				var privKey = '_' + key;
+				
+				if (!$f.is.func(handler)) {
+					throw new Error('Only functions can be registered as event handler');
+				}
+				
                 if (this[privKey] === undefined) {
                     this[privKey] = [];
                 }

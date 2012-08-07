@@ -28,9 +28,9 @@
                     set: setter
                 });
             }
-            else if (proto.__defineGetter__ !== undefined) {
-                proto.__defineGetter__(key, getter);
-                proto.__defineSetter__(key, setter);
+            else if (obj.__defineGetter__ !== undefined) {
+                obj.__defineGetter__(key, getter);
+                obj.__defineSetter__(key, setter);
             }
         }
 
