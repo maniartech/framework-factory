@@ -101,7 +101,8 @@
                        timestamp = new Date() - 0;
 
                    if (objRefs.indexOf(obj) >= 0) {
-                       return objRefs[obj];
+                        //Object found, returns the same object no need to copy it.
+                       return obj;
                    }
                    else {
                        objRefs.push(obj);

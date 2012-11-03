@@ -18,7 +18,8 @@
 
         <!-- Other Plugin Modules --->
         <script type="text/javascript" src="../src/plugins/utils.js"></script>
-        
+        <script type="text/javascript" src="../src/plugins/collections.js"></script>
+
         <!-- Test Scripts -->
         <script type="text/javascript" src="support.js"></script>
         <script type="text/javascript" src="test.js"></script>
