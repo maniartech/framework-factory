@@ -344,7 +344,7 @@ var Component = framework.Class({
     click: function() {
         this._clickCount += 1;
     },
-	clickCount: framework.readonly({
+    clickCount: framework.readonly({
         value: 0,
         get: function() {
             return this._clickCount;
@@ -352,10 +352,10 @@ var Component = framework.Class({
     }),
 	
 	
-	length: framework.readonly(0),
-	add: function() {
-		this._length += 1;
-	}
+    length: framework.readonly(0),
+    add: function() {
+	    this._length += 1;
+    }
 });
 
 var p1 = new Person("abc");

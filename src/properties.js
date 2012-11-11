@@ -128,47 +128,31 @@
             },
 
             handler = function (Class, key, options) {
-
+		
                 var proto       = Class.prototype, _get, _set,
                     readonly    = options.readonly,
                     observable = options.observable || false,
                     getter      = options.get,
                     setter      = options.set,
-					privKey     = '_' + key,
-					value       = options.value;
+		    privKey     = '_' + key,
+		    value       = options.value,
+		    events = {},
+		    changingEvent = key + "changing",
+		    changeEvent = key + "change";
 				
-				if (getter !== undefined && setter === undefined) {
+		if (getter !== undefined && setter === undefined) {
                     if (value !== undefined) {
-						proto[privKey] = options.value;
-					}
+			proto[privKey] = options.value;
+		    }
                 }
-				else {
-					proto[privKey] = options.value;
-				}
-
-                if (proto.propertyChanging === undefined) {
-
-                    Class.attach({
-                        propertyChanging: $f.event(),
-                        propertyChanged : $f.event(),
-                        triggerPropertyChanging: function triggerPropertyChanging(oldValue, newValue) {
-                            var args = {
-                                propertyName: key,
-                                oldValue: oldValue,
-                                newValue: newValue
-                            };
-                            this.trigger('propertyChanging', args);
-                        },
-                        triggerPropertyChanged: function triggerPropertyChanged(oldValue, newValue) {
-                            var args = {
-                                propertyName: key,
-                                oldValue: oldValue,
-                                newValue: newValue
-                            };
-                            this.trigger('propertyChanged', args);
-                        }
-                    });
-                }
+		else {
+		    proto[privKey] = options.value;
+		}
+		
+		//Attach events
+		events[changingEvent] = $f.event();
+		events[changeEvent] = $f.event();		
+		Class.attach(events);
 
                 //console.log('In set', setter);
 
@@ -201,9 +185,9 @@
 	                                oldValue: oldVal,
 	                                newValue: v
 	                            };
-	                            this.trigger('propertyChanging', args);
+	                            this.trigger(changingEvent, args);
 	                            setter.call(this, v);
-	                            this.trigger('propertyChanged', args);
+	                            this.trigger(changeEvent, args);
 	                        };
 	                    }
 	                }
@@ -227,10 +211,15 @@
 	                                    oldValue: oldVal,
 	                                    newValue: v
 	                                };
-	
-	                                this.trigger('propertyChanging', args);
+	                                this.trigger(changingEvent, args);
+					if (this.onPropertyChanging) {
+					    this.onPropertyChanging(args);
+					}
 	                                this[privKey] = v;
-	                                this.trigger('propertyChanged', args);
+	                                this.trigger(changeEvent, args);
+					if (this.onPropertyChanged) {
+					    this.onPropertyChanged(args);
+					}
 	                            };
 	                        }
 	                    }

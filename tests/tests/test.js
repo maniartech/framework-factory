@@ -4,7 +4,6 @@ var neq = notStrictEqual;
 
 //$(function(){
 
-
 module("Core Tests");
 
     var frameworkTests = {
@@ -439,18 +438,19 @@ module('TypeHandler Tests');
         },
 
         properties: function() {
-
+	    
             //Component Tests
             var c1 = new Component();
 			
             var changingCount = 0;
             var changedCount = 0;
             //c1.name = "great";
-            c1.propertyChanging(function() {
-                changingCount++;
+	    
+            c1.namechanging(function() {
+		changingCount++;
             });
 
-            c1.propertyChanged(function() {
+            c1.namechange(function() {
                 changedCount++;
             });
 
@@ -473,8 +473,7 @@ module('TypeHandler Tests');
             eq(c1.width, 0);
             c1.width = 10;
             eq(c1.width, 10);
-			
-			eq(c1.length, 0, "Initial length is zero");
+	    eq(c1.length, 0, "Initial length is zero");
 			
 			
 
@@ -508,12 +507,11 @@ module('TypeHandler Tests');
 
             });
 
-            var propObj = new PropClass()
+            var propObj = new PropClass(),
                 errors = 0,
                 events = 0;
 
             function propChanging(args) {
-                eq (args.eventName, 'propertyChanging');
                 eq (propObj, this);
                 eq (this instanceof PropClass, true);
                 neq (args.oldValue, undefined);
@@ -522,16 +520,15 @@ module('TypeHandler Tests');
             }
 
             function propChanged(args) {
-                eq (args.eventName, 'propertyChanged');
                 eq (propObj, this);
                 eq (this instanceof PropClass, true);
-                neq (args.oldValue, undefined);
+		neq (args.oldValue, undefined);
                 neq (args.oldVaue, args.newValue);
                 events++;
             }
-
-            propObj.propertyChanging(propChanging);
-            propObj.propertyChanged(propChanged);
+	    
+            propObj.onPropertyChanging = propChanging;
+            propObj.onPropertyChanged = propChanged;
 
             eq(propObj.length, 5);
             eq('_length' in propObj, false);
