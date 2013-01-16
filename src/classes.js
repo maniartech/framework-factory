@@ -2,7 +2,7 @@
 (function (global, undefined) {
     "use strict";
 
-    function classes($f) {
+    function plugin($f) {
 
         var initializing = true,
             fnTest = /xyz/.test(function (){xyz;}) ? /\bbase\b/ : /.*/,
@@ -124,15 +124,15 @@
 
     };
 
-    classes.toString = function() {
-        return "classes";
+    plugin.toString = function() {
+        return "plugin";
     }
 
-    classes.info = {
-        name: 'classes'
+    plugin.info = {
+        name: 'plugin'
     };
 
-    FrameworkFactory.plugins.register(classes);
+    FrameworkFactory.plugins.register(plugin);
 
 
 })(this);

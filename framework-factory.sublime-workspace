@@ -1,0 +1,587 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"mod",
+				"modified"
+			],
+			[
+				"swi",
+				"switch"
+			],
+			[
+				"render",
+				"renderUserListItem"
+			],
+			[
+				"user",
+				"userId"
+			],
+			[
+				"RENDER",
+				"renderNotes"
+			],
+			[
+				"mar",
+				"margin-top"
+			],
+			[
+				"mo",
+				"modified"
+			],
+			[
+				"get",
+				"getNormalizedString"
+			],
+			[
+				"inclu",
+				"include_node"
+			],
+			[
+				"inc",
+				"include_user"
+			],
+			[
+				"Date",
+				"DateTimeField  (class)"
+			],
+			[
+				"tpa",
+				"tpapp_lib  (module)"
+			],
+			[
+				"tpapp",
+				"tpapp_lib"
+			],
+			[
+				"mess",
+				"messageType"
+			],
+			[
+				"to",
+				"to_dict"
+			],
+			[
+				"json",
+				"json_encode"
+			],
+			[
+				"log",
+				"log_message"
+			],
+			[
+				"messa",
+				"messageType"
+			],
+			[
+				"acti",
+				"activityList"
+			],
+			[
+				"Act",
+				"ActivityViewItem"
+			],
+			[
+				"req",
+				"request"
+			],
+			[
+				"activit",
+				"activityView"
+			],
+			[
+				"Acti",
+				"ActivitiView"
+			],
+			[
+				"activity",
+				"activity-view"
+			],
+			[
+				"Activi",
+				"ActivitiesSidebar"
+			],
+			[
+				"assign",
+				"assigned_member"
+			],
+			[
+				"Team",
+				"TeamMember"
+			],
+			[
+				"assi",
+				"assigned_member"
+			],
+			[
+				"ass",
+				"assign_to_user"
+			],
+			[
+				"can",
+				"can_public_share"
+			],
+			[
+				"ex",
+				"experienceMap"
+			],
+			[
+				"memoRowHe",
+				"memoRowHeaderClick"
+			],
+			[
+				"cur",
+				"cursor"
+			],
+			[
+				"scen",
+				"scenarioList"
+			],
+			[
+				"in",
+				"industryId"
+			],
+			[
+				"text",
+				"text-decoration"
+			],
+			[
+				"font",
+				"font-weight"
+			],
+			[
+				"indu",
+				"industry"
+			],
+			[
+				"pro",
+				"processing"
+			],
+			[
+				"all",
+				"all_scenarios"
+			],
+			[
+				"type",
+				"typeahead"
+			],
+			[
+				"login",
+				"login_required"
+			],
+			[
+				"Http",
+				"HttpResponseBadRequest"
+			],
+			[
+				"brand",
+				"brand_id"
+			],
+			[
+				"Bran",
+				"Brand"
+			],
+			[
+				"bac",
+				"backUrl"
+			],
+			[
+				"goto",
+				"gotoSelectView"
+			],
+			[
+				"z",
+				"z-index"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 47.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"instal	",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"inst	",
+				"Package Control: Install Package"
+			],
+			[
+				"insta	",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 602.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/node-dialog.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp_lib/utilities/__init__.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp_lib/static/js/coffeescript/views/utils.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/share-map-edit-dialog.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/views/notes.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/notes-view-item.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/swim-lane-matrix.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/node.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/map-options-dialog.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/node-popup.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp_lib/static/js/coffeescript/views/uploader.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/css/tp.css",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/note.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/libs/jquery/plugins/jquery.ui.touch-punch.js",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/libs/jquery/plugins/timeago.js",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/share-map-public-dialog.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/map-page.js",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/libs/xdate.js",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/notes-sidebar.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/experience-map.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/minify/build_map_page.js",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/views/node_activities.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/views/nodes.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/models/node_activities.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/less/sidebar.less",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/less/map-page.less",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/notes-view.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/accordion-legend.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/filter-list-item.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/notes-view-user-legend.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/models/notes.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/note-list-item.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/notes-view-user-legendcoffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/notes-view-user-item.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/editable-list-item.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/membership/models/user_profile.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/collections/notes.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/urls.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/less/general.less",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/views/general.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/models/experience_map.py",
+		"/Users/kabir/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/activity-view-item.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/activities-sidebar.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/charts-sidebar.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/activity-view.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/models/node.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp_lib/utilities/html.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/views/node_files.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/less/node-dialog.less",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/views/experience_maps.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/models/experience-map.coffee",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/views/comments.py",
+		"/Users/kabir/Projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/node-activity-list-item.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/static/js/modules/application.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/static/js/modules/views/main.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/static/js/modules/views/scenario.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/static/js/modules/views/select-scenario.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/static/js/modules/views/offer.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/templates/admin/base_site.html",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/static/js/modules/views/base.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/static/js/modules/views/brand-list.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/media/less/general.less",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/media/less/home.less",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/templates/base.html",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/membership/models/team_member.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/membership/views/team.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/membership/static/js/coffeescript/views/team-member-dialog.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/membership/static/js/coffeescript/views/team-member-remove-dialog.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/membership/static/js/coffeescript/models/team-member.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/membership/views/account.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp_lib/static/js/coffeescript/views/action-button.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/node.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/cell.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/node-popup.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/swim-lane-matrix.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/views/report_configurations.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/views/swim_lane_configurations.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/views/general.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/membership/static/js/coffeescript/views/company.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/accordion-legend.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/swim-lane-matrix-sidebar.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp_lib/static/js/coffeescript/views/uploader.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/unmapped-nodes-legend.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/models/experience_map.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/models/experience_map_shares.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/swim-lane-configuration-dialog.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/membership/static/js/coffeescript/views/membership.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/scripts/temp.py",
+		"/Users/kabir/Documents/projects/touchpoint/scripts/yammer.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/data-definition-dialog.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/data-definition-group-dialog.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/data-definition-editor.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/map-options-dialog.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp_lib/static/js/coffeescript/views/prompt-dialog.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/less/general.less",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/views.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/swim-lane-header.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/experience-map-sidebar.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/views/choices.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/css/tp.css",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/map-list-item.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/settings_aamir.py",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/templates/home.html",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/settings.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/chart-configuration-dialog.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/color-dialog.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/choice-dialog.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/data-definition-groups-dialog.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/models.py",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/static/js/modules/views/search.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/media/bootstrap/js/bootstrap.js",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/urls.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/less/map-embed-page.less",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/tpapp/services.py",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/static/js/modules/views/nav.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/templates/tpapp/map-embed.html",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views/experience-map-embed.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/map-embed-page.js",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/less/map-page.less",
+		"/var/folders/xp/6_3d1w_x5c32yblqsndglmxh0000gn/T/sublime-svn-1357285636/SVN",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/manage_aamir.py",
+		"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/templates/base.html",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/static/js/app.js",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/static/js/modules/models/industry.coffee",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights/mybrandinsights.sublime-workspace",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/manage.py",
+		"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/settings_aamir.py"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"/Users/kabir/Documents/projects/touchpoint/touchpoint/tpsite/tpapp/static/js/coffeescript/views",
+			"/Users/kabir/Documents/projects/touchpoint/mybrandinsights/mybrandinsights/mybrandinsights"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"@tab",
+			"notes",
+			"time",
+			"modified",
+			"created",
+			"removeNode",
+			"drop",
+			"video",
+			"color",
+			"\";\n",
+			"header_memo",
+			"tp.css",
+			"removeNode",
+			"removenode",
+			"removeNode",
+			"cid",
+			"nodeView",
+			"NodeView",
+			"Node",
+			"trigger\n\ntrigger\ntrigger",
+			"trigger\n\ntrigger\n",
+			"trigger\n\ntrigger",
+			"trigger",
+			"destroy",
+			"()\n",
+			"0px",
+			"id",
+			"      \n",
+			"@model.get",
+			"\")\n",
+			"notes",
+			"tab",
+			"indent",
+			"console",
+			"from",
+			"()\n",
+			"\")\n",
+			"}\n",
+			"	",
+			"get_object_or_404",
+			")\n",
+			"=>\n",
+			"	",
+			"renderUsersLegend",
+			"currentview",
+			"currentview\n\n\n\ncurrentView",
+			"currentview",
+			"()\n",
+			"tooltip",
+			"           ",
+			"time",
+			"memo-row-header",
+			"row-header",
+			"maps",
+			"tran",
+			"header-memo",
+			"add-column",
+			"add-row",
+			"map-button",
+			"();\n",
+			"\");\n",
+			"from",
+			"#@$",
+			")=>\n",
+			";\n",
+			";'>$",
+			";\n",
+			"fullscreenbutton",
+			"fullscreen",
+			"embed",
+			"error",
+			"	",
+			"5px",
+			"hover",
+			"=>\n",
+			"gotoSelectView",
+			"delete-button",
+			"button",
+			";\n",
+			"%}\n",
+			"relational",
+			"sys",
+			"=\"\">",
+			"=>\n"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"  "
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 44.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 112.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 25.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 426.0,
+	"status_bar_visible": true
+}

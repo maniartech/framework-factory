@@ -3,7 +3,7 @@
     "use strict";
 
 
-    function events($f) {
+    function plugin($f) {
 
         $f.event = function () {
             return {
@@ -47,8 +47,8 @@
             if (proto.on === undefined) {
 
                 /**
-                 * Registers the event handler for one or more events.
-                 * This function is similar to obj.eventName except it accepts more then one events.
+                 * Registers the event handler for one or more plugin.
+                 * This function is similar to obj.eventName except it accepts more then one plugin.
                  * @example
                  * var btn = new Button();
                  * btn.on('mousemove mouseout mouseup', function() {});
@@ -113,14 +113,14 @@
 
     }
 
-    events.info = {
-        name: 'events'
+    plugin.info = {
+        name: 'plugin'
     };
 
-    events.toString = function () {
-        return events.info.name;
+    plugin.toString = function () {
+        return plugin.info.name;
     };
 
-    global.FrameworkFactory.plugins.register(events);
+    global.FrameworkFactory.plugins.register(plugin);
 
 })(this);

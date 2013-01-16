@@ -1,7 +1,7 @@
 (function (global, undefined) {
     "use strict";
 
-    function is($f) {
+    function plugin($f) {
 
         var _is = {
 
@@ -71,14 +71,14 @@
         $f.is = _is;
     }
 
-    is.info = {
+    plugin.info = {
         name: 'is'
     };
 
-    is.toString = function toString() {
-        return is.info.name;
+    plugin.toString = function toString() {
+        return plugin.info.name;
     };
 
-    global.FrameworkFactory.plugins.register(is);
+    global.FrameworkFactory.plugins.register(plugin);
 
 })(this);

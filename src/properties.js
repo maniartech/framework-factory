@@ -2,7 +2,7 @@
 (function (global, undefined) {
     "use strict";
 
-    function properties($f) {
+    function plugin($f) {
 
         /**
          * Attaches the property to the given object. If setter is not specified creates reaonly property.
@@ -53,7 +53,7 @@
 
                 if (typeof options === 'object') {
                     valueOf = options.valueOf();
-                    //Incase of Object based primitive properties like
+                    //Incase of Object based primitive plugin like
                     // new String('abc')
                     // new Date('123')
                     if (typeof valueOf !== 'object' && typeof valueOf !== 'function') {
@@ -243,14 +243,14 @@
 
     }
 
-    properties.info = {
-        name: 'properties'
+    plugin.info = {
+        name: 'plugin'
     };
 
-    properties.toString = function toString() {
-        return properties.info.name;
+    plugin.toString = function toString() {
+        return plugin.info.name;
     };
 
-    global.FrameworkFactory.plugins.register(properties);
+    global.FrameworkFactory.plugins.register(plugin);
 
 })(this);

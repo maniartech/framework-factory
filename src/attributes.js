@@ -2,7 +2,7 @@
 (function (global, undefined) {
     "use strict";
 
-    function attributes($f) {
+    function plugin($f) {
 
         /**
         * Helper function to create attribute members for class.
@@ -42,14 +42,14 @@
 
     }
 
-    attributes.info = {
-        name: 'attributes'
+    plugin.info = {
+        name: 'plugin'
     };
 
-    attributes.toString = function () {
-        return attributes.info.name;
+    plugin.toString = function () {
+        return plugin.info.name;
     };
 
-    global.FrameworkFactory.plugins.register(attributes);
+    global.FrameworkFactory.plugins.register(plugin);
 
 })(this);

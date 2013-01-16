@@ -220,7 +220,7 @@
         return utils.info.name;
     };
 
-    FrameworkFactory.plugins.register(utils);
+    global.FrameworkFactory.plugins.register(utils);
 
 
 })(this);
