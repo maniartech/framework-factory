@@ -1,9 +1,9 @@
 
-(function(global, undefined) {
+(function (global, undefined) {
     "use strict";
 
 
-    function events($f, config) {
+    function events($f) {
 
         $f.event = function () {
             return {
@@ -11,7 +11,7 @@
             };
         };
 
-        var eventHandler = function (Class, key, options) {
+        var eventHandler = function (Class, key) {
 
             var proto = Class.prototype;
             //var eventName = key;
@@ -27,11 +27,11 @@
              **/
             proto[key] = function (handler) {
 				var privKey = '_' + key;
-				
+
 				if (!$f.is.func(handler)) {
 					throw new Error('Only functions can be registered as event handler');
 				}
-				
+
                 if (this[privKey] === undefined) {
                     this[privKey] = [];
                 }
@@ -121,6 +121,6 @@
         return events.info.name;
     };
 
-    FrameworkFactory.plugins.register(events);
+    global.FrameworkFactory.plugins.register(events);
 
 })(this);

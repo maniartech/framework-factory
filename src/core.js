@@ -5,7 +5,6 @@
     var FrameworkFactory = {},
 
         plugins = [],
-        typeHandlers = [],
         i, iLen;
 
     /**
@@ -37,7 +36,6 @@
             otherVersion = null,
             plugin,
             name,
-            plug,
             key;
 
         if (typeof c === "string") {
@@ -50,8 +48,8 @@
 
             _config.framework = c.framework;
             _config.version = c.version || '1.0.0';
-            _config.noConflict = (c.noConflict !== undefined)? c.noConflict: false;
-			
+            _config.noConflict = (c.noConflict !== undefined) ? c.noConflict : false;
+
             for (key in c) {
                 if (c.hasOwnProperty(key) === true) {
                     if (key in _config === false) {
@@ -60,9 +58,9 @@
                 }
             }
         }
-        
+
         //If noConflict config is true and framework detected in global,
-        //resets the global with current version and framework.noConflict() 
+        //resets the global with current version and framework.noConflict()
         //function returns the other version.
         if (_config.noConflict === true) {
             if (_config.framework === undefined) {
@@ -73,26 +71,26 @@
             if (otherVersion === undefined || (otherVersion.version === _config.version)) {
                 framework.noConflict = function noConflict() {
                     return framework;
-                }
+                };
             }
             else {
                 framework.noConflict = function noConflict() {
                     return otherVersion;
-                }
+                };
             }
         }
 
         //sets the framework version
         framework.version = _config.version;
-        
+
         //sets the framework name
         framework.framework = _config.framework;
-        
+
         //initialize empty type handlers
         framework.typeHandlers = {};
 
         /**
-         * Returns the 
+         * Returns the
          * @function config
          **/
         framework.config = function config(cfg, defaultValue) {

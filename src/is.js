@@ -1,9 +1,9 @@
 (function (global, undefined) {
     "use strict";
 
-    function is($f, config) {
+    function is($f) {
 
-        var is = {
+        var _is = {
 
             //Validation
             /**
@@ -17,7 +17,7 @@
             func: function func(val) {
                 return typeof val === 'function' || val instanceof Function  === true;
             },
-            
+
             /**
              * Checks whether given value is a number or not.
              * @function
@@ -35,7 +35,7 @@
             },
 
             primitive: function primitive(val) {
-                return is.string(val) || is.number(val);
+                return _is.string(val) || _is.number(val);
             },
 
             undef: function undef(val) {
@@ -50,16 +50,16 @@
                 return val instanceof Date === true;
             },
 
-            plainObject: function(val) {
-                if (val === undefined || val === null) return false;
+            plainObject: function (val) {
+                if (val === undefined || val === null) { return false; }
                 return ((typeof val === 'object') && (val.constructor === Object));
             },
 
-            concreteObject: function(val) {
-                return (is.primitive(val) || is.date(val) || is.nullOrUndef(val) || is.array(val)) === false;
+            concreteObject: function (val) {
+                return (_is.primitive(val) || _is.date(val) || _is.nullOrUndef(val) || _is.array(val)) === false;
             },
 
-            array: function(val) {
+            array: function (val) {
                 return val instanceof Array;
             },
 
@@ -68,7 +68,7 @@
             }
         };
 
-        $f.is = is;
+        $f.is = _is;
     }
 
     is.info = {
@@ -77,8 +77,8 @@
 
     is.toString = function toString() {
         return is.info.name;
-    }
+    };
 
-    FrameworkFactory.plugins.register(is);
+    global.FrameworkFactory.plugins.register(is);
 
 })(this);

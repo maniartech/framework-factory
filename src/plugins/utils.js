@@ -14,17 +14,16 @@
              * @param o2 The second object
              * @returns True if both the objects are equal, false if they are not.
              **/
-            equals: function(o1, o2) {
+            equals: function (o1, o2) {
 
-                var key, v1, v2, i, iLen,
-                    is = $f.is;
+                var key, v1, v2, i, iLen;
 
                 //True if both objects references are same.
                 if (o1 === o2) {
                     return true;
                 }
 
-                for(key in o1) {
+                for (key in o1) {
                     //If key exists in o1 but not in o2, return false.
                     if (o2[key] === undefined) {
                         return false;
@@ -56,7 +55,7 @@
                         }
                     }
                     else if ($f.is.array(v1)) {
-                        for(i=0, iLen = v1.length; i<iLen; i += 1) {
+                        for (i = 0, iLen = v1.length; i < iLen; i += 1) {
                             if ($f.utils.equals(v1[i], v2[i]) === false) {
                                 return false;
                             }
@@ -80,6 +79,7 @@
 
             },
 
+
             /**
             * Returns the cloned object created using deep copy algorithm.
             * @param Object that need to be copied.
@@ -89,82 +89,80 @@
             *  - Modified to handle circular dependencies.
             *  - May not behave as expected if object consturctor accepts various parameters.
             **/
-           deepCopy: function deepCopy(o) {
+            deepCopy: function deepCopy(o) {
 
-               //To improve performance, need to replace array with some sort of
-               //hash map that accepts objects as key.
-               var objRefs = [];
+                //To improve performance, need to replace array with some sort of
+                //hash map that accepts objects as key.
+                var objRefs = [];
 
-               function doCopy(obj) {
+                function doCopy(obj) {
 
-                   var copy, i, iLen, objVal, refIndex,
-                       timestamp = new Date() - 0;
+                    var copy, i, iLen;
 
-                   if (objRefs.indexOf(obj) >= 0) {
-                        //Object found, return the same object no need to copy it.
-                       return obj;
-                   }
-                   else {
-                       objRefs.push(obj);
-                   }
-                   // Handle the 3 simple types, and null or undefined
-                   if (null == obj || "object" != typeof obj) return obj;
-
-                   // Handle Date
-                   if (obj instanceof Date) {
-                       copy = new Date();
-                       copy.setTime(obj.getTime());
-                       return copy;
-                   }
-
-                   // Handle Array
-                   if (obj instanceof Array) {
-                       copy = [];
-                       for (i = 0, iLen = obj.length; i < iLen; i += 1) {
-                           copy[i] = doCopy(obj[i]);
-                       }
-                       return copy;
-                   }
-
-                   // Handle Object
-                   if (obj instanceof Object) {
-                       copy = new obj.constructor();
-                       for (var attr in obj) {
-                           if (obj.hasOwnProperty(attr) === true) {
-                               copy[attr] = doCopy(obj[attr]);
-                           }
-                       }
-                       return copy;
-                   }
-                   throw new Error("Unable to copy obj! Its type isn't supported.");
-               }
-               return doCopy(o);
-           },
-
-            importObject: function(o, json, options) {
-
-                options = options || {};
-                var setFunctions = options.setFunctions || false;
-
-                for (var key in json) {
-
-                    //Check json object owns the member
-                    if (json.hasOwnProperty[key] === false) {
-                        continue;
+                    if (objRefs.indexOf(obj) >= 0) {
+                         //Object found, return the same object no need to copy it.
+                        return obj;
+                    }
+                    else {
+                        objRefs.push(obj);
+                    }
+                    // Handle the 3 simple types, and null or undefined
+                    if (null === obj || "object" !== typeof obj) {
+                        return obj;
                     }
 
-                    //Check the member exists in object to set.
-                    //if (o[key] === undefined) {
-                    //    continue;
-                    //}
+                    // Handle Date
+                    if (obj instanceof Date) {
+                        copy = new Date();
+                        copy.setTime(obj.getTime());
+                        return copy;
+                    }
 
-                    //var propMemberType = typeof prop[key];
-                    var oMemberType = typeof o[key];
-                    var val = json[key];
+                    // Handle Array
+                    if (obj instanceof Array) {
+                        copy = [];
+                        for (i = 0, iLen = obj.length; i < iLen; i += 1) {
+                            copy[i] = doCopy(obj[i]);
+                        }
+                        return copy;
+                    }
 
-                    switch (oMemberType) {
+                    // Handle Object
+                    if (obj instanceof Object) {
+                        copy = new obj.constructor();
+                        for (var attr in obj) {
+                            if (obj.hasOwnProperty(attr) === true) {
+                                copy[attr] = doCopy(obj[attr]);
+                            }
+                        }
+                        return copy;
+                    }
+                    throw new Error("Unable to copy obj! Its type isn't supported.");
+                }
+                return doCopy(o);
+            },
 
-                        case 'object': {
+            importObject: function (o, json, options) {
+
+                options = options || {};
+                var key;
+
+                for (key in json) {
+
+                    //Check json object owns the member
+                    if (json.hasOwnProperty[key] === true) {
+
+                        //Check the member exists in object to set.
+                        //if (o[key] === undefined) {
+                        //    continue;
+                        //}
+
+                        //var propMemberType = typeof prop[key];
+                        var oMemberType = typeof o[key];
+                        var val = json[key];
+
+                        switch (oMemberType) {
+                        case 'object':
                             if (o[key] === null) {
                                 o[key] = val;
                             }
@@ -177,11 +175,11 @@
                                 o[key] = val;
                             }
                             else {
-                                _framework.Utils.importObject(o[key], val);
+                                $f.Utils.importObject(o[key], val);
                             }
                             break;
-                        }
-                        case 'function': {
+
+                        case 'function':
                             if (o[key].importObject !== undefined) {
                                 o[key].importObject(o, key, val);
                             }
@@ -189,23 +187,15 @@
                                 o[key] = val;
                             }
                             break;
-                        }
-                        default: {
+
+                        default:
                             o[key] = val;
                         }
                     }
                 }
             },
 
-            exportObject: function exportToJSON(o) {
-                var json = {};
-                for (key in o) {
-
-                }
-            },
-
             //UUID
-
             simpleGuid: function(sep) {
                 function section() {
                     return (((1+Math.random())*0x10000)|0).toString(16).substring(1);

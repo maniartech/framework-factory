@@ -21,7 +21,7 @@
                 parent = parent || Object;
             }
             prop    = prop || {};
-			
+
             //prevents call to
             initializing = true;
             proto = new parent;
@@ -71,45 +71,43 @@
                     typeHandler;
 
                 for (key in prop) {
+                    if (hasProp.call(prop, key)) {
 
-                    if (!hasProp.call(prop, key)) {
-                        continue;
-                    }
+                        item = prop[key];
+                        type = typeof item;
+                        val = item;
+                        processed = false;
 
-                    item = prop[key];
-                    type = typeof item;
-                    val = item;
-                    processed = false;
-
-                    if (type === 'object' && item != null && item.type !== undefined) {
-                        typeHandler = $f.typeHandlers[item.type];
-                        if (typeHandler !== undefined) {
-                            typeHandler(Class, key, item);
+                        if (type === 'object' && item !== null && item.type !== undefined) {
+                            typeHandler = $f.typeHandlers[item.type];
+                            if (typeHandler !== undefined) {
+                                typeHandler(Class, key, item);
+                                processed = true;
+                            }
+                        }
+                        else if (type === 'function' &&
+                                typeof __super__[key] === 'function' &&
+                                fnTest.test(item)) {
+                            proto[key] = (function (key, fn) {
+                                return function () {
+                                    this.base =  function () {
+                                        __super__[key].apply(this, arguments);
+                                    };
+                                    var ret = fn.apply(this, arguments);
+                                    delete this.base;
+                                    return ret;
+                                };
+                            })(key, item);
                             processed = true;
                         }
-                    }
-                    else if (type === 'function' &&
-                            typeof __super__[key] === 'function' &&
-                            fnTest.test(item)) {
-                        proto[key] = (function (key, fn) {
-                            return function () {
-                                this.base =  function () {
-                                    __super__[key].apply(this, arguments);
-                                };
-                                var ret = fn.apply(this, arguments);
-                                delete this.base;
-                                return ret;
-                            };
-                        })(key, item);
-                        processed = true;
-                    }
 
-                    //console.log([key, type == 'function', typeof __super__[key], fnTest.test(item)]);
+                        //console.log([key, type == 'function', typeof __super__[key], fnTest.test(item)]);
 
-                    if (!processed) {
-                        proto[key] = val;
+                        if (!processed) {
+                            proto[key] = val;
+                        }
+                        Class.__meta__[key] = item;
                     }
-                    Class.__meta__[key] = item;
                 }
             };
 

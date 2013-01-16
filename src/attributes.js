@@ -27,8 +27,7 @@
              * @version 1.0.0
              **/
             attributeHandler = function (Class, key, options) {
-                var proto = Class.prototype,
-                    privKey = '_' + key;
+                var proto = Class.prototype;
                 proto[key] = options.defaultValue;
             };
 
@@ -51,6 +50,6 @@
         return attributes.info.name;
     };
 
-    FrameworkFactory.plugins.register(attributes);
+    global.FrameworkFactory.plugins.register(attributes);
 
 })(this);
