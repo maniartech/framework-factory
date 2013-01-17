@@ -40,3 +40,5 @@ Thumbs.db
 .komodoproject
 .settings
 .svn
+#*.sublime-project
+*.sublime-workspace
