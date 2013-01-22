@@ -100,7 +100,14 @@
                  **/
                 proto.off = function (eventName, handler) {
                     var arr = this['_' + eventName],
-                        index = arr.indexOf(handler);
+                        index;
+
+                    //Specified event not registered so no need to put it off.
+                    if (arr === undefined) {
+                        return;
+                    }
+
+                    index = arr.indexOf(handler);
                     if (index !== -1) {
                         arr.splice(index, 1);
                     }
