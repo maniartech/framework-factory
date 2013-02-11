@@ -14,8 +14,6 @@
         var eventHandler = function (Class, key) {
 
             var proto = Class.prototype;
-            //var eventName = key;
-
 
             /**
              * Registers the event for particular event.
@@ -26,17 +24,16 @@
              * });
              **/
             proto[key] = function (handler) {
-				var privKey = '_' + key;
-
-				if (!$f.is.func(handler)) {
-					throw new Error('Only functions can be registered as event handler');
-				}
-
-                if (this[privKey] === undefined) {
-                    this[privKey] = [];
-                }
-                this[privKey].push(handler);
+                this.on(key, handler);
                 return this;
+
+				// var privKey = '_' + key;
+
+    //             if (this[privKey] === undefined) {
+    //                 this[privKey] = [];
+    //             }
+    //             this[privKey].push(handler);
+    //             return this;
             };
 
             proto[key].importObject = function (o, k, v) {
@@ -55,14 +52,24 @@
                  **/
                 proto.on = function (eventNames, eventHandler) {
                     var names = eventNames.split(' '),
-                        i, iLen, eventName;
+                        i, iLen, eventName,
+                        privKey;
+
+                    if (!$f.is.func(eventHandler)) {
+                        throw new Error('Only functions can be registered as event handler');
+                    }
+
                     for (i = 0, iLen = names.length; i < iLen; i += 1) {
                         eventName = String.trim(names[i]);
-                        if (this[eventName] !== undefined) {
-                            //Event found, now register handler
-                            this[eventName](eventHandler);
+
+                        privKey = '_' + eventName;
+                        if (this[privKey] === undefined) {
+                            this[privKey] = [];
                         }
+                        this[privKey].push(eventHandler);
+
                     }
+                    return this;
                 };
 
                 /**
@@ -78,14 +85,14 @@
 
                     var s = this['_' + eventName],
                             callback,
-                            i, iLen;
+                            i;
                     //console.log(eventName, s);
                     if (s === undefined || s.length === 0) {
                         return this; //No need to fire event, sicne there is no subscriber.
                     }
                     args = args || {};
                     args.eventName = eventName;
-                    for (i = 0, iLen = s.length; i < iLen; i += 1) {
+                    for (i = 0; i < s.length; i += 1) {
                         callback = s[i];
                         if (callback.call(this, args) === false) {
                             //no more firing, if handler returns falses
@@ -111,6 +118,7 @@
                     if (index !== -1) {
                         arr.splice(index, 1);
                     }
+                    return this;
                 };
 
             }

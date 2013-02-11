@@ -340,7 +340,7 @@ var Component = framework.Class({
             this._width = v;
         }
     }),
-	
+
     click: function() {
         this._clickCount += 1;
     },
@@ -350,8 +350,8 @@ var Component = framework.Class({
             return this._clickCount;
         }
     }),
-	
-	
+
+
     length: framework.readonly(0),
     add: function() {
 	    this._length += 1;

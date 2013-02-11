@@ -42,7 +42,7 @@ module("Core Tests");
                 framework: 'wonderFramework',
                 noConflict: true
             });
-            
+
             eq(ns.noConflict(), ns);
 
             try {
@@ -63,7 +63,7 @@ module("Core Tests");
                 version: '2.0.0'
             });
 
-            neq(ns, window.wonderFramework); 
+            neq(ns, window.wonderFramework);
             eq(ns.noConflict(), window.wonderFramework);
 
             window.wonderFramework = ns;
@@ -81,12 +81,12 @@ module("Core Tests");
                 framework: 'MyFramework',
                 defaultBaseClass: "BaseObject"
             });
-			
-			eq(ns.BaseObject, undefined);			
+
+			eq(ns.BaseObject, undefined);
 			ns.BaseObject = ns.Class({
             });
 			neq(ns.BaseObject, undefined);
-			
+
 			var ChildClass = ns.Class({
             });
             eq(new ChildClass() instanceof ns.BaseObject, true);
@@ -122,7 +122,7 @@ module("Core Tests");
 
             eq (typeof FrameworkFactory.plugins, 'object');
             FrameworkFactory.plugins.register(myPlugin);
-			
+
             var myFramework = FrameworkFactory.create('myFramework');
             neq (FrameworkFactory.plugins.getNames().indexOf('myPlugin'), -1);
             neq (FrameworkFactory.plugins.toArray().indexOf(myPlugin), -1);
@@ -354,9 +354,9 @@ module('TypeHandler Tests');
             btn.trigger('click', {
                 val: 100
             });
-			
+
             eq (typeof btn.trigger, 'function', 'Check trigger attached');
-			
+
             eq (obj, btn, "this in event handler must the object which fired the event.");
             neq (args, null, "Event args can not be null.");
             eq (typeof args, 'object', "Supplied args must be of type object.");
@@ -438,14 +438,14 @@ module('TypeHandler Tests');
         },
 
         properties: function() {
-	    
+
             //Component Tests
             var c1 = new Component();
-			
+
             var changingCount = 0;
             var changedCount = 0;
             //c1.name = "great";
-	    
+
             c1.namechanging(function() {
 		changingCount++;
             });
@@ -474,8 +474,8 @@ module('TypeHandler Tests');
             c1.width = 10;
             eq(c1.width, 10);
 	    eq(c1.length, 0, "Initial length is zero");
-			
-			
+
+
 
             //PropClass Tests
             var PropClass = framework.Class({
@@ -526,7 +526,7 @@ module('TypeHandler Tests');
                 neq (args.oldVaue, args.newValue);
                 events++;
             }
-	    
+
             propObj.onPropertyChanging = propChanging;
             propObj.onPropertyChanged = propChanged;
 
@@ -555,21 +555,21 @@ module('TypeHandler Tests');
             eq (2, events);
             eq (propObj._birthday, '21-11');
         },
-		
+
 		attachProperty: function() {
 			var obj = {},
 			    error = 0;
-			framework.attachProperty(obj, "name", 
-			function(){ 
+			framework.attachProperty(obj, "name",
+			function(){
 			     return obj._name
 		    }, function (val) {
 				obj._name = "Name: " + val;
 			});
-			
+
 			framework.attachProperty(obj, "justName", function() {
 				return obj._name.split(" ")[1];
 			});
-			
+
 			eq(obj.name, undefined, "Name is undefined initially.");
 			obj.name = "Great";
 			neq(obj.name, undefined, "Name is initialized.");
@@ -582,7 +582,7 @@ module('TypeHandler Tests');
 				error += 1;
 			}
 			eq(error, 1, "Just name is a readonly field, hence error count 1;");
-				
+
 		}
     };
 
@@ -644,10 +644,6 @@ module('framework.utils Tests');
 
         },
 
-        equalsAdvanced: function () {
-
-        },
-
         json: function() {
 
             var s = new Shape({
@@ -662,8 +658,10 @@ module('framework.utils Tests');
                 ]
             });
 
-            eq('main', s.id);
-            eq(10, s.x);
+            debugger
+
+            eq(s.id, "main");
+            eq(s.x, 10);
             eq(20, s.y);
             eq(150, s.width);
             eq(250, s.height);

@@ -150,12 +150,7 @@
                 for (key in json) {
 
                     //Check json object owns the member
-                    if (json.hasOwnProperty[key] === true) {
-
-                        //Check the member exists in object to set.
-                        //if (o[key] === undefined) {
-                        //    continue;
-                        //}
+                    if (json.hasOwnProperty(key) === true) {
 
                         //var propMemberType = typeof prop[key];
                         var oMemberType = typeof o[key];
@@ -189,6 +184,7 @@
                             break;
 
                         default:
+                            console.log (key, val);
                             o[key] = val;
                         }
                     }

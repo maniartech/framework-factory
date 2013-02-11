@@ -10,7 +10,8 @@
             Class;
 
         Class = function (prop, parent) {
-            //Checks if _super exists in overriden function, inspired by John Resig.
+            //Checks if base exists in overriden function, inspired by John Resig's class
+            //implementation.
             var hasProp = Object.prototype.hasOwnProperty,
                 proto, key, Class, __super__, funcString;
 
