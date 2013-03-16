@@ -26,6 +26,9 @@
 *.sql
 *.sqlite
 
+#Project Workspaces #
+###################
+*.sublime*
 
 # OS generated files #
 ######################

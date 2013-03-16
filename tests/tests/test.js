@@ -2,239 +2,6 @@
 var eq = strictEqual;
 var neq = notStrictEqual;
 
-//$(function(){
-
-module("Core Tests");
-
-    var frameworkTests = {
-
-        basic: function() {
-
-            eq(typeof FrameworkFactory, 'object');
-            eq(FrameworkFactory.version, '1.0.0');
-            var ns = FrameworkFactory.create();
-            neq (ns, undefined, 'The namespace ns must not be undefined.');
-            neq (ns, null, 'The namespace ns must not be null.');
-            eq (ns.version, '1.0.0', "Default version must be 1.0.0");
-            //eq (ns.framework, 'framework', 'The default framework full name must be "framework"');
-        },
-
-        noConflict: function() {
-            //For framework with no version and noConflict = false
-            var ns = FrameworkFactory.create('wonderFramework'), error = 0;
-            eq(ns.version, '1.0.0');
-            eq(ns.config('noConflict'), false);
-
-            //For framework with no name, no version and noConflict = false
-            ns = FrameworkFactory.create();
-            eq(ns.version, '1.0.0');
-            eq(ns.config('noConflict'), false);
-
-            //For framework with no version and noConflict = false passed as config options
-            ns = FrameworkFactory.create({
-                    framework: 'wonderFramework'
-                });
-            eq(ns.version, '1.0.0');
-            eq(ns.config('noConflict'), false);
-
-            //For framework with noConflict = true
-            ns = FrameworkFactory.create({
-                framework: 'wonderFramework',
-                noConflict: true
-            });
-
-            eq(ns.noConflict(), ns);
-
-            try {
-                FrameworkFactory.create({
-                    noConflict: true
-                });
-            }
-            catch (ex) {
-                error += 1;
-            }
-
-            eq(error, 1);
-
-            window.wonderFramework = ns;
-            ns = FrameworkFactory.create({
-                framework: 'wonderFramework',
-                noConflict: true,
-                version: '2.0.0'
-            });
-
-            neq(ns, window.wonderFramework);
-            eq(ns.noConflict(), window.wonderFramework);
-
-            window.wonderFramework = ns;
-            eq(window.wonderFramework.version, '2.0.0');
-            ns = window.wonderFramework.noConflict();
-            eq(ns.version, '1.0.0');
-            eq(window.wonderFramework.version, '2.0.0');
-
-        },
-
-        customConfig: function() {
-
-            var ns = FrameworkFactory.create({
-                version: '1.0.1',
-                framework: 'MyFramework',
-                defaultBaseClass: "BaseObject"
-            });
-
-			eq(ns.BaseObject, undefined);
-			ns.BaseObject = ns.Class({
-            });
-			neq(ns.BaseObject, undefined);
-
-			var ChildClass = ns.Class({
-            });
-            eq(new ChildClass() instanceof ns.BaseObject, true);
-
-            ns.BaseObject.attach({
-                hi: function(msg) {
-                    return 'Hi, ' + msg + '.';
-                }
-            });
-
-            neq (ns, undefined, 'The namespace ns must not be undefined.');
-            neq (ns, null, 'The namespace ns must not be null.');
-            eq (ns.version, '1.0.1', "Default version must be 1.0.1");
-            eq (ns.framework, 'MyFramework', 'The default framework full name must be "MyFramework"');
-
-            var Cls = ns.Class({});
-            var inst = new Cls(); //Class instance.
-            eq (inst instanceof ns.BaseObject, true);
-            eq(inst.hi('there'), 'Hi, there.');
-        },
-
-        pluginsTests: function() {
-
-            function myPlugin($f, config) {
-                $f.echo = function echo(val) {
-                    return  val;
-                }
-            };
-
-            myPlugin.info = {
-                name: 'myPlugin'
-            };
-
-            eq (typeof FrameworkFactory.plugins, 'object');
-            FrameworkFactory.plugins.register(myPlugin);
-
-            var myFramework = FrameworkFactory.create('myFramework');
-            neq (FrameworkFactory.plugins.getNames().indexOf('myPlugin'), -1);
-            neq (FrameworkFactory.plugins.toArray().indexOf(myPlugin), -1);
-            neq (myFramework.echo, undefined);
-            eq (myFramework.echo('wow'), 'wow');
-        },
-
-        isTests: function() {
-            var is = framework.is;
-
-            //String tests
-            eq(is.string("str"), true);
-            eq(is.string(new String("str")), true);
-            eq(is.string(new Number("str")), false);
-            eq(is.string(new Date()), false);
-            eq(is.string(new Function()), false);
-            eq(is.string(), false);
-            eq(is.string(null), false);
-            eq(is.string([]), false);
-            eq(is.string({}), false);
-
-            //Number tests
-            eq(is.number(0), true);
-            eq(is.number(new Number(100)), true);
-            eq(is.number("str"), false);
-            eq(is.number(new Date()), false);
-            eq(is.number(new Function()), false);
-            eq(is.number(), false);
-            eq(is.number(null), false);
-            eq(is.number([]), false);
-            eq(is.number({}), false);
-
-            //function tests
-            eq(is.func(function(){}), true);
-            eq(is.func(new Function()), true);
-            eq(is.func("str"), false);
-            eq(is.func(new Date()), false);
-            eq(is.func(0), false);
-            eq(is.func(), false);
-            eq(is.func(null), false);
-            eq(is.func([]), false);
-            eq(is.func({}), false);
-
-            //undefined tests
-            var x;
-            eq(is.undef(), true);
-            eq(is.undef(x), true);
-            eq(is.undef("str"), false);
-            eq(is.undef(new Date()), false);
-            eq(is.undef(0), false);
-            eq(is.undef(null), false);
-            eq(is.undef([]), false);
-            eq(is.undef({}), false);
-
-            //null or undefined tests
-            eq(is.nullOrUndef(null), true);
-            eq(is.nullOrUndef(x), true);
-            eq(is.nullOrUndef(), true);
-            eq(is.nullOrUndef("str"), false);
-            eq(is.nullOrUndef(new Date()), false);
-            eq(is.nullOrUndef(0), false);
-            eq(is.nullOrUndef([]), false);
-            eq(is.nullOrUndef({}), false);
-
-            //date tests
-            eq(is.date(new Date), true);
-            eq(is.date("str"), false);
-            eq(is.date(0), false);
-            eq(is.date(new Function()), false);
-            eq(is.date(), false);
-            eq(is.date(null), false);
-            eq(is.date([]), false);
-            eq(is.date({}), false);
-
-            //date tests
-            eq(is.plainObject({}), true);
-            eq(is.plainObject(new Object), true);
-
-            eq(is.plainObject("str"), false);
-            eq(is.plainObject(0), false);
-            eq(is.plainObject(new Function()), false);
-            eq(is.plainObject(), false);
-            eq(is.plainObject(null), false);
-            eq(is.plainObject([]), false);
-            eq(is.plainObject(new Date), false);
-            eq(is.plainObject(new Component), false);
-
-            //Array tests
-            eq(is.array([]), true);
-            eq(is.array(new Array), true);
-            eq(is.array("str"), false);
-            eq(is.array(0), false);
-            eq(is.array(new Function()), false);
-            eq(is.array(), false);
-            eq(is.array(null), false);
-            eq(is.array(new Date), false);
-            eq(is.array(new Component), false);
-
-            //In Browser
-            eq(is.inBrowser(), true);
-
-
-        }
-    };
-
-    test("Framework Basic", frameworkTests.basic);
-    test("Framework noConflict tests", frameworkTests.noConflict);
-    test ('Custom Config Tests', frameworkTests.customConfig);
-    test ('Plugins Tests', frameworkTests.pluginsTests);
-    test ('Is of Type Tests', frameworkTests.isTests);
-
-
 module("Class Tests");
 
     var classTests = {
@@ -326,87 +93,6 @@ module("Class Tests");
 module('TypeHandler Tests');
 
     var typeHandlerTests = {
-
-        events: function(){
-
-            var btn = new Button("Button1");
-
-            eq (typeof btn.click, 'function', 'Check event attached');
-
-            var obj, args, val, eventRaised, errors = 0;
-
-            function handler1(a) {
-                obj = this;
-                args = a;
-                val = a.val;
-                btn.clickCount++;
-                eventRaised = a.eventName;
-                //console.log(a);
-            }
-
-            function handler2 () {
-                btn.clickCount++;
-                //console.log(btn.clickCount)
-            }
-
-            btn.click(handler1);
-            eq (btn._click.length, 1, "Event subsriber count check");
-            btn.trigger('click', {
-                val: 100
-            });
-
-            eq (typeof btn.trigger, 'function', 'Check trigger attached');
-
-            eq (obj, btn, "this in event handler must the object which fired the event.");
-            neq (args, null, "Event args can not be null.");
-            eq (typeof args, 'object', "Supplied args must be of type object.");
-            eq (args.val, 100, "Event handler must receive the values supplied.");
-            eq (val, 100, "Event handler must receive the values supplied.");
-            eq (btn.clickCount, 1, "Event fired once and received once so click count 1");
-            eq (eventRaised, 'click', 'Event args should contain the name of event which triggered.');
-            btn.click(handler2);
-
-            btn.trigger('click', { val: 100 });
-
-            eq (btn._click.length, 2, "Event subsriber count check");
-
-            eq (btn.clickCount, 3, "Event handler must have first argument the object on which event fired.");
-
-            btn.off('click', handler2);
-
-            eq (btn._click.length, 1, "Event subsriber count check");
-
-            btn.trigger('click', { val: 200 });
-
-            eq (btn.clickCount, 4, "Event handler must have first argument the object on which event fired.");
-
-            var btn2 = new Button("Button2");
-            btn2.click(handler1);
-            btn2.click(handler2);
-
-            eq (btn._click.length, 1, "Event subsriber count check for button1");
-            eq (btn2._click.length, 2, "Event subsriber count check for button2");
-            //alert([btn.click.count(), btn2.click.count()]);
-
-            btn2.off('click', handler1);
-            btn2.off('click', handler2);
-
-            eq (btn2._click.length, 0, "Event subsriber count check for button2");
-
-            btn2.on('click mouseMove', handler1);
-
-            eq (btn2._click.length, 1, "Event subsriber count check for button2");
-            eq (btn2._mouseMove.length, 1, "Event subsriber count check for button2");
-
-            try {
-				btn.click(true)
-			}
-			catch(error) {
-				eq(error.message, 'Only functions can be registered as event handler');
-				errors += 1;
-			}
-            eq(errors, 1, "Value other then function can't be set as event handler.");
-        },
 
         attributes: function() {
 
@@ -586,7 +272,6 @@ module('TypeHandler Tests');
 		}
     };
 
-    test ('Event Tests', typeHandlerTests.events);
     test ('Attribute Tests', typeHandlerTests.attributes);
     test ('Readonly Attribute Tests', typeHandlerTests.readonly);
     test ('Property Tests', typeHandlerTests.properties);
@@ -634,7 +319,7 @@ module('framework.utils Tests');
 
             o2.children = {
                 name : "wow"
-            }
+            };
 
             o1.time = new Date();
             o2.time = new Date();
@@ -657,8 +342,6 @@ module('framework.utils Tests');
                     new Shape({ id: 'b' })
                 ]
             });
-
-            debugger
 
             eq(s.id, "main");
             eq(s.x, 10);

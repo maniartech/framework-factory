@@ -1,0 +1,25 @@
+{
+  "name": "framework-factory",
+  "version": "1.0.0",
+  "description": "Wonderful framwork factory for creating your class library",
+  "main": "framework-factory.js",
+  "dependencies": {
+    "grunt": "~0.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://framework-factory.com"
+  },
+  "keywords": [
+    "class",
+    "framework",
+    "oops",
+    "library"
+  ],
+  "author": "Mohamed Aamir Maniar",
+  "license": "MIT"
+}
