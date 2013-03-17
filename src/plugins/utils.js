@@ -170,7 +170,7 @@
                                 o[key] = val;
                             }
                             else {
-                                $f.Utils.importObject(o[key], val);
+                                $f.utils.importObject(o[key], val);
                             }
                             break;
 
@@ -184,7 +184,6 @@
                             break;
 
                         default:
-                            console.log (key, val);
                             o[key] = val;
                         }
                     }
