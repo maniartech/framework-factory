@@ -1,5 +1,5 @@
 
-(function (global, undefined) {
+(function (root, undefined) {
     "use strict";
 
 
@@ -17,10 +17,13 @@
 
             /**
              * Registers the event for particular event.
+             * @function
+             * @param {function} handler The handler function which should be invoked on event.
+             * @returns The current object.
              * @example
              * var btn = new Button();
              * btn.mouseMove(function(){
-             *  console.log('mouse is moving');
+             *     console.log('mouse is moving');
              * });
              **/
             proto[key] = function (handler) {
@@ -136,6 +139,6 @@
         return plugin.info.name;
     };
 
-    global.FrameworkFactory.plugins.register(plugin);
+    root.FrameworkFactory.plugins.register(plugin);
 
 })(this);

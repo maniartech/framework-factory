@@ -7,14 +7,15 @@
 
         /**
          * Returns the cloned object created using deep copy algorithm.
-         * @param Object that need to be copied.
-         * @returns Deep copied object. *
+         * @param o Object or anything that need to be cloned.
+         * @returns The cloned object.
          * @ref: http://stackoverflow.com/questions/728360/copying-an-object-in-javascript
+         * @thanks A. Levy
          * @remark:
          *  - Modified to handle circular dependencies.
          *  - May not behave as expected if object consturctor accepts various parameters.
          **/
-        $f.deepCopy = function deepCopy(o) {
+        $f.clone = function clone(o) {
             //To improve performance, need to replace array with some sort of
             //hash map that accepts objects as key.
             var objRefs = [];
@@ -68,7 +69,9 @@
     }
 
     plugin.info = {
-        name: 'deepCopy'
+        name: "clone",
+        author: "Mohamed Aamir Maniar",
+        version: "1.0"
     };
 
     plugin.toString = function toString() {

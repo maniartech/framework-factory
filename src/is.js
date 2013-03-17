@@ -19,10 +19,10 @@
             },
 
             /**
-             * Checks whether given value is a number or not.
+             * Checks whether given value is a string or not.
              * @function
-             * @param {anything} val The val to be checked for number test.
-             * @returns {boolean} ``true`` if parameter val is a valid number, else ``false``.
+             * @param {anything} val The val to be checked for string test.
+             * @returns {boolean} ``true`` if parameter val is a valid string, else ``false``.
              * @public
              * @version 1.0
              **/
@@ -30,14 +30,39 @@
                 return typeof val === 'string' || val instanceof String === true;
             },
 
-            number: function num(val) {
+            /**
+             * Checks whether given value is a number or not.
+             * @function
+             * @param {anything} val The val to be checked for number test.
+             * @returns {boolean} ``true`` if parameter val is a valid number, else ``false``.
+             * @public
+             * @version 1.0
+             **/
+            number: function number(val) {
                 return typeof val === 'number' || val instanceof Number  === true;
             },
 
+            /**
+             * Checks whether given value is a primitive or not.
+             * @function
+             * @param {anything} val The val to be checked for primitive test.
+             * @returns {boolean} ``true`` if parameter val is a valid primitive, else ``false``.
+             * @public
+             * @version 1.0
+             **/
             primitive: function primitive(val) {
                 return _is.string(val) || _is.number(val);
             },
 
+            /**
+             * Checks whether specified value is undefined or not.
+             * @function undef
+             * @module <future-framework>.is
+             * @param {anything} val The val to be checked for undefined test.
+             * @returns {boolean} ``true`` if parameter val is a valid undefined, else ``false``.
+             * @public
+             * @version 1.0
+             **/
             undef: function undef(val) {
                 return val === undefined;
             },
