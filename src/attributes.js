@@ -5,13 +5,13 @@
     function plugin($f) {
 
         /**
-        * Helper function to create attribute members for class.
-        * @param defaultValue The default value of the attribute.
-        * @option [options] Additional options for attribute member.
-        * @public
-        * @function
-        * @version 1.0.0
-        **/
+         * Helper function to create attribute members for class.
+         * @param defaultValue The default value of the attribute.
+         * @option [options] Additional options for attribute member.
+         * @public
+         * @function
+         * @version 1.0.0
+         **/
         var attribute = function (defaultValue, options) {
                 return {
                     type: 'attribute',
