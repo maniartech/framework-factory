@@ -1,7 +1,6 @@
 
-(function (undefined) {
+(function (root, undefined) {
     "use strict";
 
 
-
-})();
+})(this);

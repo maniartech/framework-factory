@@ -1,15 +1,61 @@
-
-(function (global, undefined) {
+(function (root, undefined) {
     "use strict";
 
-    var FrameworkFactory = {},
-
+    var FrameworkFactory,
         plugins = [],
-        i, iLen;
+        i, iLen,
+        environment, //Environement - node, requirejs or browser
+        g; //Global
+
+    /**
+     * Represents the FrameworkFactory singleton class object, which contains
+     * members useful for generating and managing your framework and framework-factory
+     * plugins.
+     *
+     * @Class FrameworkFactory
+     *
+     * @public
+     * @version 1.0
+     **/
+    FrameworkFactory = (function (){
+        function FrameworkFactory() {}
+        return new FrameworkFactory();
+    })();
+
+    //Setup environment
+    if (module !== undefined && typeof module.exports === "object") {
+        environment = "node";
+        module.exports = FrameworkFactory;
+    }
+    else if (define !== undefined && typeof define.amd) {
+        environment = "requirejs";
+        define(function() {
+            return FrameworkFactory;
+        });
+    }
+    else {
+        environment = "browser";
+        root.FrameworkFactory = FrameworkFactory;
+    }
+
+    //Indentify global object
+    g = environment === "node" ? global : root;
+
+    /**
+     * The current environment in which FrameworkFactory is running.
+     * @field {string}
+     *
+     * @public
+     * @version 1.0
+     */
+    FrameworkFactory.environment = environment;
 
     /**
      * The current version of framework factory.
-     * @field
+     *
+     * @field {string}
+     * @defult 1.0.0
+     *
      * @public
      * @version 1.0
      **/
@@ -18,37 +64,58 @@
     /**
      * Factory function which creates the core framework based on specified configuration
      * parameters.
-     * @function
+     *
+     * @function FrameworkFactory.create(config)
      * @param {objct} config The configuration object.
      * @returns {Object} The base framework.
+     *
      * @example
-     *      var framework = FrameworkFactory.create({
-     *          version: '1.2',
-     *          framework: 'xyzjs'
-     *      });
+     * //This example creates a new framework called `myFramework` and defines a class called `ClassA`.
+     * //`ClassA` contains field called `name` which can be set through constructor `init`.
+     *
+     * var myFramework = FrameworkFactory.create({
+     *     version: '1.2',
+     *     framework: 'myFramework'
+     * });
+     *
+     * myFramework.ClassA = myFramework.Class({
+     *     name: myFramework.attribute("un-named"),
+     *
+     *     init: function (name) {
+     *         this.name = name;
+     *     }
+     * });
+     *
+     * var a = new myFramework.ClassA("wow");
+     * console.log(a.name);
+     *
+     * @memberOf FrameworkFactory
      * @public
      * @version 1.0
      **/
     FrameworkFactory.create = function create(c) {
 
         var _config = {},
-            framework = {},
+            framework,
             otherVersion = null,
             plugin,
             name,
             key;
 
         if (typeof c === "string") {
-            _config.framework = c;
+            _config.name = c;
             _config.version = '1.0.0';
             _config.noConflict = false;
+            framework = {};
         }
         else {
             c = c || {};
 
-            _config.framework = c.framework;
+            _config.name = c.name || "framework";
             _config.version = c.version || '1.0.0';
-            _config.noConflict = (c.noConflict !== undefined) ? c.noConflict : false;
+            _config.noConflict = (c.noConflict === undefined) ? false : c.noConflict;
+
+            framework = _config.root || {};
 
             for (key in c) {
                 if (c.hasOwnProperty(key) === true) {
@@ -63,30 +130,58 @@
         //resets the global with current version and framework.noConflict()
         //function returns the other version.
         if (_config.noConflict === true) {
-            if (_config.framework === undefined) {
-                throw new Error('noConfig functionality is only supported if framework name is supplied.');
-            }
-            //Other version detected.
-            otherVersion = global[_config.framework];
-            if (otherVersion === undefined || (otherVersion.version === _config.version)) {
-                framework.noConflict = function noConflict() {
-                    return framework;
-                };
+
+            //Only support noConflice in non-node environment
+            if (environment !== "node") {
+                if (_config.framework === undefined) {
+                    throw new Error('noConfig functionality is only supported if framework name is supplied.');
+                }
+                //Other version detected.
+                otherVersion = g[_config.framework];
+                if (otherVersion === undefined || (otherVersion.version === _config.version)) {
+                    /**
+                     * If other version of $f is detected `noConflict` fucntion returns
+                     * the other version. This is patricularly useful when more then one
+                     * version of $f is loaded into the browser.
+                     *
+                     * @function $f.noConflict
+                     * @return {$f} The other version of $f if found, otherwise same.
+                     *
+                     * @public
+                     **/
+                    framework.noConflict = function noConflict() {
+                        return framework;
+                    };
+                }
+                else {
+                    framework.noConflict = function noConflict() {
+                        return otherVersion;
+                    };
+                }
             }
             else {
                 framework.noConflict = function noConflict() {
-                    return otherVersion;
+                    throw new Error("The function noConflict is not supported in node environment.");
                 };
             }
         }
 
-        //sets the framework version
+        /**
+         * The current version of $f.
+         * @field {string} returns
+         *
+         * @
+         */
         framework.version = _config.version;
 
         //sets the framework name
-        framework.framework = _config.framework;
+        framework.name = _config.name;
 
-        //initialize empty type handlers
+        /**
+         *
+         * @public
+         * @version 1.0
+         */
         framework.typeHandlers = {};
 
         /**
@@ -127,7 +222,10 @@
 
     /**
      * Represents the plugins registry object.
-     * @field {Object}
+     *
+     * @field {Object}hh
+     *
+     * @memberOf FrameworkFactory
      * @public
      * @version 1.0
      **/
@@ -151,6 +249,7 @@
 
     /**
      * Gets the names of all available plugins with FrameworkFactory.
+     *
      * @returns {Array} The plugin names array.
      * @public
      * @version 1.0
@@ -174,6 +273,6 @@
         return plugins.slice();
     };
 
-    global.FrameworkFactory = FrameworkFactory;
+    root.FrameworkFactory = FrameworkFactory;
 
 })(this);
