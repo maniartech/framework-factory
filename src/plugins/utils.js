@@ -173,7 +173,6 @@
                                 $f.utils.importObject(o[key], val);
                             }
                             break;
-
                         case 'function':
                             if (o[key].importObject !== undefined) {
                                 o[key].importObject(o, key, val);
