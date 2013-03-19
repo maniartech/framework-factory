@@ -39,7 +39,7 @@
     }
 
     //Indentify global object
-    g = environment === "node" ? global : root;
+    FrameworkFactory.global = environment === "node" ? global : root;
 
     /**
      * The current environment in which FrameworkFactory is running.
@@ -123,46 +123,6 @@
                         _config[key] = c[key];
                     }
                 }
-            }
-        }
-
-        //If noConflict config is true and framework detected in global,
-        //resets the global with current version and framework.noConflict()
-        //function returns the other version.
-        if (_config.noConflict === true) {
-
-            //Only support noConflice in non-node environment
-            if (environment !== "node") {
-                if (_config.framework === undefined) {
-                    throw new Error('noConfig functionality is only supported if framework name is supplied.');
-                }
-                //Other version detected.
-                otherVersion = g[_config.framework];
-                if (otherVersion === undefined || (otherVersion.version === _config.version)) {
-                    /**
-                     * If other version of $f is detected `noConflict` fucntion returns
-                     * the other version. This is patricularly useful when more then one
-                     * version of $f is loaded into the browser.
-                     *
-                     * @function $f.noConflict
-                     * @return {$f} The other version of $f if found, otherwise same.
-                     *
-                     * @public
-                     **/
-                    framework.noConflict = function noConflict() {
-                        return framework;
-                    };
-                }
-                else {
-                    framework.noConflict = function noConflict() {
-                        return otherVersion;
-                    };
-                }
-            }
-            else {
-                framework.noConflict = function noConflict() {
-                    throw new Error("The function noConflict is not supported in node environment.");
-                };
             }
         }
 

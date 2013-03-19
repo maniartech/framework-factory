@@ -6,7 +6,7 @@ var frameworkTests = {
 
         var ns = FrameworkFactory.create({
             version: '1.0.1',
-            framework: 'MyFramework',
+            name: 'MyFramework',
             defaultBaseClass: "BaseObject"
         });
 
@@ -15,8 +15,7 @@ var frameworkTests = {
         });
         neq(ns.BaseObject, undefined);
 
-        var ChildClass = ns.Class({
-        });
+        var ChildClass = ns.Class();
         eq(new ChildClass() instanceof ns.BaseObject, true);
 
         ns.BaseObject.attach({
@@ -28,7 +27,7 @@ var frameworkTests = {
         neq (ns, undefined, 'The namespace ns must not be undefined.');
         neq (ns, null, 'The namespace ns must not be null.');
         eq (ns.version, '1.0.1', "Default version must be 1.0.1");
-        eq (ns.framework, 'MyFramework', 'The default framework full name must be "MyFramework"');
+        eq (ns.name, 'MyFramework', 'The default framework full name must be "MyFramework"');
 
         var Cls = ns.Class({});
         var inst = new Cls(); //Class instance.
@@ -165,61 +164,6 @@ test("Framework Basic", function () {
     neq(ns, null, 'The namespace ns must not be null.');
     eq(ns.version, '1.0.0', "Default version must be 1.0.0");
     //eq (ns.framework, 'framework', 'The default framework full name must be "framework"');
-});
-
-test("Framework noConflict tests", function() {
-    //For framework with no version and noConflict = false
-    var ns = FrameworkFactory.create('wonderFramework'), error = 0;
-    eq(ns.version, '1.0.0');
-    eq(ns.config('noConflict'), false);
-
-    //For framework with no name, no version and noConflict = false
-    ns = FrameworkFactory.create();
-    eq(ns.version, '1.0.0');
-    eq(ns.config('noConflict'), false);
-
-    //For framework with no version and noConflict = false passed as config options
-    ns = FrameworkFactory.create({
-            framework: 'wonderFramework'
-        });
-    eq(ns.version, '1.0.0');
-    eq(ns.config('noConflict'), false);
-
-    //For framework with noConflict = true
-    ns = FrameworkFactory.create({
-        framework: 'wonderFramework',
-        noConflict: true
-    });
-
-    eq(ns.noConflict(), ns);
-
-    try {
-        FrameworkFactory.create({
-            noConflict: true
-        });
-    }
-    catch (ex) {
-        error += 1;
-    }
-
-    eq(error, 1);
-
-    window.wonderFramework = ns;
-    ns = FrameworkFactory.create({
-        framework: 'wonderFramework',
-        noConflict: true,
-        version: '2.0.0'
-    });
-
-    neq(ns, window.wonderFramework);
-    eq(ns.noConflict(), window.wonderFramework);
-
-    window.wonderFramework = ns;
-    eq(window.wonderFramework.version, '2.0.0');
-    ns = window.wonderFramework.noConflict();
-    eq(ns.version, '1.0.0');
-    eq(window.wonderFramework.version, '2.0.0');
-
 });
 
 test('Custom Config Tests', frameworkTests.customConfig);
