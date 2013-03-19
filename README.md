@@ -18,7 +18,6 @@ var myFramework = FrameworkFactory.create({
 
 Create new class called Person within myFramework namespace.
 
-
 ```
 myFramework.Person = myFramework.Class({
 
@@ -46,13 +45,69 @@ _myFramework.Person_.
 
 myFramework.Employee = myFramework.Class({
 
-    //Readonly properties can not be set.
-    employeeCode: myFramework.readonly();
+    department: myFramework.readonly(),
+
+    //Define employeeCode property which sets the department
+    //info based on its value.
+    employeeCode: myFramework.property({
+        get: function () {
+            return this._employeeCode;
+        },
+        set: function(v) {
+            if (v !== this._employeeCode) {
+                this._employeeCode = v;
+                if (employeeCode < 100) {
+                    this._department = "Sales";
+                }
+                else {
+                    this._department = "Marketing";
+                }
+
+                //Load other properties like firstName, lastName etc from database.
+            }
+        }
+    }),
 
     //Create an event which is fired when employee is join.
-    join: myFrmaework.event();
+    start: myFrmaework.event();
+
+    init: function (employeeCode) {
+
+        if (employeeCode) {
+            //Initialize an existing employee
+            this.employeeCode = employeeCode;
+        }
+        else {
+            throw new Error("Invalid employeeCode");
+        }
+    },
+
+    work: fuction() {
+        this.trigger("start");
+        //Do work
+    }
 
 }, myFramework.Person);
+
+```
+
+Some applications of dummy framework myFramework.
+
+```
+
+var p1 = new myFramework.Person();
+p1.firstName = "Peter";
+p1.lastName = "Parker";
+console.log(p1.fullName); //Prints Peter Parker
+
+p1.fullName = "Peter Thompson"; //Can't set read-only properties
+
+var e1 = new myFramework.Employee(10);
+console.log(e1.employeeCode); //Prints 10
+console.log(e1.department); //Prints Sales
+console.log(e1 instanceof Employee) //Prints true
+console.log(e1 instanceof Person) //Prints true
+console.log(e1.fullName); //Prints the fullName loaded from the database.
 
 ```
 
