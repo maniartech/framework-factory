@@ -13,6 +13,8 @@ sources = [
 
 tests = [
     'support',
+    'core',
+    'events',
     'test'
 ];
 
