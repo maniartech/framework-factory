@@ -29,14 +29,6 @@
             proto[key] = function (handler) {
                 this.on(key, handler);
                 return this;
-
-				// var privKey = '_' + key;
-
-    //             if (this[privKey] === undefined) {
-    //                 this[privKey] = [];
-    //             }
-    //             this[privKey].push(handler);
-    //             return this;
             };
 
             proto[key].importObject = function (o, k, v) {

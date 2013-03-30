@@ -64,8 +64,13 @@ module("Class Tests");
             neq( p1.name, p2.name, 'p1.name must not be equal to p2.name');
         },
         inheritance: function(){
-
+            var person = new Person();
+            person.age = 10;
             var t1 = new Teacher('T');
+            t1.age = 20;
+            neq(t1.age, person.age);
+            console.log(t1);
+
             eq (t1.name, 'T', 'Should call base class\' init method if '
                 + 'init in not defined in derived class');
 

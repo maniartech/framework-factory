@@ -1,5 +1,6 @@
 
-Object.create = Object.create || function (o) {
+Object.create = Object.create ||
+function create(o) {
     "use strict";
 
     function F() {}
@@ -8,7 +9,8 @@ Object.create = Object.create || function (o) {
 };
 
 
-Object.getPrototypeOf = Object.getPrototypeOf || function () {
+Object.getPrototypeOf = Object.getPrototypeOf ||
+function getPrototypeOf() {
     "use strict";
 
     if (typeof "test".__proto__ === "object") {
@@ -24,7 +26,7 @@ Object.getPrototypeOf = Object.getPrototypeOf || function () {
 };
 
 Array.prototype.indexOf = Array.prototype.indexOf ||
-function (obj, start) {
+function indexOf(obj, start) {
     "use strict";
 
     for (var i = (start || 0), j = this.length; i < j; i += 1) {
@@ -36,7 +38,8 @@ function (obj, start) {
 };
 
 
-String.trim = String.trim || function (s) {
+String.trim = String.trim ||
+function trim(s) {
     "use strict";
     return s.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 };

@@ -228,7 +228,7 @@ framework.collections.MapList = framework.Class({
  * Sets the value into collection
  **/
 framework.collections.MapList.importObject = function importObject(o, key, value) {
-	var colObj = o[key];
+    var colObj = o[key];
     if (colObj instanceof framework.collections.MapList === false) {
         throw new Error('Operation "set" not supported on this object.');
     }
@@ -299,6 +299,7 @@ var Button = framework.Class({
     caption: framework.attribute('Button', {
         type: 'string'
     }),
+
     isDefault: framework.attribute(false, {
         type: 'boolean'
     }),
@@ -354,7 +355,18 @@ var Component = framework.Class({
 
     length: framework.readonly(0),
     add: function() {
-	    this._length += 1;
+        this._length += 1;
+    }
+});
+
+
+var X = framework.Class({
+    x: 10,
+    init: function(x) {
+        if (!x) {
+            throw new Error("x must be defined");
+        }
+        this.x = x;
     }
 });
 

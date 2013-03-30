@@ -105,7 +105,6 @@
         if (typeof c === "string") {
             _config.name = c;
             _config.version = '1.0.0';
-            _config.noConflict = false;
             framework = {};
         }
         else {
@@ -113,7 +112,6 @@
 
             _config.name = c.name || "framework";
             _config.version = c.version || '1.0.0';
-            _config.noConflict = (c.noConflict === undefined) ? false : c.noConflict;
 
             framework = _config.root || {};
 
