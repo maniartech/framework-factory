@@ -1,15 +1,14 @@
 #Framework Factory#
 
-Framework factory is a tiny, well-designed and yet powerful factory framework for developing modern Object Oriented JavaScript based class libraries and applications. Its pluggable architecture and amazing combination of tools (configuration handling, read-only members, events, properties, class inheritance, and much more) gives you enough power to create robust applications which are compatible with your favorite JavaScript library (jQuery, mooTools, underscore), your favorite platform (Modern Browser, NodeJS) and your favorite language (JavaScript, CoffeeScript and TypeScript).
+Framework factory is a tiny, well-designed and yet powerful factory framework for developing modern Object Oriented JavaScript based class libraries, frameworks and applications. Its pluggable architecture and amazing combination of tools (configuration handling, read-only members, events, properties, class inheritance, and much more) gives you enough power to create robust applications which are compatible with your favorite JavaScript library (jQuery, mooTools, underscore), your favorite platform (Modern Browser, NodeJS) and your favorite language (JavaScript, CoffeeScript and TypeScript).
 
-**Example:**
 
-Following example shows how is a simple farmework called _myFramework_ created.
+**Following example shows how a simple farmework called _myFramework_ is created.**
+
+Create a new Framework called myFramework through _FrameworkFactory.create_
+function. This function accepts configuration object.
 
 ```
-
-//Create a new Framework called myFramework through FrameworkFactory.create
-//function. This function accepts configuration parameter
 var myFramework = FrameworkFactory.create({
     name: "myFramework",
     version: "1.0.0"
@@ -21,13 +20,14 @@ Create new class called Person within myFramework namespace.
 ```
 myFramework.Person = myFramework.Class({
 
-    //Cretes a new attribute called name with default value first-name.
+    //An attribute called firstName with default value first-name.
     firstName: myFramework.attribute("first-name"),
 
-    //Cretes a new attribute called name with default value last-name.
+    //An attribute called lastName with default value last-name.
     lastName: myFramework.attribute("last-name"),
 
-    //Create a
+    //A readonly field fullName which returns fullName. Readonly fields
+    //can not be changed directly.
     fullName: myFramework.readonly({
         get: function () {
             return this.firstName + " " + this.lastName;
