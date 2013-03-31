@@ -2,6 +2,7 @@
 (function (root, undefined) {
     "use strict";
 
+    var FrameworkFactory = root.FrameworkFactory;
 
     function plugin($f) {
 
@@ -115,22 +116,20 @@
                     }
                     return this;
                 };
-
             }
         };
 
-        $f.typeHandlers.event = eventHandler;
-
+        FrameworkFactory.typeHandlers.register("event", eventHandler);
     }
 
     plugin.info = {
-        name: 'plugin'
+        name: 'events'
     };
 
     plugin.toString = function () {
         return plugin.info.name;
     };
 
-    root.FrameworkFactory.plugins.register(plugin);
+    FrameworkFactory.plugins.register(plugin);
 
 })(this);

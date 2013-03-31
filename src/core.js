@@ -3,6 +3,7 @@
 
     var FrameworkFactory,
         plugins = [],
+        typeHandlers = {},
         i, iLen,
         environment, //Environement - node, requirejs or browser
         g; //Global
@@ -187,48 +188,117 @@
      * @public
      * @version 1.0
      **/
-    FrameworkFactory.plugins = {};
+    FrameworkFactory.plugins = {
 
-    /**
-     * Registers the new plugin for the framework. Once registered all the frameworks
-     * created henceforth will have specified plugin available.
-     * @param {Object} The plugin object.
-     * @public
-     * @version 1.0
-     **/
-    FrameworkFactory.plugins.register = function register(p) {
+        /**
+         * Registers the new plugin for the framework. Once registered all the frameworks
+         * created henceforth will have specified plugin available.
+         * @param {Object} The plugin object.
+         * @public
+         * @version 1.0
+         **/
+        register: function register(p) {
 
-        if (typeof p === 'function' || typeof p === 'object') {
-            plugins.push(p);
-            return;
+            if (typeof p === 'function' || typeof p === 'object') {
+                plugins.push(p);
+                return;
+            }
+            throw new Error('Invalid plugin type.');
+        },
+
+        /**
+         * Gets the names of all available plugins with FrameworkFactory.
+         *
+         * @returns {Array} The plugin names array.
+         * @public
+         * @version 1.0
+         **/
+        getNames: function getNames() {
+            var names = [],
+                i, iLen;
+            for (i = 0, iLen = plugins.length; i < iLen; i += 1) {
+                names.push(plugins[i].info.name);
+            }
+            return names;
+        },
+
+        /**
+         * Gest the array of all the the registered plugins with FramewrokFactory.
+         * @returns {Array} The plugings array.
+         * @public
+         * @version 1.0
+         **/
+        toArray: function toArray() {
+            return plugins.slice();
         }
-        throw new Error('Invalid plugin type.');
+
     };
 
+
+
     /**
-     * Gets the names of all available plugins with FrameworkFactory.
+     * Represents the typeHandlers registry object.
      *
-     * @returns {Array} The plugin names array.
+     * @memberOf FrameworkFactory
      * @public
      * @version 1.0
      **/
-    FrameworkFactory.plugins.getNames = function getNames() {
-        var names = [],
-            i, iLen;
-        for (i = 0, iLen = plugins.length; i < iLen; i += 1) {
-            names.push(plugins[i].info.name);
-        }
-        return names;
-    };
+    FrameworkFactory.typeHandlers = {
 
-    /**
-     * Gest the array of all the the registered plugins with FramewrokFactory.
-     * @returns {Array} The plugings array.
-     * @public
-     * @version 1.0
-     **/
-    FrameworkFactory.plugins.toArray = function toArray() {
-        return plugins.slice();
+        /**
+         * Registers the new typeHandler for the framework.
+         *
+         * @function
+         * @param {Object} handler The typeHandler which needs to be registered.
+         *
+         * @namespace FrameworkFactory.typeHandlers
+         * @public
+         * @version 1.0
+         **/
+        register: function register(type, handler) {
+
+            if (typeof handler === 'function') {
+                typeHandlers[type] = handler;
+                return;
+            }
+            throw new Error('Invalid typeHandler.');
+        },
+
+        /**
+         * Returns the handler function which is used to handle associated types during class creation.
+         *
+         * @function
+         * @param {string} type The type name of typeHandler.
+         * @returns {function} The handler function.
+         *
+         * @namespace FrameworkFactory.typeHandlers
+         * @public
+         * @version 1.0
+         **/
+        get: function get(type) {
+            return typeHandlers[type];
+        },
+
+        /**
+         * Gets the types of all available typeHandlers with FrameworkFactory.
+         *
+         * @function
+         * @returns {Array} The string array which contains types of all registered type handlers.
+         *
+         * @namespace FrameworkFactory.typeHandlers
+         * @public
+         * @version 1.0
+         **/
+        getTypes: function getTypes() {
+            var types = [],
+                type;
+            for (type in typeHandlers) {
+                if (typeHandlers.hasOwnProperty(type)) {
+                    types.push(type);
+                }
+            }
+            return types;
+        }
     };
 
     root.FrameworkFactory = FrameworkFactory;

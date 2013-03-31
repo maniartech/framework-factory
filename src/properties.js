@@ -1,6 +1,8 @@
 
-(function (global, undefined) {
+(function (root, undefined) {
     "use strict";
+
+    var FrameworkFactory = root.FrameworkFactory;
 
     function plugin($f) {
 
@@ -238,19 +240,19 @@
         $f.property     = property;
         $f.readonly     = readonly;
 
-        $f.typeHandlers.property = handler;
-        $f.typeHandlers.readonly = handler;
+        FrameworkFactory.typeHandlers.register("property", handler);
+        FrameworkFactory.typeHandlers.register("readonly", handler);
 
     }
 
     plugin.info = {
-        name: 'plugin'
+        name: 'properties'
     };
 
     plugin.toString = function toString() {
         return plugin.info.name;
     };
 
-    global.FrameworkFactory.plugins.register(plugin);
+    FrameworkFactory.plugins.register(plugin);
 
 })(this);

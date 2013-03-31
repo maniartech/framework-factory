@@ -1,5 +1,7 @@
-(function (global, undefined) {
+(function (root, undefined) {
     "use strict";
+
+    var FrameworkFactory = root.FrameworkFactory;
 
     function plugin($f) {
 
@@ -89,7 +91,7 @@
             },
 
             inBrowser: function browser() {
-                return window !== undefined && global === window;
+                return window !== undefined && root === window;
             }
         };
 
@@ -104,6 +106,6 @@
         return plugin.info.name;
     };
 
-    global.FrameworkFactory.plugins.register(plugin);
+    FrameworkFactory.plugins.register(plugin);
 
 })(this);

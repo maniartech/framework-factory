@@ -275,8 +275,11 @@ var Person = framework.Class({
 
 
 var Employee = framework.Class({
-    init: function(name) {
-        this.base(name);
+
+    age: 20,
+
+    init: function(n) {
+        this.base(n);
     },
 
     info: function() {

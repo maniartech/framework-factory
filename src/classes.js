@@ -1,22 +1,28 @@
 this.counter = 0;
-(function (global, undefined) {
+(function (root, undefined) {
     "use strict";
+
+    var FrameworkFactory = root.FrameworkFactory;
 
     function _plainObject (val) {
         if (val === undefined || val === null) { return false; }
         return ((typeof val === 'object') && (val.constructor === Object));
     }
 
-    function _copyKeys(o, newO, updateMeta) {
+    function _copyKeys(o, newO, overrideExisting) {
         var key, val;
+
+        overrideExisting = (overrideExisting === undefined) ? true : overrideExisting;
 
         for(key in o) {
             if (o.hasOwnProperty(key)) {
                 val = o[key];
-                newO[key] = val;
-                if (updateMeta) {
-                    if (_plainObject(val)) {
-                        console.log(val);
+                if (overrideExisting) {
+                    newO[key] = val;
+                }
+                else {
+                    if(key in newO === false) {
+                        newO[key] = val;
                     }
                 }
             }
@@ -24,15 +30,14 @@ this.counter = 0;
     }
 
     function _updateMeta(Class) {
-        var meta = {},
-            curMeta = Class.__meta__,
-            parentMeta = Class.__super__.constructor.__meta__;
+        var meta = Class.__meta__,
+            parentMeta = {};
 
-        if(parentMeta) {
-            _copyKeys(parentMeta, meta);
+        if(Class.__super__.constructor.__meta__) {
+            _copyKeys(Class.__super__.constructor.__meta__, parentMeta);
         }
 
-        _copyKeys(meta, curMeta, true);
+        _copyKeys(parentMeta, meta, false);
     }
 
     function plugin($f) {
@@ -44,8 +49,6 @@ this.counter = 0;
             Class;
 
         Class = function (prop, parent) {
-            //Checks if base exists in overriden function, inspired by John Resig's class
-            //implementation.
             var hasProp = Object.prototype.hasOwnProperty,
                 proto, key, Class, __super__, funcString,
                 customParent = false;
@@ -110,12 +113,14 @@ this.counter = 0;
                         processed = false;
 
                         if ($f.is.plainObject(item)) {
-                            typeHandler = $f.typeHandlers[item.type];
+                            typeHandler = FrameworkFactory.typeHandlers.get(item.type);
                             if (typeHandler !== undefined) {
                                 typeHandler(Class, key, item);
                                 processed = true;
                             }
                         }
+                        //Checks if base exists in overriden function, inspired by John Resig's class
+                        //implementation.
                         else if (type === 'function' &&
                                 typeof __super__[key] === 'function' &&
                                 fnTest.test(item)) {
@@ -131,8 +136,6 @@ this.counter = 0;
                             })(key, item);
                             processed = true;
                         }
-
-                        //console.log([key, type == 'function', typeof __super__[key], fnTest.test(item)]);
 
                         if (!processed) {
                             proto[key] = val;
@@ -158,14 +161,13 @@ this.counter = 0;
     }
 
     plugin.toString = function() {
-        return "plugin";
+        return plugin.info.name;
     };
 
     plugin.info = {
-        name: 'plugin'
+        name: "classes"
     };
 
     FrameworkFactory.plugins.register(plugin);
-
 
 })(this);

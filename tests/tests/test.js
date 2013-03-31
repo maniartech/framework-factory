@@ -69,7 +69,6 @@ module("Class Tests");
             var t1 = new Teacher('T');
             t1.age = 20;
             neq(t1.age, person.age);
-            console.log(t1);
 
             eq (t1.name, 'T', 'Should call base class\' init method if '
                 + 'init in not defined in derived class');
@@ -84,6 +83,8 @@ module("Class Tests");
             eq (p1.info(), 'Person', 'Must return "Person"');
 
             eq (e1.info(), 'Employee', 'Must return "Employee"');
+
+            console.log(Employee.__meta__);
 
         }
     };
