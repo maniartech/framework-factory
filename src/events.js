@@ -120,12 +120,6 @@
                 proto[key].importObject = function (o, k, v) {
                     o[k].call(o, v);
                 };
-
-
-                if (proto.on === undefined) {
-
-
-                }
             }
         });
     }

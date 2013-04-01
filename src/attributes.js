@@ -7,11 +7,10 @@
     function plugin($f) {
 
 
-        var attribute = function (defaultValue, options) {
+        var attribute = function (defaultValue) {
                 return {
                     type: 'attribute',
-                    defaultValue: defaultValue,
-                    options: options
+                    defaultValue: defaultValue
                 };
             };
 
@@ -33,7 +32,7 @@
 
         FrameworkFactory.typeHandlers.register({
             type: "attribute",
-            hanlder: function handler(Class, key, options) {
+            handler: function handler(Class, key, options) {
                 var proto = Class.prototype;
                 proto[key] = options.defaultValue;
             }
