@@ -12,32 +12,10 @@
             };
         };
 
-        var eventHandler = function (Class, key) {
-
-            var proto = Class.prototype;
-
-            /**
-             * Registers the event for particular event.
-             * @function
-             * @param {function} handler The handler function which should be invoked on event.
-             * @returns The current object.
-             * @example
-             * var btn = new Button();
-             * btn.mouseMove(function(){
-             *     console.log('mouse is moving');
-             * });
-             **/
-            proto[key] = function (handler) {
-                this.on(key, handler);
-                return this;
-            };
-
-            proto[key].importObject = function (o, k, v) {
-                o[k].call(o, v);
-            };
-
-
-            if (proto.on === undefined) {
+        FrameworkFactory.typeHandlers.register({
+            type: "event",
+            init: function init(Class) {
+                var proto = Class.prototype;
 
                 /**
                  * Registers the event handler for one or more plugin.
@@ -116,10 +94,40 @@
                     }
                     return this;
                 };
-            }
-        };
 
-        FrameworkFactory.typeHandlers.register("event", eventHandler);
+            },
+
+            handler: function handler(Class, key) {
+
+                var proto = Class.prototype;
+
+                /**
+                 * Registers the event for particular event.
+                 * @function
+                 * @param {function} handler The handler function which should be invoked on event.
+                 * @returns The current object.
+                 * @example
+                 * var btn = new Button();
+                 * btn.mouseMove(function(){
+                 *     console.log('mouse is moving');
+                 * });
+                 **/
+                proto[key] = function (handler) {
+                    this.on(key, handler);
+                    return this;
+                };
+
+                proto[key].importObject = function (o, k, v) {
+                    o[k].call(o, v);
+                };
+
+
+                if (proto.on === undefined) {
+
+
+                }
+            }
+        });
     }
 
     plugin.info = {
