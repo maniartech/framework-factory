@@ -4,6 +4,20 @@ this.counter = 0;
 
     var FrameworkFactory = root.FrameworkFactory;
 
+    function _initTypeHandlers(Class) {
+        var types = FrameworkFactory.typeHandlers.getTypes(),
+            type, typeHandler,
+            i, iLen;
+
+        for (i=0, iLen=types.length; i < iLen; i += 1) {
+            type = types[i];
+            typeHandler = FrameworkFactory.typeHandlers.get(type);
+            if (typeHandler.init) {
+                typeHandler.init(Class);
+            }
+        }
+    }
+
     function _plainObject (val) {
         if (val === undefined || val === null) { return false; }
         return ((typeof val === 'object') && (val.constructor === Object));
@@ -113,7 +127,7 @@ this.counter = 0;
                         processed = false;
 
                         if ($f.is.plainObject(item)) {
-                            typeHandler = FrameworkFactory.typeHandlers.get(item.type);
+                            typeHandler = FrameworkFactory.typeHandlers.get(item.type).handler;
                             if (typeHandler !== undefined) {
                                 typeHandler(Class, key, item);
                                 processed = true;
@@ -148,7 +162,7 @@ this.counter = 0;
             };
 
             Class.__meta__ = {};
-
+            _initTypeHandlers(Class);
             Class.attach(prop);
 
             //return

@@ -137,13 +137,6 @@
         framework.name = _config.name;
 
         /**
-         *
-         * @public
-         * @version 1.0
-         */
-        framework.typeHandlers = {};
-
-        /**
          * Returns the
          * @function config
          **/
@@ -255,10 +248,10 @@
          * @public
          * @version 1.0
          **/
-        register: function register(type, handler) {
+        register: function register(o) {
 
-            if (typeof handler === 'function') {
-                typeHandlers[type] = handler;
+            if (typeof o === 'object') {
+                typeHandlers[o.type] = o;
                 return;
             }
             throw new Error('Invalid typeHandler.');

@@ -240,8 +240,15 @@
         $f.property     = property;
         $f.readonly     = readonly;
 
-        FrameworkFactory.typeHandlers.register("property", handler);
-        FrameworkFactory.typeHandlers.register("readonly", handler);
+        FrameworkFactory.typeHandlers.register({
+            type: "property",
+            handler: handler
+        });
+
+        FrameworkFactory.typeHandlers.register({
+            type: "readonly",
+            handler: handler
+        });
 
     }
 
