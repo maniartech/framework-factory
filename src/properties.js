@@ -21,7 +21,7 @@
         function attachProperty(obj, key, getter, setter) {
 
             setter = setter || function () {
-                throw new Error('You are not allowed to write to readonly property "' + key + '".');
+                throw new Error('Can not assign to readonly property "' + key + '".');
             };
 
             if (Object.defineProperty) {
@@ -33,6 +33,9 @@
             else if (obj.__defineGetter__ !== undefined) {
                 obj.__defineGetter__(key, getter);
                 obj.__defineSetter__(key, setter);
+            }
+            else {
+                throw new Error("Properties are not supported in current environment.");
             }
         }
 

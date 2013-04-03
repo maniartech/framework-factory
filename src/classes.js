@@ -1,4 +1,3 @@
-this.counter = 0;
 (function (root, undefined) {
     "use strict";
 
@@ -157,7 +156,6 @@ this.counter = 0;
                         Class.__meta__[key] = item;
                     }
                 }
-                counter += 1;
                 _updateMeta(Class);
             };
 
