@@ -71,6 +71,8 @@ myFramework.Employee = myFramework.Class({
     //Create an event which is fired when employee is join.
     start: myFrmaework.event();
 
+    //Constructor function, initializes the new instance of
+    //myFramework.Employee
     init: function (employeeCode) {
 
         if (employeeCode) {
@@ -109,7 +111,6 @@ console.log(e1 instanceof Person) //Prints true
 console.log(e1.fullName); //Prints the fullName loaded from the database.
 
 ```
-
 
 ## Under Development ##
 FrameworkFactory is currently under development we are planning to releast first version during April 2013.
