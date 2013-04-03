@@ -25,10 +25,11 @@
                  * btn.on('mousemove mouseout mouseup', function() {});
                  **/
                 proto.on = function (eventNames, eventHandler) {
-                    var names = eventNames.split(' '),
+                    //Conver the event names to lower case.
+                    var names = eventNames.toLowerCase().split(' '),
                         i, iLen, eventName,
                         privKey;
-
+                    //debugger
                     if (!$f.is.func(eventHandler)) {
                         throw new Error('Only functions can be registered as event handler');
                     }
@@ -57,10 +58,9 @@
                  **/
                 proto.trigger = function (eventName, args) {
 
-                    var s = this['_' + eventName],
+                    var s = this['_' + eventName.toLowerCase()],
                             callback,
                             i;
-                    //console.log(eventName, s);
                     if (s === undefined || s.length === 0) {
                         return this; //No need to fire event, sicne there is no subscriber.
                     }
@@ -69,7 +69,7 @@
                     for (i = 0; i < s.length; i += 1) {
                         callback = s[i];
                         if (callback.call(this, args) === false) {
-                            //no more firing, if handler returns falses
+                            //no more firing, if handler returns false.
                             break;
                         }
                     }
@@ -80,7 +80,7 @@
                  * Disassociate the handler from the trigger.
                  **/
                 proto.off = function (eventName, handler) {
-                    var arr = this['_' + eventName],
+                    var arr = this['_' + eventName.toLowerCase()],
                         index;
 
                     //Specified event not registered so no need to put it off.
@@ -93,6 +93,10 @@
                         arr.splice(index, 1);
                     }
                     return this;
+                };
+
+                proto.event = function (eventName) {
+                    return this['_' + eventName.toLowerCase()] || [];
                 };
 
             },
@@ -112,8 +116,8 @@
                  *     console.log('mouse is moving');
                  * });
                  **/
-                proto[key] = function (handler) {
-                    this.on(key, handler);
+                proto[key] = function (eventHandler) {
+                    this.on(key, eventHandler);
                     return this;
                 };
 
