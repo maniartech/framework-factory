@@ -8,7 +8,7 @@ Framework factory is a tiny, well-designed and yet powerful factory framework fo
 Create a new Framework called myFramework through _FrameworkFactory.create_
 function. This function accepts configuration object.
 
-```
+```js
 var myFramework = FrameworkFactory.create({
     name: "myFramework",
     version: "1.0.0"
@@ -17,7 +17,7 @@ var myFramework = FrameworkFactory.create({
 
 Create new class called Person within myFramework namespace.
 
-```
+```js
 myFramework.Person = myFramework.Class({
 
     //An attribute called firstName with default value first-name.
@@ -41,8 +41,8 @@ myFramework.Person = myFramework.Class({
 Create another class called _myFramework.Employee_ which is derived from
 _myFramework.Person_.
 
-```
 
+```js
 myFramework.Employee = myFramework.Class({
 
     department: myFramework.readonly(),
@@ -93,8 +93,7 @@ myFramework.Employee = myFramework.Class({
 
 Some applications of dummy framework myFramework.
 
-```
-
+```js
 var p1 = new myFramework.Person();
 p1.firstName = "Peter";
 p1.lastName = "Parker";
