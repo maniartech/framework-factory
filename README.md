@@ -32,7 +32,14 @@ myFramework.Person = myFramework.Class({
         get: function () {
             return this.firstName + " " + this.lastName;
         }
-    })
+    }),
+
+    //Represents an event which is fired when person starts working.
+    start: myFrmaework.event();
+
+    work: function () {
+        this.trigger("start");
+    }
 
 });
 
@@ -68,9 +75,6 @@ myFramework.Employee = myFramework.Class({
         }
     }),
 
-    //Create an event which is fired when employee is join.
-    start: myFrmaework.event();
-
     //Constructor function, initializes the new instance of
     //myFramework.Employee
     init: function (employeeCode) {
@@ -84,9 +88,12 @@ myFramework.Employee = myFramework.Class({
         }
     },
 
+    //Employee starts working.
     work: fuction() {
-        this.trigger("start");
-        //Do work
+        console.log("Employee started working.");
+
+        //Call base class function, which will fire "start" event.
+        this.base();
     }
 
 }, myFramework.Person);
