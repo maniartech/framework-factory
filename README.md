@@ -93,7 +93,7 @@ myFramework.Employee = myFramework.Class({
     work: fuction() {
         console.log("Employee started working.");
 
-        //Call base class function, which will fire "start" event.
+        //Call base class' work function, which will fire "start" event.
         this.base();
     }
 
