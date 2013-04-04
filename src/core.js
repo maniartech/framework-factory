@@ -97,7 +97,7 @@
     FrameworkFactory.create = function create(c) {
 
         var _config = {},
-            framework,
+            $f,
             otherVersion = null,
             plugin,
             name,
@@ -106,7 +106,7 @@
         if (typeof c === "string") {
             _config.name = c;
             _config.version = '1.0.0';
-            framework = {};
+            $f = {};
         }
         else {
             c = c || {};
@@ -114,7 +114,7 @@
             _config.name = c.name || "framework";
             _config.version = c.version || '1.0.0';
 
-            framework = _config.root || {};
+            $f = _config.root || {};
 
             for (key in c) {
                 if (c.hasOwnProperty(key) === true) {
@@ -131,24 +131,37 @@
          *
          * @
          */
-        framework.version = _config.version;
+        $f.version = _config.version;
 
         //sets the framework name
-        framework.name = _config.name;
+        $f.name = _config.name;
 
         /**
          * Returns the
          * @function config
          **/
-        framework.config = function config(cfg, defaultValue) {
-            if (_config[cfg] !== undefined) {
-                return _config[cfg];
+        $f.config = function config(key, defaultValue) {
+            if (_config[key] !== undefined) {
+                return _config[key];
             }
             return defaultValue;
         };
 
-        framework.config.set = function set(value) {
-            _config[key] = value;
+        $f.config.set = function set() {
+            var o = arguments[0],
+                key;
+
+            if (arguments.length === 1 && typeof(o) === "object") {
+                for(key in o) {
+                    if (o.hasOwnProperty(key) === true) {
+                        _config[key] = o[key];
+                    }
+                }
+            }
+            else if (arguments.length === 2) {
+                _config[arguments[0]] = arguments[1];
+            }
+
         };
 
         //Load plugins
@@ -158,18 +171,18 @@
             name = plugin.info.name;
 
             //Checks if plugin loaded
-            if (framework[name] !== undefined) {
+            if ($f[name] !== undefined) {
                 throw new Error('Plugin with the name "' + plugin.name + '" already loaded.');
             }
 
             //If plugin is defined as function, execute it.
             if (typeof plugin === 'function') {
-                plugin(framework);
+                plugin($f);
                 plugin.initialized = true;
             }
         }
 
-        return framework;
+        return $f;
     };
 
     /**
