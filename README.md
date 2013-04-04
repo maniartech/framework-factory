@@ -37,6 +37,7 @@ myFramework.Person = myFramework.Class({
     //Represents an event which is fired when person starts working.
     start: myFrmaework.event();
 
+    //Person starts working
     work: function () {
         this.trigger("start");
     }
