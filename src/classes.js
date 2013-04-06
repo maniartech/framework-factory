@@ -81,22 +81,36 @@
             //proto = Object.create(parent.prototype)
             initializing = false;
 
-            Class = function Object() {
-                if (requireNew && this instanceof Class === false) {
-                    throw new Error('Class used as function.');
-                }
-                else if(requireNew === false && this instanceof Class === false) {
-                    var inst = Object.create(proto);
-                    if (initializing === false && inst.init !== undefined) {
-                        inst.init.apply(inst, arguments);
+            if (requireNew) {
+                Class = function Object() {
+                    if (this instanceof Class === false) {
+                        throw new Error('Class used as function.');
                     }
-                    return inst;
-                }
-                //this.constructor = Class;
-                if (initializing === false && this.init !== undefined) {
-                    this.init.apply(this, arguments);
-                }
-            };
+                    //this.constructor = Class;
+                    if (initializing === false && this.init !== undefined) {
+                        this.init.apply(this, arguments);
+                    }
+                };
+            }
+            else {
+                Class = function Object() {
+                    var init = initializing,
+                        inst = null;
+                    if(this instanceof Class === false) {
+                        initializing = true;
+                        inst = new Class();
+                        initializing = init;
+                        if (initializing === false && inst.init !== undefined) {
+                            inst.init.apply(inst, arguments);
+                        }
+                        return inst;
+                    }
+                    //this.constructor = Class;
+                    if (initializing === false && this.init !== undefined) {
+                        this.init.apply(this, arguments);
+                    }
+                };
+            }
 
             //for each static members in parents, copy'em to child
             for (key in parent) {
