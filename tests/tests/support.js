@@ -295,17 +295,11 @@ var Teacher = framework.Class({
 var Button = framework.Class({
 
     //Attributes
-    clickCount: framework.attribute(0, {
-        type: 'number'
-    }),
+    clickCount: framework.attribute(0),
 
-    caption: framework.attribute('Button', {
-        type: 'string'
-    }),
+    caption: framework.attribute('Button'),
 
-    isDefault: framework.attribute(false, {
-        type: 'boolean'
-    }),
+    isDefault: framework.attribute(false),
 
     //Events
     click: framework.event(),
@@ -354,7 +348,6 @@ var Component = framework.Class({
             return this._clickCount;
         }
     }),
-
 
     length: framework.readonly(0),
     add: function() {

@@ -183,6 +183,10 @@
 
             }
 
+            if (value !== undefined) {
+                proto[privateKey] = value;
+            }
+
             // return;
 
             // if (getter !== undefined && setter === undefined) {
