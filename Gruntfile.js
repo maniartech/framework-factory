@@ -18,7 +18,8 @@ var src = [
         'src/classes.js',
         'src/attributes.js',
         'src/events.js',
-        'src/properties.js'
+        'src/properties.js',
+        'src/observables.js'
     ],
     plugins = [
         'src/plugins/deep-copy.js',

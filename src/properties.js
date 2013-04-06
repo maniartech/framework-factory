@@ -6,6 +6,8 @@
 
     function plugin($f) {
 
+        var readonly, property, handler;
+
         /**
          * Attaches the property to the given object. If setter is not specified creates reaonly property.
          * @param {Object} obj The object on which property has to be attached.
@@ -21,11 +23,13 @@
         function attachProperty(obj, key, getter, setter) {
 
             setter = setter || function () {
-                throw new Error('Can not assign to readonly property "' + key + '".');
+                throw new Error('Cannot assign to readonly property "' + key + '".');
             };
 
             if (Object.defineProperty) {
                 Object.defineProperty(obj, key, {
+                    enumerable: true,
+                    configurable: true,
                     get: getter,
                     set: setter
                 });
@@ -40,6 +44,31 @@
         }
 
         /**
+         *
+         */
+        readonly = function readonly(options) {
+            var get, value;
+
+            if ($f.is.plainObject(options)) {
+                value = options.value;
+                if ($f.is.func(options.get)) {
+                    get = options.get;
+                }
+            }
+            else {
+                value = options;
+            }
+
+            return {
+                type            : 'readonly',
+                value           : value,
+                readonly        : true,
+                get             : get,
+                set             : undefined
+            };
+        };
+
+        /**
          * While defining class, this function sets the member as
          * a property.
          * @param: defaultValue, the default value of property
@@ -48,196 +77,193 @@
          * @public
          * @version 1.0.0
          **/
-        var property = function property(options) {
+        property = function property(options) {
 
-                var valueOf,
-                    value,
-                    get, set,
-                    readonly,
-                    observable = true;
+            var valueOf,
+                value,
+                get, set;
 
-                if (typeof options === 'object') {
-                    valueOf = options.valueOf();
-                    //Incase of Object based primitive plugin like
-                    // new String('abc')
-                    // new Date('123')
-                    if (typeof valueOf !== 'object' && typeof valueOf !== 'function') {
-                        //Set primitive
-                        value = options.value;
-                        get = options.get;
-                    }
-                    else {
-                        //If is object but only getter is found
-                        observable  = false;
-                        value       = options.value;
-                        if (options.get !== undefined && options.set === undefined) {
-                            readonly = true;
-                            if (arguments[1] === true) {
-                                observable = true;
-                            }
-                        }
-                        else if (options.get === undefined && options.set === undefined) {
-                            throw new Error('Neither get nor set found in property declaration. This type of object is not currently supported.');
-                        }
-                        else {
-                            get = options.get;
-                            set = options.set;
-                        }
-                    }
+            if ($f.is.plainObject(options)) {
+                value = options.value;
+                get = options.get;
+                set = options.set;
+
+                //If get is provided but not set, return readonly version.
+                if (get && !set) {
+                    return readonly(options);
                 }
-                else if (typeof options === 'function') {
-                    throw new Error('functions not supported as property default value.');
-                }
-                else {
-                    value = options;
-                    if (arguments[1] === true) {
-                        observable = true;
-                    }
-                }
+            }
+            else {
+                value = options;
+            }
 
-                options = options || {};
+            return {
+                type : 'property',
+                readonly : false,
+                value : value,
+                get : get,
+                set : set
+            };
 
-                return {
-                    type        : 'property',
-                    value       : value,
-                    readonly    : readonly,
-                    observable  : observable || false,
-                    get         : options.get,
-                    set         : options.set
-                };
-            },
+            // if (typeof options === 'object') {
+            //     valueOf = options.valueOf();
+            //     //Incase of Object based primitive plugin like
+            //     // new String('abc')
+            //     // new Date('123')
+            //     if (typeof valueOf !== 'object' && typeof valueOf !== 'function') {
+            //         //Set primitive
+            //         value = options.value;
+            //         get = options.get;
+            //     }
+            //     else {
+            //         //If is object but only getter is found
+            //         observable  = false;
+            //         value       = options.value;
+            //         if (options.get !== undefined && options.set === undefined) {
+            //             readonly = true;
+            //             if (arguments[1] === true) {
+            //                 observable = true;
+            //             }
+            //         }
+            //         else if (options.get === undefined && options.set === undefined) {
+            //             throw new Error('Neither get nor set found in property declaration. This type of object is not currently supported.');
+            //         }
+            //         else {
+            //             get = options.get;
+            //             set = options.set;
+            //         }
+            //     }
+            // }
+            // else {
+            //     value = options;
+            //     if (arguments[1] === true) {
+            //         observable = true;
+            //     }
+            // }
 
-            /**
-             *
-             */
-            readonly = function readonly(value) {
-				var options = {},
-                    getter;
+            // options = options || {};
 
-				if ($f.is.plainObject(value)) {
-					options = value;
-					value = (options.value !== undefined) ? options.value : undefined;
-					if ($f.is.func(options.get)) {
-						getter = options.get;
-					}
-				}
+            // return {
+            //     type        : 'property',
+            //     value       : value,
+            //     readonly    : readonly,
+            //     get         : options.get,
+            //     set         : options.set
+            // };
+        };
 
-                return {
-                    type            : 'readonly',
-                    value           : value,
-                    readonly        : true,
-                    observable      : false,
-                    get             : getter,
-                    set             : undefined
-                };
-            },
+        handler = function (Class, key, options) {
 
-            handler = function (Class, key, options) {
+            var proto       = Class.prototype, _get, _set,
+                readonly    = options.readonly,
+                getter      = options.get,
+                setter      = options.set,
+                privateKey     = '_' + key,
+                value       = options.value;
 
-                var proto       = Class.prototype, _get, _set,
-                    readonly    = options.readonly,
-                    observable = options.observable || false,
-                    getter      = options.get,
-                    setter      = options.set,
-                    privKey     = '_' + key,
-                    value       = options.value,
-                    events = {},
-                    changingEvent = key + "changing",
-                    changeEvent = key + "change";
-
-                if (getter !== undefined && setter === undefined) {
-                    if (value !== undefined) {
-                        proto[privKey] = options.value;
-                    }
+            if (readonly) {
+                if (getter !== undefined) {
+                    _get = getter;
                 }
                 else {
-                    proto[privKey] = options.value;
-                }
-
-                //Attach events
-                events[changingEvent] = $f.event();
-                events[changeEvent] = $f.event();
-                Class.attach(events);
-
-                _get = getter || function get() {
-                    return this[privKey];
-                };
-
-                if (readonly) {
-                    _set = function readonlySet() {
-                        throw new Error('You are not allowed to write to readonly property "' + key + '".');
+                    _get = function () {
+                        return this[privateKey];
                     };
                 }
-                else {
-                    if (setter !== undefined) {
-                        if (!observable) {
-                            _set = setter;
-                        }
-                        else {
-                            _set = function (v) {
-                                var oldVal = this[key],
-                                    args;
+            }
+            else {
 
-                                if (oldVal === v) {
-                                    return; //property not changed.
-                                }
+                _get = getter || function () {
+                    return this[privateKey];
+                };
 
-                                args = {
-                                    propertyName: key,
-                                    oldValue: oldVal,
-                                    newValue: v
-                                };
-                                this.trigger(changingEvent, args);
-                                setter.call(this, v);
-                                this.trigger(changeEvent, args);
-                            };
-                        }
-                    }
-                    else {
+                _set = setter || function (v) {
+                    this[privateKey] = v;
+                };
 
-                        if (!observable) {
-                            _set = function (v) {
-                                this[privKey] = v;
-                            };
-                        }
-                        else {
-                            _set = function set(v) {
-                                var oldVal = this[privKey],
-                                    args;
+            }
 
-                                if (oldVal === v) {
-                                    return; //Property not changed.
-                                }
-                                args = {
-                                    propertyName: key,
-                                    oldValue: oldVal,
-                                    newValue: v
-                                };
-                                this.trigger(changingEvent, args);
-                                if (this.onPropertyChanging) {
-                                    this.onPropertyChanging(args);
-                                }
-                                this[privKey] = v;
-                                this.trigger(changeEvent, args);
-                                if (this.onPropertyChanged) {
-                                    this.onPropertyChanged(args);
-                                }
-                            };
-                        }
-                    }
-                }
+            // return;
 
-                if (Object.defineProperty) {
-                    Object.defineProperty(proto, key, {
-                        get: _get,
-                        set: _set
-                    });
-                }
-                else if (proto.__defineGetter__ !== undefined) {
-                    proto.__defineGetter__(key, _get);
-                    proto.__defineSetter__(key, _set);
-                }
-            };
+            // if (getter !== undefined && setter === undefined) {
+            //     if (value !== undefined) {
+            //         proto[privateKey] = options.value;
+            //     }
+            // }
+            // else {
+            //     proto[privateKey] = options.value;
+            // }
+
+            // _get = getter || function get() {
+            //     return this[privateKey];
+            // };
+
+            // if (readonly) {
+            //     _set = function readonlySet() {
+            //         throw new Error('Cannot assign to readonly property "' + key + '".');
+            //     };
+            // }
+            // else {
+            //     if (setter !== undefined) {
+            //         if (!observable) {
+            //             _set = setter;
+            //         }
+            //         else {
+            //             _set = function (v) {
+            //                 var oldVal = this[key],
+            //                     args;
+
+            //                 if (oldVal === v) {
+            //                     return; //property not changed.
+            //                 }
+
+            //                 args = {
+            //                     propertyName: key,
+            //                     oldValue: oldVal,
+            //                     newValue: v
+            //                 };
+            //                 this.trigger(changingEvent, args);
+            //                 setter.call(this, v);
+            //                 this.trigger(changeEvent, args);
+            //             };
+            //         }
+            //     }
+            //     else {
+
+            //         if (!observable) {
+            //             _set = function (v) {
+            //                 this[privateKey] = v;
+            //             };
+            //         }
+            //         else {
+            //             _set = function set(v) {
+            //                 var oldVal = this[privateKey],
+            //                     args;
+
+            //                 if (oldVal === v) {
+            //                     return; //Property not changed.
+            //                 }
+            //                 args = {
+            //                     propertyName: key,
+            //                     oldValue: oldVal,
+            //                     newValue: v
+            //                 };
+            //                 this.trigger(changingEvent, args);
+            //                 if (this.onPropertyChanging) {
+            //                     this.onPropertyChanging(args);
+            //                 }
+            //                 this[privateKey] = v;
+            //                 this.trigger(changeEvent, args);
+            //                 if (this.onPropertyChanged) {
+            //                     this.onPropertyChanged(args);
+            //                 }
+            //             };
+            //         }
+            //     }
+            // }
+
+            attachProperty(proto, key, _get, _set);
+        };
 
         $f.attachProperty = attachProperty;
         $f.property     = property;

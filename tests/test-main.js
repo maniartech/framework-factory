@@ -8,6 +8,7 @@ sources = [
     'attributes.js',
     'events.js',
     'properties.js',
+    'observables.js',
     'plugins/utils'
 ];
 
