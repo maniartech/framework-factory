@@ -4,7 +4,7 @@
 
     var FrameworkFactory = root.FrameworkFactory;
 
-    function plugin($f) {
+    function events($f) {
 
         $f.event = function () {
             return {
@@ -128,14 +128,6 @@
         });
     }
 
-    plugin.info = {
-        name: 'events'
-    };
-
-    plugin.toString = function () {
-        return plugin.info.name;
-    };
-
-    FrameworkFactory.plugins.register(plugin);
+    FrameworkFactory.plugins.register(events);
 
 })(this);

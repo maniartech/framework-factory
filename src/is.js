@@ -3,7 +3,7 @@
 
     var FrameworkFactory = root.FrameworkFactory;
 
-    function plugin($f) {
+    function is($f) {
 
         var _is = {
 
@@ -98,14 +98,6 @@
         $f.is = _is;
     }
 
-    plugin.info = {
-        name: 'is'
-    };
-
-    plugin.toString = function toString() {
-        return plugin.info.name;
-    };
-
-    FrameworkFactory.plugins.register(plugin);
+    FrameworkFactory.plugins.register(is);
 
 })(this);

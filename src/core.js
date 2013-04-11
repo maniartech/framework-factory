@@ -5,7 +5,7 @@
         plugins = [],
         typeHandlers = {},
         i, iLen,
-        environment, //Environement - node, requirejs or browser
+        environment = {}, //Environement - node, requirejs or browser
         g; //Global
 
     /**
@@ -23,24 +23,25 @@
         return new FrameworkFactory();
     })();
 
-    //Setup environment
-    if (module !== undefined && typeof module.exports === "object") {
-        environment = "node";
+    //environment node
+    environment.node = typeof module !== "undefined" && typeof module.exports === "object";
+    if (environment.node) {
         module.exports = FrameworkFactory;
     }
-    else if (define !== undefined && typeof define.amd) {
-        environment = "requirejs";
+
+    //environment requirejs
+    environment.requirejs = typeof define !== "undefined" && typeof define.amd === "object";
+    if (environment.requirejs) {
         define(function() {
             return FrameworkFactory;
         });
     }
-    else {
-        environment = "browser";
-        root.FrameworkFactory = FrameworkFactory;
-    }
+
+    //environment browser
+    environment.browser = typeof window !== "undefined" && typeof window.document === "object";
 
     //Indentify global object
-    FrameworkFactory.global = environment === "node" ? global : root;
+    FrameworkFactory.global = environment.node ? global : root;
 
     /**
      * The current environment in which FrameworkFactory is running.
@@ -136,6 +137,9 @@
         //sets the framework name
         $f.name = _config.name;
 
+        //assign the environment object to new framework.
+        $f.environment = environment;
+
         /**
          * Returns the
          * @function config
@@ -168,7 +172,7 @@
         for (i = 0, iLen = plugins.length; i < iLen; i += 1) {
 
             plugin = plugins[i];
-            name = plugin.info.name;
+            name = plugin.name;
 
             //Checks if plugin loaded
             if ($f[name] !== undefined) {
@@ -178,7 +182,9 @@
             //If plugin is defined as function, execute it.
             if (typeof plugin === 'function') {
                 plugin($f);
-                plugin.initialized = true;
+            }
+            else if(typeof plugin === 'object') {
+                plugin.load($f);
             }
         }
 
@@ -203,10 +209,13 @@
          * @public
          * @version 1.0
          **/
-        register: function register(p) {
+        register: function register(plugin) {
 
-            if (typeof p === 'function' || typeof p === 'object') {
-                plugins.push(p);
+            if (typeof plugin === 'function' || typeof plugin === 'object') {
+                if (plugin.name === undefined) {
+                    throw new Error("Missing plugin name.");
+                }
+                plugins.push(plugin);
                 return;
             }
             throw new Error('Invalid plugin type.');
@@ -221,9 +230,11 @@
          **/
         getNames: function getNames() {
             var names = [],
+                plugin,
                 i, iLen;
             for (i = 0, iLen = plugins.length; i < iLen; i += 1) {
-                names.push(plugins[i].info.name);
+                plugin = plugins[i];
+                names.push(plugin.name);
             }
             return names;
         },

@@ -30,7 +30,7 @@
     }
 
 
-    function plugin($f) {
+    function observables($f) {
 
         FrameworkFactory.typeHandlers.register({
             type: "observable",
@@ -117,10 +117,6 @@
 
     }
 
-    plugin.info = {
-        name: 'observable'
-    };
-
-    FrameworkFactory.plugins.register(plugin);
+    FrameworkFactory.plugins.register(observables);
 
 })(this);

@@ -4,7 +4,7 @@
 
     var FrameworkFactory = root.FrameworkFactory;
 
-    function plugin($f) {
+    function properties($f) {
 
         var readonly, property, handler;
 
@@ -285,14 +285,6 @@
 
     }
 
-    plugin.info = {
-        name: 'properties'
-    };
-
-    plugin.toString = function toString() {
-        return plugin.info.name;
-    };
-
-    FrameworkFactory.plugins.register(plugin);
+    FrameworkFactory.plugins.register(properties);
 
 })(this);

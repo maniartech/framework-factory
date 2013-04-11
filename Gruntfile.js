@@ -12,19 +12,19 @@
 'use strict';
 
 var src = [
-        'src/pollyfills.js',
-        'src/core.js',
-        'src/is.js',
-        'src/classes.js',
-        'src/attributes.js',
-        'src/events.js',
-        'src/properties.js',
-        'src/observables.js'
-    ],
-    plugins = [
-        'src/plugins/deep-copy.js',
-        'src/plugins/utils.js'
-    ];
+    'src/pollyfills.js',
+    'src/core.js',
+    'src/is.js',
+    'src/classes.js',
+    'src/attributes.js',
+    'src/events.js',
+    'src/properties.js',
+    'src/observables.js'
+],
+plugins = [
+    'src/plugins/deep-copy.js',
+    'src/plugins/utils.js'
+];
 
 module.exports = function (grunt) {
 

@@ -1,3 +1,5 @@
+var eq = strictEqual;
+var neq = notStrictEqual;
 var source, tests, i, iLen;
 
 sources = [
@@ -15,8 +17,12 @@ sources = [
 tests = [
     'support',
     'core',
+    'plugins',
+    'is',
+    'classes',
+    'type-handlers',
     'events',
-    'test'
+    'utils'
 ];
 
 for (i=0, iLen=sources.length; i<iLen; i+=1) {sources[i] = "order!../src/" + sources[i];}
