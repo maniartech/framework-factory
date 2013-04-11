@@ -12,18 +12,21 @@ function main(FrameworkFactory) {
         /**
          * The plugin version.
          * @field {String}
+         * @optional
          */
         version: "1.0",
 
         /**
          * The plugin author.
          * @type {String}
+         * @optional
          */
         author: "Aamir Maniar",
 
         /**
          * The plugin url.
          * @type {String}
+         * @optional
          */
         url: "http://www.ff-plugin.com",
 
@@ -36,9 +39,9 @@ function main(FrameworkFactory) {
         }
     };
 
+    //Register plugin with FrameworkFactory. Registration enables plugin's load function
+    //to be invoked each time a new framework is created.
     FrameworkFactory.plugins.register(plugin);
-
-    return plugin;
 }
 
 //Load environment
@@ -48,5 +51,3 @@ if (typeof module !== "undefined" && typeof module.exports === "object") {
 else {
     main(this.FrameworkFactory);
 }
-
-
