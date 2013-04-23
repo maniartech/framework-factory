@@ -5,37 +5,40 @@ function main(FrameworkFactory) {
 
         /**
          * The plugin name.
-         * @field {String}
+         * @field {String} name
          */
         name: "my-plugin",
 
         /**
          * The plugin version.
-         * @field {String}
+         * @field {String} version
          * @optional
          */
         version: "1.0",
 
         /**
          * The plugin author.
-         * @type {String}
+         * @field {String} author
          * @optional
          */
-        author: "Aamir Maniar",
+        author: "Your Name",
 
         /**
          * The plugin url.
-         * @type {String}
+         * @field  {String} url
          * @optional
          */
         url: "http://www.ff-plugin.com",
 
         /**
          * Called when a new framework ($f) is created
+         * @function load
          * @param  {[type]} $f The new framework.
          */
         load: function ($f) {
-            //TODO: Code to attach framework related code goes here.
+            // TODO: Code to attach framework related code goes here.
+            // Example:
+            // $f.myPluginFunction = function(){...}
         }
     };
 
