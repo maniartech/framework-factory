@@ -6,7 +6,7 @@
         typeHandlers = {},
         i, iLen,
         environment = {}, //Environement - node, requirejs or browser
-        g; //Global
+        g; //global
 
     /**
      * Represents the FrameworkFactory singleton class object, which contains

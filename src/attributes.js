@@ -44,10 +44,6 @@
         name: 'attributes'
     };
 
-    plugin.toString = function () {
-        return plugin.info.name;
-    };
-
     FrameworkFactory.plugins.register(plugin);
 
 })(this);

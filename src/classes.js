@@ -186,10 +186,6 @@
 
     }
 
-    plugin.toString = function() {
-        return plugin.info.name;
-    };
-
     plugin.info = {
         name: "classes"
     };
