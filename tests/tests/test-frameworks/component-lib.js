@@ -1,25 +1,50 @@
 
-var framework = FrameworkFactory.create();
 
-framework.BaseObject = framework.Class({
+var components = FrameworkFactory.create({
+    name: "components",
+    version: "1.0"
+});
 
-}, Object);
+components.Component = framework.Class({
+    name : framework.property('', true),
+    width: framework.property({
+        value: 0,
+        get: function() {
+            return this._width;
+        },
+        set: function(v) {
+            this._width = v;
+        }
+    }),
 
-framework.defaultBaseClass = framework.BaseObject;
+    click: function() {
+        this._clickCount += 1;
+    },
+    clickCount: framework.readonly({
+        value: 0,
+        get: function() {
+            return this._clickCount;
+        }
+    }),
 
-framework.collections = {};
+    length: framework.readonly(0),
+    add: function() {
+        this._length += 1;
+    }
+});
+
 
 /**
  * A collection class which stores both indexes as well as keys.
- * @class framework.collection.MapList
- * @name framework.collections.MapList.prototype
+ * @class components.collection.MapList
+ * @name components.collections.MapList.prototype
  **/
-framework.collections.MapList = framework.Class({
+components.collections.MapList = components.Class({
 
     /**
      * Represents total number of items in the list.
      **/
-    length          : framework.property({
+    length          : components.property({
         get: function() {
             return this._items.length;
         }
@@ -27,18 +52,18 @@ framework.collections.MapList = framework.Class({
 
     /**
      * Key identifier in the item object.
-     * @lends framework.collections.MapList
+     * @lends components.collections.MapList
      **/
     keyName         : 'id',
 
     validator       : undefined,
 
-    itemBeforeAdd   : framework.event(),
-    itemAdd         : framework.event(),
-    itemBeforeRemove: framework.event(),
-    itemRemoved     : framework.event(),
-    itemBeforeSet   : framework.event(),
-    itemSet         : framework.event(),
+    itemBeforeAdd   : components.event(),
+    itemAdd         : components.event(),
+    itemBeforeRemove: components.event(),
+    itemRemoved     : components.event(),
+    itemBeforeSet   : components.event(),
+    itemSet         : components.event(),
 
     init: function() {
         this._items = [];
@@ -227,9 +252,9 @@ framework.collections.MapList = framework.Class({
 /**
  * Sets the value into collection
  **/
-framework.collections.MapList.importObject = function importObject(o, key, value) {
+components.collections.MapList.importObject = function importObject(o, key, value) {
     var colObj = o[key];
-    if (colObj instanceof framework.collections.MapList === false) {
+    if (colObj instanceof components.collections.MapList === false) {
         throw new Error('Operation "set" not supported on this object.');
     }
     //Clear the collection
@@ -244,18 +269,7 @@ framework.collections.MapList.importObject = function importObject(o, key, value
     }
 };
 
-framework.collections.MapList.exportObject = function toJson(colObj) {
-    var items = [];
-    var colItems = colObj.toArray();
-    for (var i=0, len=colObj.length; i<len; i++) {
-        var item = colItems[i];
-        items.push($f.utils.toJson(item));
-    }
-    return items;
-};
-
-
-var Button = framework.Class({
+components.Button = framework.Class({
 
     //Attributes
     clickCount: framework.attribute(0),
@@ -276,7 +290,7 @@ var Button = framework.Class({
     }
 });
 
-var Shape = framework.Class({
+components.Shape = framework.Class({
     id: 'shape',
     x: 0,
     y: 0,
@@ -290,46 +304,11 @@ var Shape = framework.Class({
     }
 });
 
-var Component = framework.Class({
-    name : framework.property('', true),
-    width: framework.property({
-        value: 0,
-        get: function() {
-            return this._width;
-        },
-        set: function(v) {
-            this._width = v;
-        }
-    }),
-
-    click: function() {
-        this._clickCount += 1;
-    },
-    clickCount: framework.readonly({
-        value: 0,
-        get: function() {
-            return this._clickCount;
-        }
-    }),
-
-    length: framework.readonly(0),
-    add: function() {
-        this._length += 1;
-    }
-});
 
 
-var X = framework.Class({
-    x: 10,
-    init: function(x) {
-        if (!x) {
-            throw new Error("x must be defined");
-        }
-        this.x = x;
-    }
-});
 
-var p1 = new Person("abc");
-var p2 = new Person("xyz");
 
-var e1 = new Employee("abc1");
+
+
+
+

@@ -12,19 +12,24 @@
 'use strict';
 
 var src = [
-    'src/pollyfills.js',
-    'src/core.js',
-    'src/is.js',
-    'src/classes.js',
-    'src/attributes.js',
-    'src/events.js',
-    'src/properties.js',
-    'src/observables.js'
-],
-plugins = [
-    'src/plugins/deep-copy.js',
-    'src/plugins/utils.js'
-];
+        'src/pollyfills.js',
+        'src/core.js',
+        'src/is.js',
+        'src/classes.js',
+        'src/attributes.js',
+        'src/events.js'
+    ],
+
+    srcExtended = src.concat([
+        'src/properties.js',
+        'src/observables.js'
+    ]),
+
+    plugins = [
+        'src/plugins/deep-copy.js',
+        'src/plugins/utils.js'
+    ];
+
 
 module.exports = function (grunt) {
 
@@ -34,15 +39,18 @@ module.exports = function (grunt) {
         license: grunt.file.read('src/license.js'),
         concat: {
             options: {
-                //separator: ';',
                 banner: '<%= license %>'
             },
             main: {
                 src: src,
                 dest: 'lib/framework-factory.js'
             },
+            x: {
+                src: srcExtended,
+                dest: 'lib/framework-factory-x.js'
+            },
             all: {
-                src: src.concat(plugins),
+                src: srcExtended.concat(plugins),
                 dest: 'lib/framework-factory-all.js'
             }
         },
@@ -67,6 +75,7 @@ module.exports = function (grunt) {
             main: {
                 files: {
                     'lib/framework-factory.min.js': ['lib/framework-factory.js'],
+                    'lib/framework-factory.x.min.js': ['lib/framework-factory-x.js'],
                     'lib/framework-factory-all.min.js': ['lib/framework-factory-all.js'],
                     'lib/plugins/deep-copy.min.js': ['lib/plugins/deep-copy.js'],
                     'lib/plugins/utils.min.js': ['lib/plugins/utils.js']
@@ -76,7 +85,7 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: ['src/**/*.js'],
-                tasks: ['concat'],
+                tasks: ['concat', 'uglify'],
                 options: {
                     nospawn: true
                 }
@@ -92,5 +101,5 @@ module.exports = function (grunt) {
 
 
     // Default task(s).
-    grunt.registerTask('default', ['concat:main', 'concat:all', 'copy:main', 'uglify']);
+    grunt.registerTask('default', ['concat:main', 'concat:x', 'concat:all', 'copy:main', 'uglify']);
 };

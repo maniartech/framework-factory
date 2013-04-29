@@ -2,7 +2,7 @@ module("is");
 
 test('Is of Type Tests', function() {
 
-        var is = framework.is;
+        var is = membership.is;
 
         //String tests
         eq(is.string("str"), true);
@@ -79,7 +79,7 @@ test('Is of Type Tests', function() {
         eq(is.plainObject(null), false);
         eq(is.plainObject([]), false);
         eq(is.plainObject(new Date()), false);
-        eq(is.plainObject(new Component()), false);
+        eq(is.plainObject(new membership.Employee()), false);
 
         //Array tests
         eq(is.array([]), true);
@@ -91,7 +91,7 @@ test('Is of Type Tests', function() {
         eq(is.array(), false);
         eq(is.array(null), false);
         eq(is.array(new Date()), false);
-        eq(is.array(new Component()), false);
+        eq(is.array(new membership.Employee()), false);
 
         //In Browser
         eq(is.inBrowser(), true);

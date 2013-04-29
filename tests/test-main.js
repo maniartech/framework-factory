@@ -2,29 +2,16 @@ var eq = strictEqual;
 var neq = notStrictEqual;
 var source, tests, i, iLen;
 
-sources = [
-    'pollyfills.js',
-    'core.js',
-    'is.js',
-    'classes.js',
-    'attributes.js',
-    'events.js',
-    'properties.js',
-    'observables.js',
-    'plugins/utils'
-];
+sources = [ "order!../lib/framework-factory.js"];
 
 tests = [
-    'support',
+    'test-frameworks/membership-lib',
     'core',
-    'plugins',
     'is',
     'classes',
-    'type-handlers',
-    'events',
-    'utils'
+    'attributes',
+    'events'
 ];
 
-for (i=0, iLen=sources.length; i<iLen; i+=1) {sources[i] = "order!../src/" + sources[i];}
 for (i=0, iLen=tests.length; i<iLen; i+=1) {tests[i] = "order!tests/" + tests[i];}
 require({urlArgs: Number(new Date())}, sources.concat(tests));

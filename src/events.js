@@ -95,10 +95,9 @@
                     return this;
                 };
 
-                proto.event = function (eventName) {
+                proto.subscribers = function subscribers(eventName) {
                     return this['_' + eventName.toLowerCase()] || [];
                 };
-
             },
 
             handler: function handler(Class, key) {
