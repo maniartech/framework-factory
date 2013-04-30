@@ -43,8 +43,12 @@
             }
         }
 
+        function attachReadonly(obj, key, getter) {
+            attachProperty(obj, key, getter);
+        }
+
         /**
-         *
+         * Attaches readonly member to associated class.
          */
         readonly = function readonly(options) {
             var get, value;
@@ -104,52 +108,6 @@
                 get : get,
                 set : set
             };
-
-            // if (typeof options === 'object') {
-            //     valueOf = options.valueOf();
-            //     //Incase of Object based primitive plugin like
-            //     // new String('abc')
-            //     // new Date('123')
-            //     if (typeof valueOf !== 'object' && typeof valueOf !== 'function') {
-            //         //Set primitive
-            //         value = options.value;
-            //         get = options.get;
-            //     }
-            //     else {
-            //         //If is object but only getter is found
-            //         observable  = false;
-            //         value       = options.value;
-            //         if (options.get !== undefined && options.set === undefined) {
-            //             readonly = true;
-            //             if (arguments[1] === true) {
-            //                 observable = true;
-            //             }
-            //         }
-            //         else if (options.get === undefined && options.set === undefined) {
-            //             throw new Error('Neither get nor set found in property declaration. This type of object is not currently supported.');
-            //         }
-            //         else {
-            //             get = options.get;
-            //             set = options.set;
-            //         }
-            //     }
-            // }
-            // else {
-            //     value = options;
-            //     if (arguments[1] === true) {
-            //         observable = true;
-            //     }
-            // }
-
-            // options = options || {};
-
-            // return {
-            //     type        : 'property',
-            //     value       : value,
-            //     readonly    : readonly,
-            //     get         : options.get,
-            //     set         : options.set
-            // };
         };
 
         handler = function (Class, key, options) {
@@ -191,6 +149,7 @@
         };
 
         $f.attachProperty = attachProperty;
+        $f.attachReadonly = attachReadonly;
         $f.property     = property;
         $f.readonly     = readonly;
 

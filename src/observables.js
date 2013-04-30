@@ -22,35 +22,35 @@
         }
     }
 
-    function observable (defaultValue) {
+    function observable (value) {
         return {
             type: 'observable',
-            defaultValue: defaultValue
+            value: value
         };
     }
 
 
     function observables($f) {
 
+        $f.observable = observable;
+
         FrameworkFactory.typeHandlers.register({
             type: "observable",
             init: function (Class) {
                 var proto = Class.prototype;
 
-                proto._previousVals = {};
-
                 proto.set = function set() {
                     var o = arguments[0],
-                        key, changed = {},
+                        key, privateKey, changed = {},
                         oldVal, newVal;
 
                     if (arguments.length === 1 && typeof(o) === "object") {
                         for(key in o) {
                             if (o.hasOwnProperty(key) === true && (this[key] !== o[key])) {
+                                privateKey = "_" + key;
                                 oldVal = this[key];
                                 newVal = o[key];
-                                this._previousVals[key] = oldVal;
-                                this[key] = newVal;
+                                this[privateKey] = newVal;
                                 changed[key] = {
                                     oldValue: oldVal,
                                     newValue: newVal
@@ -61,11 +61,12 @@
 
                     else if (arguments.length === 2) {
                         key = arguments[0];
+                        privateKey = "_" + key;
                         oldVal = this[key];
                         newVal = arguments[1];
 
                         if (oldVal !== newVal) {
-                            this[key] = newVal;
+                            this[privateKey] = newVal;
                             changed[key] = {
                                 oldValue: oldVal,
                                 newValue: newVal
@@ -74,7 +75,6 @@
                     }
 
                     this.onChange(changed);
-
                     return this;
                 };
 
@@ -104,11 +104,12 @@
                 set = function set(v) {
                     var value = this[privateKey],
                         changed;
-                    if (value !== this[privateKey]) {
+
+                    if (value !== v) {
                         this[privateKey] = v;
                         changed = {};
                         changed[key] = { oldValue: value, newValue: v };
-                        this.onChange({ changed: changed });
+                        this.onChange(changed);
                     }
                 };
                 _attachProperty(proto, key, get, set);

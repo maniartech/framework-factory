@@ -1,162 +1,159 @@
+module("properties");
 
+test ('readonly', function() {
 
-test ('Readonly Attribute Tests', function() {
-    var c1 = new Component();
-    eq(c1.clickCount, 0, "Intial count should be 0.");
-    c1.click();
-    eq(c1.clickCount, 1, "Count incremented");
-    count = 100;
-    raises(function() {
-        c1.clickCount = 100;
-    }, "Readonly properties cannot be assigned.");
+    var ro = new components.ReadonlyClass("wow"),
+        ro2 = new components.ReadonlyClass("Amazing"),
+        readonly = components.readonly({
+            value: 20,
+            get: function() {}
+        });
 
-    eq (c1.clickCount, 1, "Count didnt increment because it is a readonly.");
-});
+    eq(readonly.type, "readonly");
+    eq(readonly.value, 20);
+    eq(readonly.readonly, true);
+    eq(typeof readonly.get, "function");
+    eq(typeof readonly.set, "undefined");
 
-test ('Property Tests', function() {
+    neq(components.readonly, undefined);
 
-//           //Component Tests
-//           var c1 = new Component();
+    eq(ro.readonly, true);
+    eq(ro._readonly, true);
 
-//           var changingCount = 0;
-//           var changedCount = 0;
-//           //c1.name = "great";
+    eq(ro.readonly2, 10);
+    eq(ro._readonly2, 10);
 
-//           c1.namechanging(function() {
-// changingCount++;
-//           });
+    eq(ro.readonly3, "wow");
+    eq(ro._readonly3, "wow");
 
-//           c1.namechange(function() {
-//               changedCount++;
-//           });
+    eq(ro.readonly4, false);
+    eq(ro._readonly4, false);
 
-//           c1.name = "abc";
-//           eq (changingCount, 1);
-//           eq (changedCount, 1);
-//           c1.name = "abc";
-//           eq (changingCount, 1, 'Should not trigger an property change events is the new value is same');
-//           eq (changedCount, 1, 'Should not trigger an property change events is the new value is same');
-//           c1.name = "xyz";
-//           eq (changingCount, 2);
-//           eq (changedCount, 2);
+    eq(ro2.readonly, true);
+    eq(ro2._readonly, true);
 
-//           var c2 = new Component();
-//           neq(c1.name, c2.name, 'Properties of both the object must independently work.');
-//           c2.name = "wonderful";
-//           eq (changingCount, 2, 'Should not trigger an property change events if an another object is changed.');
-//           eq (changedCount, 2, 'Should not trigger an property change events if an another object is changed.');
+    eq(ro2.readonly2, 10);
+    eq(ro2._readonly2, 10);
 
-//           eq(c1.width, 0);
-//           c1.width = 10;
-//           eq(c1.width, 10);
-//    eq(c1.length, 0, "Initial length is zero");
+    eq(ro2.readonly3, "Amazing");
+    eq(ro2._readonly3, "Amazing");
 
+    eq(ro2.readonly4, false);
+    eq(ro2._readonly4, false);
 
-
-    //PropClass Tests
-    var PropClass = framework.Class({
-
-        init: function() {
-            this._list = [1, 2, 3, 4, 5];
-        },
-
-        length : framework.property({
-            get: function() {
-                return this._list.length;
-            }
-        }),
-
-        name : framework.property({
-            value: "Aamir",
-            get:  function() {
-                return this._name;
-            },
-            set: function(v) {
-                if (this._name !== v) {
-                    this._name = v;
-                }
-            }
-        }),
-
-        age          : framework.readonly(37), //default observable from settings
-        birthday     : framework.property('1-1') //observable false
-
+    raises(function(){
+        ro.readonly = false;
     });
 
-    var propObj = new PropClass(),
-        errors = 0,
-        events = 0;
+    raises(function(){
+        ro.readonly2 = false;
+    });
 
-    function propChanging(args) {
-        eq (propObj, this);
-        eq (this instanceof PropClass, true);
-        neq (args.oldValue, undefined);
-        neq (args.oldVaue, args.newValue);
-        events++;
-    }
+    raises(function(){
+        ro.readonly3 = false;
+    });
 
-    function propChanged(args) {
-        eq (propObj, this);
-        eq (this instanceof PropClass, true);
-        neq (args.oldValue, undefined);
-        neq (args.oldVaue, args.newValue);
-        events++;
-    }
+    raises(function(){
+        ro.readonly4 = true;
+    });
 
-    propObj.onPropertyChanging = propChanging;
-    propObj.onPropertyChanged = propChanged;
-
-    eq(propObj.length, 5);
-    eq('_length' in propObj, false);
-    eq (typeof propObj.length, 'number');
-    try { propObj.length = 10; } catch (ex) { errors++; }
-    eq(errors, 1, 'Can not set readonly properties.');
-
-    eq (propObj.name, 'Aamir');
-    eq (propObj._name, 'Aamir');
-    eq (typeof propObj.name, 'string');
-    propObj.name = 'Maniar';
-    eq (propObj.name, 'Maniar');
-    eq (propObj._name, 'Maniar');
-
-    eq (propObj.age, 37);
-    eq (propObj._age, 37);
-    try { propObj.age = 100; } catch (ex) { errors++; }
-    eq(errors, 2, 'Can not set readonly properties.');
-
-    eq (propObj.birthday, '1-1');
-    eq (propObj._birthday, '1-1');
-    propObj.birthday = '21-11';
-    eq (propObj.birthday, '21-11');
-    //eq (2, events);
-    eq (propObj._birthday, '21-11');
 });
 
-test ('Attach Property Tests', function() {
-    var obj = {},
-        error = 0;
-    framework.attachProperty(obj, "name",
+test ('property', function() {
+
+    var po1 = components.PropertyClass("one"),
+        po2 = components.PropertyClass("two"),
+        pa = components.property(10),
+        pb = components.property({ value: 10, get: function () {}, set: function () {} }),
+        pc = components.property({ value: 10, get: function () {} });
+
+    eq(pa.type, "property");
+    eq(pa.readonly, false);
+    eq(pa.value, 10);
+    eq(typeof pa.get, "undefined");
+    eq(typeof pa.set, "undefined");
+
+    eq(pb.type, "property");
+    eq(pb.readonly, false);
+    eq(pb.value, 10);
+    eq(typeof pb.get, "function");
+    eq(typeof pb.set, "function");
+
+    eq(pc.type, "readonly");
+    eq(pc.readonly, true);
+    eq(pc.value, 10);
+    eq(typeof pc.get, "function");
+    eq(typeof pc.set, "undefined");
+
+    eq(po1.p1, 10);
+    eq(po2.p1, 10);
+    po1.p1 = 20;
+    eq(po1.p1, 20);
+    eq(po2.p1, 10);
+
+    eq(po1.p2, 20);
+    eq(po2.p2, 20);
+    po1.p2 = 30;
+    eq(po1.p2, 30);
+    eq(po2.p2, 20);
+
+    eq(po1.p3, "one");
+    eq(po2.p3, "two");
+    po1.p3 = 1;
+    eq(po1.p3, 1);
+    eq(po2.p3, "two");
+
+    eq(po1.p4, true);
+    eq(po2.p4, true);
+    raises(function () {
+        po1.p4 = false;
+    });
+    raises(function () {
+        po2.p4 = false;
+    });
+
+});
+
+test ('attachProperty', function() {
+    var obj = {};
+
+    components.attachProperty(obj, "name",
         function(){
              return obj._name;
         }, function (val) {
-            obj._name = "Name: " + val;
+            obj._name = val;
         });
 
-    framework.attachProperty(obj, "justName", function() {
-        return obj._name.split(" ")[1];
+    eq(typeof components.attachReadonly, "function");
+
+    components.attachProperty(obj, "readonly", function() {
+        return  true;
     });
 
     eq(obj.name, undefined, "Name is undefined initially.");
     obj.name = "Great";
-    neq(obj.name, undefined, "Name is initialized.");
-    eq(obj.name, "Name: Great", "Name is initialized to Great.");
-    eq(obj.justName, "Great", "Name is initialized to Great.");
-    try {
-        obj.justName = "Another Name";
-    }
-    catch (e) {
-        error += 1;
-    }
-    eq(error, 1, "Just name is a readonly field, hence error count 1;");
+    eq(obj.name, "Great", "Name is initialized to Great.");
+    eq(obj.readonly, true);
+    raises(function() {
+        obj.readonly = false;
+    });
+
+});
+
+test ('attachReadonly', function() {
+    var obj = {};
+
+    eq(typeof components.attachReadonly, "function");
+
+    components.attachReadonly(obj, "name", function() {
+        return "John";
+    });
+
+    eq(obj.name, "John");
+
+    raises(function(){
+        obj.name = "Peter";
+    });
+
 
 });
