@@ -1,25 +1,39 @@
 {
   "name": "framework-factory",
   "version": "1.0.0",
-  "description": "Wonderful framwork factory for creating your class library",
-  "main": "framework-factory.js",
-  "dependencies": {
-    "grunt": "~0.4.1"
+  "description": "Wonderful factory framwork for creating modern object oriented javascript frameworks",
+  "main": "lib/framework-factory.js",
+  "directories": {
+    "test": "tests"
   },
-  "devDependencies": {},
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.1.3",
+    "grunt-contrib-compress": "~0.4.3",
+    "grunt-contrib-copy": "~0.4.0",
+    "grunt-contrib-qunit": "~0.2.0",
+    "grunt-contrib-jshint": "~0.2.0",
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-contrib-uglify": "~0.1.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "http://framework-factory.com"
+    "url": "https://github.com/maniartech/framework-factory.git"
   },
   "keywords": [
-    "class",
     "framework",
+    "framework-factory",
     "oops",
+    "object-oriented-programming",
+    "class",
     "library"
   ],
-  "author": "Mohamed Aamir Maniar",
-  "license": "MIT"
+  "author": "Aamir Maniar",
+  "license": "MIT",
+  "gitHead": "12a8a47ec23725904eb920a7eacd113da3b03847",
+  "readmeFilename": "README.md"
 }
