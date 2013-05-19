@@ -33,7 +33,7 @@ membership.Employee = membership.Class({
     stop: membership.event(),
 
     init: function(n) {
-        this.base(n);
+        this.base.init(n);
     },
 
     info: function() {

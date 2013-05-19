@@ -165,7 +165,6 @@
             else if (arguments.length === 2) {
                 _config[arguments[0]] = arguments[1];
             }
-
         };
 
         //Load plugins
