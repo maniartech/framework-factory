@@ -11,7 +11,7 @@
 
 'use strict';
 
-var src = [
+var srcLegacy = [
         'src/pollyfills.js',
         'src/core.js',
         'src/is.js',
@@ -20,7 +20,7 @@ var src = [
         'src/events.js'
     ],
 
-    srcExtended = src.concat([
+    src = srcLegacy.concat([
         'src/properties.js',
         'src/observables.js'
     ]),
@@ -45,12 +45,12 @@ module.exports = function (grunt) {
                 src: src,
                 dest: 'lib/framework-factory.js'
             },
-            x: {
-                src: srcExtended,
-                dest: 'lib/framework-factory-x.js'
+            legacy: {
+                src: srcLegacy,
+                dest: 'lib/framework-factory-legacy.js'
             },
             all: {
-                src: srcExtended.concat(plugins),
+                src: src.concat(plugins),
                 dest: 'lib/framework-factory-all.js'
             }
         },
@@ -75,7 +75,7 @@ module.exports = function (grunt) {
             main: {
                 files: {
                     'lib/framework-factory.min.js': ['lib/framework-factory.js'],
-                    'lib/framework-factory.x.min.js': ['lib/framework-factory-x.js'],
+                    'lib/framework-factory.legacy.min.js': ['lib/framework-factory-legacy.js'],
                     'lib/framework-factory-all.min.js': ['lib/framework-factory-all.js'],
                     'lib/plugins/deep-copy.min.js': ['lib/plugins/deep-copy.js'],
                     'lib/plugins/utils.min.js': ['lib/plugins/utils.js']
@@ -101,5 +101,5 @@ module.exports = function (grunt) {
 
 
     // Default task(s).
-    grunt.registerTask('default', ['concat:main', 'concat:x', 'concat:all', 'copy:main', 'uglify']);
+    grunt.registerTask('default', ['concat:main', 'concat:legacy', 'concat:all', 'copy:main', 'uglify']);
 };

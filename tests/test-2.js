@@ -2,7 +2,7 @@ var eq = strictEqual;
 var neq = notStrictEqual;
 var source, tests, i, iLen;
 
-sources = [ "order!../lib/framework-factory.js"];
+sources = [ "order!../lib/framework-factory-legacy"];
 
 tests = [
     'test-frameworks/membership-lib',
