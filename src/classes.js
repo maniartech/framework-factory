@@ -73,8 +73,6 @@
                 parent = parent || Object;
             }
             prop    = prop || {};
-
-            proto = new parent;
             proto = create(parent.prototype);
 
             if (requireNew) {
@@ -101,7 +99,6 @@
                         }
                         return inst;
                     }
-                    parent.call(this);
                     //this.constructor = Constructor;
                     if (this.init !== undefined) {
                         this.init.apply(this, arguments);
