@@ -56,6 +56,7 @@
     function plugin($f) {
 
         var initializing = true,
+            fnTest = /xyz/.test(function (){xyz;}) ? /\bbase\b/ : /.*/,
             defaultBaseClass = $f.config('defaultBaseClass'),
             requireNew = $f.config('requireNew', false),
             Class;
@@ -63,22 +64,18 @@
         Class = function (prop, parent) {
             var hasProp = Object.prototype.hasOwnProperty,
                 proto, key, Constructor, __base__, funcString,
-                customParent = false;
+                create = Object.create;
 
             if ($f[defaultBaseClass] !== undefined) {
                 parent  = parent || $f[defaultBaseClass];
-                customParent = true;
             }
             else {
                 parent = parent || Object;
             }
             prop    = prop || {};
 
-            //prevents call to
-            initializing = true;
             proto = new parent;
-            //proto = Object.create(parent.prototype)
-            initializing = false;
+            proto = create(parent.prototype);
 
             if (requireNew) {
                 Constructor = function Object() {
@@ -93,19 +90,20 @@
             }
             else {
                 Constructor = function Object() {
-                    var init = initializing,
-                        inst = null;
+                    var inst = null;
+
+                    // Constructor is called as function,
+                    // instanciate it and return instance object.
                     if(this instanceof Constructor === false) {
-                        initializing = true;
-                        inst = new Constructor();
-                        initializing = init;
-                        if (initializing === false && inst.init !== undefined) {
+                        inst = create(Constructor.prototype);
+                        if (inst.init !== undefined) {
                             inst.init.apply(inst, arguments);
                         }
                         return inst;
                     }
+                    parent.call(this);
                     //this.constructor = Constructor;
-                    if (initializing === false && this.init !== undefined) {
+                    if (this.init !== undefined) {
                         this.init.apply(this, arguments);
                     }
                 };
@@ -123,7 +121,7 @@
 
             Constructor.prototype = proto;
             Constructor.prototype.constructor = Constructor;
-            proto.base = __base__;
+            Constructor.__base__ = __base__;
 
             Constructor.attach = function attach(prop) {
 
@@ -144,6 +142,23 @@
                                 typeHandler(Constructor, key, item);
                                 processed = true;
                             }
+                        }
+                        else if (type === 'function' &&
+                                typeof __base__[key] === 'function' &&
+                                fnTest.test(item)) {
+                            proto[key] = (function (key, fn) {
+                                var baseFunc = function () {
+                                        __base__[key].apply(this, arguments);
+                                    },
+                                    wrapper = function () {
+                                        this.base =  baseFunc;
+                                        var ret = fn.apply(this, arguments);
+                                        this.base = null;
+                                        return ret;
+                                    };
+                                return wrapper;
+                            })(key, item);
+                            processed = true;
                         }
 
                         if (!processed) {

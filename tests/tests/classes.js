@@ -64,7 +64,8 @@ test ('Inheritance Tests', function() {
 
     var user = new membership.User(),
         employee = new membership.Employee("abc1"),
-        consumer = new membership.Consumer('Consumer');
+        consumer = new membership.Consumer('Consumer'),
+        salesGuy = new membership.SalesGuy("Sales");
 
     user.age = 10;
     consumer.age = 20;
