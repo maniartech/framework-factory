@@ -120,9 +120,6 @@ console.log(e1.fullName); //Prints the fullName loaded from the database.
 
 ```
 
-## Under Development ##
-FrameworkFactory is currently under development we are planning to releast first version during April 2013.
-
 ##Licence and Copyright ##
 
 © 2011-2013 Maniar Technologies Private Limited, MIT license
