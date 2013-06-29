@@ -15,7 +15,9 @@
         FrameworkFactory.typeHandlers.register({
             type: "event",
             init: function init(Class) {
-                var proto = Class.prototype;
+                var proto = Class.prototype,
+                    subscribedEventKeys = {},
+                    subscribedEvents = [];
 
                 /**
                  * Registers the event handler for one or more plugin.
@@ -29,7 +31,7 @@
                     var names = eventNames.toLowerCase().split(' '),
                         i, iLen, eventName,
                         privKey;
-                    //debugger
+
                     if (!$f.is.func(eventHandler)) {
                         throw new Error('Only functions can be registered as event handler');
                     }
@@ -43,6 +45,10 @@
                         }
                         this[privKey].push(eventHandler);
 
+                        if (subscribedEventKeys[eventName] === undefined) {
+                            subscribedEvents.push(eventName);
+                            subscribedEventKeys[eventName] = true;
+                        }
                     }
                     return this;
                 };
@@ -102,10 +108,30 @@
                 };
 
                 /**
+                 * Unsubscribe all the events from all the subscribers. Use this method to clean up
+                 * or detatch event handlers from the object.
+                 *
+                 * @function $f.Class.unsubscribeAll()
+                 * @return {Object} The current object.
+                 *
+                 * @public
+                 **/
+                proto.unsubscribeAll = function unsubscribeAll() {
+                    var events = subscribedEvents,
+                        i, iLen = events.length;
+
+                    for(i=0; i < iLen; i += 1) {
+                        this.off(events[i]);
+                    }
+                    return this;
+                };
+
+                /**
                  *
                  */
                 proto.subscribers = function subscribers(eventName) {
-                    return this['_' + eventName.toLowerCase()] || [];
+                    var eventSubscribers = this['_' + eventName.toLowerCase()];
+                    return (eventSubscribers) ? eventSubscribers.slice() : [];
                 };
             },
 

@@ -78,6 +78,23 @@ test ('Event Tests', function() {
     emp1.off("start", start2);
     eq(emp1.subscribers("start").length, 1);
 
+    emp1.on("start", start2);
+    eq(emp1.subscribers("start").length, 2);
+
+    emp1.off("start");
+    eq(emp1.subscribers("start").length, 0);
+
+    emp1.on("start", start);
+    emp1.on("start", start2);
+    eq(emp1.subscribers("start").length, 2);
+
+    emp1.unsubscribeAll();
+    eq(emp1.subscribers("start").length, 0);
+
+    eq(emp2.subscribers("start").length, 1);
+    emp2.unsubscribeAll();
+    eq(emp2.subscribers("start").length, 0);
+
     raises(function () {
         emp1.on("wow", false);
     }, "Only functions can be registered as event handler");
@@ -85,5 +102,7 @@ test ('Event Tests', function() {
     raises(function () {
         emp1.start(false);
     }, "Only functions can be registered as event handler");
+
+
 
 });
