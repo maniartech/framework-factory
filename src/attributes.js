@@ -6,7 +6,6 @@
 
     function plugin($f) {
 
-
         var attribute = function (defaultValue) {
                 return {
                     type: 'attribute',
