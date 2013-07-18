@@ -30,7 +30,7 @@
     }
 
 
-    function observables($f) {
+    function plugin($f) {
 
         $f.observable = observable;
 
@@ -118,6 +118,10 @@
 
     }
 
-    FrameworkFactory.plugins.register(observables);
+    plugin.info = {
+        name: 'observables'
+    };
+
+    FrameworkFactory.plugins.register(plugin);
 
 })(this);

@@ -209,11 +209,11 @@
         for (i = 0, iLen = plugins.length; i < iLen; i += 1) {
 
             plugin = plugins[i];
-            name = plugin.name;
+            name = plugin.info.name;
 
             //Checks if plugin loaded
             if ($f[name] !== undefined) {
-                throw new Error('Plugin with the name "' + plugin.name + '" already loaded.');
+                throw new Error('Plugin with the name "' + name + '" already loaded.');
             }
 
             //If plugin is defined as function, execute it.
@@ -253,7 +253,7 @@
             register: function register(plugin) {
 
                 if (typeof plugin === 'function' || typeof plugin === 'object') {
-                    if (plugin.name === undefined) {
+                    if (plugin.info.name === undefined) {
                         throw new Error("Missing plugin name.");
                     }
                     plugins.push(plugin);
