@@ -4,33 +4,6 @@ function main(FrameworkFactory) {
     var plugin = {
 
         /**
-         * The plugin name.
-         * @field {String} name
-         */
-        name: "my-plugin",
-
-        /**
-         * The plugin version.
-         * @field {String} version
-         * @optional
-         */
-        version: "1.0",
-
-        /**
-         * The plugin author.
-         * @field {String} author
-         * @optional
-         */
-        author: "Your Name",
-
-        /**
-         * The plugin url.
-         * @field  {String} url
-         * @optional
-         */
-        url: "http://www.ff-plugin.com",
-
-        /**
          * Called when a new framework ($f) is created
          * @function load
          * @param  {[type]} $f The new framework.
@@ -39,7 +12,34 @@ function main(FrameworkFactory) {
             // TODO: Code to attach framework related code goes here.
             // Example:
             // $f.myPluginFunction = function(){...}
-        }
+        },
+
+        /**
+         * The plugin information.
+         */
+        info: {
+
+            /**
+             * The name of the plugin, mandatory.
+             */
+            name: "MyPlugin"
+            
+            /**
+             * The plugin version.
+             */
+            version: "1.0",
+
+            /**
+             * The plugin author.
+             */
+            author: "Your Name",
+
+            /**
+             * The plugin url.
+             */
+            url: "http://www.ff-plugin.com"
+
+        };
     };
 
     //Register plugin with FrameworkFactory. Registration enables plugin's load function

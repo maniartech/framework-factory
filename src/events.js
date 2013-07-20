@@ -4,7 +4,7 @@
 
     var FrameworkFactory = root.FrameworkFactory;
 
-    function events($f) {
+    function plugin($f) {
 
         $f.event = function () {
             return {
@@ -162,6 +162,10 @@
         });
     }
 
-    FrameworkFactory.plugins.register(events);
+    plugin.info = {
+        name: 'attributes'
+    };
+
+    FrameworkFactory.plugins.register(plugin);
 
 })(this);
