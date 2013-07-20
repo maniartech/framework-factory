@@ -76,7 +76,7 @@
             proto = create(parent.prototype);
 
             if (requireNew) {
-                Constructor = function Object() {
+                Constructor = function () {
                     if (this instanceof Constructor === false) {
                         throw new Error('Constructor used as function.');
                     }
@@ -87,7 +87,7 @@
                 };
             }
             else {
-                Constructor = function Object() {
+                Constructor = function () {
                     var inst = null;
 
                     // Constructor is called as function,

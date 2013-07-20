@@ -31,8 +31,7 @@
 
     /**
      * Provides the environment tests in which FrameworkFactory or associated frameworks are
-     * currently running. Useful
-     * for checking whether current environment is Node, Browser or RequireJS.
+     * currently running. Useful for checking whether current environment is Node, Browser or RequireJS.
      *
      * @field {Object}
      *
@@ -45,10 +44,10 @@
     })();
 
     /**
-     * Returns `true` if framework factory is executing under the NodeJS environment otherwise
-     * `false`.
+     * Tells whether current environment is NodeJS or not.
      *
-     * @field {boolean}
+     * @field { boolean } Returns `true` if framework factory is executing under the NodeJS environment otherwise
+     * `false`.
      *
      * @public
      * @version 1.0
@@ -58,7 +57,15 @@
         module.exports = FrameworkFactory;
     }
 
-    //environment requirejs
+    /**
+     * Tells whether current environment is RequireJS or not.
+     *
+     * @field { boolean } Returns `true` if framework factory is executing under the RequireJS environment otherwise
+     * `false`.
+     *
+     * @public
+     * @version 1.0
+     **/
     environment.requirejs = typeof define !== "undefined" && typeof define.amd === "object";
     if (environment.requirejs) {
         define(function() {
@@ -66,7 +73,15 @@
         });
     }
 
-    //environment browser
+    /**
+     * Tells whether current environment is Browser or not.
+     *
+     * @field { boolean } Returns `true` if framework factory is executing under the Browser environment otherwise
+     * `false`.
+     *
+     * @public
+     * @version 1.0
+     **/
     environment.browser = typeof window !== "undefined" && typeof window.document === "object";
 
     //Indentify global object
