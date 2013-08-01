@@ -1,46 +1,393 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
         <title>Framework Factory</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <!-- Styles -->
-        <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-        <link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <!-- Mobile viewport optimized: h5bp.com/viewport -->
+        <meta name="viewport" content="width=device-width">
+        <!-- CSS -->
         <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
         <link href="assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
         <link href="assets/css/style.css" rel="stylesheet" type="text/css">
     </head>
-    <body>
+    <div class="modal hide fade " id="myModal">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+            <h3>LOGIN</h3>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="control-group">
+              <div class="controls">
+                <div class="input-prepend">
+                  <span class="add-on">@</span>
+                    <input class="span2" id="prependedInput" type="text" placeholder="Email">
+                </div>
 
-        <!-- Header -->
-        <div class="navbar navbar-inverse">
+              </div>
+          </div>
+      <div class="control-group">
+        <div class="controls">
+          <input type="password" id="inputPassword" placeholder="Password">
+        </div>
+      </div>
+    <div class="control-group">
+      <div class="controls">
+          <label class="checkbox">
+            <input type="checkbox"> Remember me
+          </label>
+    <button type="submit" class="btn">Sign in</button><br>
+      <li><a href="#">Forgot Password</a></li>
+      <li><a data-toggle="modal" href="#myModal1">Create New Registration</a></li>
+  </div>
+</div>
+          </form>
+        </div>
+    </div>
+
+     <div class="modal hide fade " id="myModal1">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+            <h3>REGISTRATION</h3>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="control-group">
+              <div class="controls">
+              <input type="text" class="form-control" placeholder="First Name">
+            </div>
+          </div>
+          <div class="control-group">
+              <div class="controls">
+              <input type="text" class="form-control" placeholder="Last Name">
+            </div>
+          </div>
+          <div class="control-group">
+              <div class="controls">
+                <div class="input-prepend">
+                  <span class="add-on">@</span>
+                    <input class="span2" id="prependedInput" type="text" placeholder="Email">
+                  </div>
+                </div>
+              </div>
+              <div class="control-group">
+              <div class="controls">
+              <input type="password" class="form-control" placeholder="Password">
+            </div>
+          </div>
+              <div class="control-group">
+              <div class="controls">
+              <input type="password" class="form-control" placeholder="confrom Password">
+            </div>
+          </div>
+          <div class="control-group">
+              <div class="controls">
+              <input type="radio" name="sex" value="male"style="margin-right: 5"> &nbsp;Male &nbsp;
+              <input type="radio" name="sex" value="female"> &nbsp;Female
+              </div>
+          </div>
+              <div class="control-group">
+              <div class="controls">
+                <button type="submit" class="btn btn-default">Submit</button>
+                          </div>
+          </div>
+ </div>
+
+              </div>
+          </div>
+          </form>
+        </div>
+    </div>
+
+
+
+   <body>
+      <div class="home-banner">
+      </div>
+
+     <div data-spy="affix" data-offset-top="380" id="nav">
+        <div class="navbar navbar-inverse navbar-fixed">
             <div class="navbar-inner">
                 <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a href="/" class="brand">Framework Factory</a>
-                    <div class="nav-collapse in collapse">
-                        <ul class="nav pull-right">
-                            <li class="active"><a href="#">Home</a></li>
-                            <li><a href="#">Link</a></li>
-                            <li><a href="#">Link</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+                  <a class="brand" href="#">Framework Factory
+                  </a>
+                  <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </a>
+                    <div class="nav-collapse collapse">
+                      <ul class="nav nav-tabs nav-justified pull-right">
+                        <li><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li class="dropdown">
+                          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account Setting <b class="caret"></b>
+                          </a>
+                            <ul class="dropdown-menu">
+                            <li><a data-toggle="modal" href="#myModal">Login</a>
+                            <li><a data-toggle="modal" href="#myModal1">Registration</a></li>
+                          </ul>
+                        </li>
+                    </ul>
+                      </div><!-- /.nav-collapse -->
+                  </div><!-- /.container -->
+              </div><!-- /.navbar-inner -->
+          </div><!-- /.navbar -->
+      </div>
+
+
+
+        <div class="container">
+          <div class="row">
+
+            <div class="span3 bs-docs-sidebar">
+
+        <ul class="nav nav-list bs-docs-sidenav affix">
+          <li><a href="#dropdowns"><i class="icon-chevron-right"></i> Dropdowns</a></li>
+          <li><a href="#buttonGroups"><i class="icon-chevron-right"></i> Button groups</a></li>
+          <li><a href="#buttonDropdowns"><i class="icon-chevron-right"></i> Button dropdowns</a></li>
+          <li><a href="#navs"><i class="icon-chevron-right"></i> Navs</a></li>
+          <li><a href="#navbar"><i class="icon-chevron-right"></i> Navbar</a></li>
+          <li><a href="#breadcrumbs"><i class="icon-chevron-right"></i> Breadcrumbs</a></li>
+          <li><a href="#pagination"><i class="icon-chevron-right"></i> Pagination</a></li>
+          <li><a href="#labels-badges"><i class="icon-chevron-right"></i> Labels and badges</a></li>
+          <li><a href="#typography"><i class="icon-chevron-right"></i> Typography</a></li>
+          <li><a href="#thumbnails"><i class="icon-chevron-right"></i> Thumbnails</a></li>
+          <li><a href="#alerts"><i class="icon-chevron-right"></i> Alerts</a></li>
+          <li><a href="#progress"><i class="icon-chevron-right"></i> Progress bars</a></li>
+          <li><a href="#media"><i class="icon-chevron-right"></i> Media object</a></li>
+          <li><a href="#misc"><i class="icon-chevron-right"></i> Misc</a></li>
+        </ul>
+      </div>
+
+
+
+    <div class="span9 span-fixed-sidebar">
+        <div class="block" id="section-0">
+            <h2 class="page-title">
+                Heading 1
+            </h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
+            <div class="block" id="section-1">
+                <h2 class="page-title">
+                    Heading 2
+                </h2>
+                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                <p><a class="btn" href="#">View details &raquo;</a></p>
+            </div>
+                <div class="block" id="section-2">
+                    <h2 class="page-title">
+                        Heading 3
+                    </h2>
+                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                    <p><a class="btn" href="#">View details &raquo;</a></p>
+                  </div>
+                    <div class="block" id="section-3">
+                        <h2 class="page-title">
+                            Heading 4
+                        </h2>
+                             <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                            <p><a class="btn" href="#">View details &raquo;</a></p>
+                      </div>
+                     <div class="block" id="section-4">
+                        <h2 class="page-title">
+                            Heading 5
+                        </h2>
+                            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                            <p><a class="btn" href="#">View details &raquo;</a></p>
+                      </div>
+                     <div class="block" id="section-5">
+                        <h2 class="page-title">
+                            Heading 6
+                        </h2>
+                            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                            <p><a class="btn" href="#">View details &raquo;</a></p>
+                      </div>
+                     <div class="block" id="section-6">
+                        <h2 class="page-title">
+                            Heading 7
+                        </h2>
+                            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                        <p><a class="btn" href="#">View details &raquo;</a></p>
+                      </div>
+                     <div class="block" id="section-7">
+                        <h2 class="page-title">
+                            Heading 8
+                        </h2>
+                            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                            <p><a class="btn" href="#">View details &raquo;</a></p>
+                      </div>
+                            <div class="block" id="section-8">
+                                <h2 class="page-title">
+                                    Heading 9
+                                </h2>
+                                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in,    egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum navbaribh, ut fermentum massa justo sit amet risus.</p>
+                                    <p><a class="btn" href="#">View details &raquo;</a></p>
+                            </div>
+                            <div class="block" id="section-9">
+                                <h2 class="page-title">
+                                    Heading 10
+                                </h2>
+                                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                                    <p><a class="btn" href="#">View details &raquo;</a></p>
+                            </div>
+                            <div class="block" id="section-10">
+                                <h2 class="page-title">
+                                    Heading 11
+                                </h2>
+                                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                                    <p><a class="btn" href="#">View details &raquo;</a></p>
+                            </div>
+                            <div class="block" id="section-11">
+                                <h2 class="page-title">
+                                    Heading 12
+                                </h2>
+                                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                                    <p><a class="btn" href="#">View details &raquo;</a></p>
+                              </div>
+                          </div>
+                          </div>
+                          </div>
 
-        <!-- Banner -->
-        <div class="home-banner"></div>
+<div class="section-wrapper section-testimonial">
+  <div class="container">
+    <div class="row">
+      <div class="span12">
+        <div class="separator">
+          <div class="">
+            <div class="lines">
+              <div>
+              <h2 class="lines-title">Clients</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="span2">
+        <div class="white-content client-container thumbnail-client">
+          <div class="client-flipper">
+            <div class="client-front">
+            <a href="#"><img src="assets/images/1.png" alt="Client-1"><h4 class= "center"> PS </h4></a>
+            </div>
+            <div class="client-back">
+            <span class="client-back-title">Photoshop <a href="index.html#"><i class="icon-external-link"></i></a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="span2">
+        <div class="white-content client-container thumbnail-client" >
+          <div class="client-flipper">
+            <div class="client-front">
+             <a href="#"><img src="assets/images/2.png" alt="Client-2"><h4 class= "center"> JQUERY </h4></a>
+            </div>
+            <div class="client-back">
+            <span class="client-back-title">Jquery <a href="index.html#"><i class="icon-external-link"></i></a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="span2">
+        <div class="white-content client-container thumbnail-client" >
+          <div class="client-flipper">
+            <div class="client-front">
+             <a href="#"><img src="assets/images/3.png" alt="Client-3"><h4 class= "center"> CSS3 </h4></a>
+            </div>
+            <div class="client-back">
+            <span class="client-back-title">CSS3 <a href="index.html#"><i class="icon-external-link"></i></a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="span2">
+        <div class="white-content client-container thumbnail-client" >
+          <div class="client-flipper">
+            <div class="client-front">
+              <a href="#"><img src="assets/images/4.png" alt="Client-4"><h4 class= "center"> GITHUB </h4></a>
+            </div>
+            <div class="client-back">
+            <span class="client-back-title">GitHub <a href="index.html#"><i class="icon-external-link"></i></a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="span2">
+        <div class="white-content client-container thumbnail-client" >
+          <div class="client-flipper">
+            <div class="client-front">
+              <a href="#"><img src="assets/images/5.png" alt="Client-5"><h4 class= "center"> HTML5 </h4></a>
+            </div>
+            <div class="client-back">
+            <span class="client-back-title">HTML5 <a href="index.html#"><i class="icon-external-link"></i></a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="span2">
+        <div class="white-content client-container thumbnail-client" >
+          <div class="client-flipper">
+            <div class="client-front">
+              <a href="#"><img src="assets/images/6.png" alt="Client-6"><h4 class= "center"> CHROMIUM </h4></a>
+            </div>
+            <div class="client-back">
+            <span class="client-back-title">Chromium <a href="index.html#"><i class="icon-external-link"></i></a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- end: client -->
 
-        <!-- Scripts -->
-        <script type="text/javascript" src="assets/js/jquery.1.10.2.js"></script>
-        <script type="text/javascript" src="assets/bootstrap/js/bootstrap.js"></script>
-    </body>
+
+
+<div class="post-footer">
+    <div class="container">
+      <div class="row">
+          <div class="span6">
+            <div class="copyright">Copyright &copy; 2013 Bootstrap Trooper. All rights reserved.</div>
+          </div>
+          <div class="span6">
+            <ul class="footer-links">
+              <li>
+                <a href="about.html">About</a>
+              </li>
+              <li>
+                <a href="features.html">Features</a>
+              </li>
+              <li>
+                <a href="blog-post.html">Blog</a>
+              </li>
+              <li>
+                <a href="sign-in.html">Sign in</a>
+              </li>
+              <li>
+                <a href="contact.html">Contact</a>
+              </li>
+            </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+</footer><!-- end: footer -->
+
+
+
+<a href="#" class="scrollup"><i class="icon-chevron-up"></i></a>
+
+
+
+    <!--Scripts-->
+        <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script><style type="text/css"></style>
+        <script src="assets/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+        <script src="assets/js/plugins.js" type="text/javascript"></script>
+        <script src="assets/js/main.js" type="text/javascript"></script>
+
+  </body>
 </html>
