@@ -4,12 +4,40 @@
 		"selected_items":
 		[
 			[
-				"margin",
-				"margin-top"
+				"back",
+				"background"
 			],
 			[
 				"ma",
-				"margin-bottom"
+				"margin"
+			],
+			[
+				"na",
+				"navbar-brand"
+			],
+			[
+				"b",
+				"background"
+			],
+			[
+				"pad",
+				"padding"
+			],
+			[
+				"mar",
+				"margin-right"
+			],
+			[
+				"margin-",
+				"margin-left"
+			],
+			[
+				"ba",
+				"background-size"
+			],
+			[
+				"margin",
+				"margin-top"
 			],
 			[
 				"pa",
@@ -22,10 +50,6 @@
 			[
 				"fo",
 				"font-size"
-			],
-			[
-				"pad",
-				"padding-right"
 			],
 			[
 				"ima",
@@ -42,10 +66,6 @@
 			[
 				"si",
 				"background-size"
-			],
-			[
-				"mar",
-				"margin-top"
 			],
 			[
 				"bord",
@@ -76,24 +96,12 @@
 				"padding"
 			],
 			[
-				"ba",
-				"background"
-			],
-			[
 				"v",
 				"vertical-align"
 			],
 			[
 				"inli",
 				"inline-block"
-			],
-			[
-				"margin-",
-				"margin-top"
-			],
-			[
-				"b",
-				"black"
 			],
 			[
 				"i",
@@ -295,7 +303,7 @@
 			"file": "assets/css/style.css",
 			"settings":
 			{
-				"buffer_size": 7344,
+				"buffer_size": 1887,
 				"line_ending": "Windows"
 			}
 		},
@@ -303,7 +311,7 @@
 			"file": "home.html",
 			"settings":
 			{
-				"buffer_size": 18609,
+				"buffer_size": 16448,
 				"line_ending": "Windows"
 			}
 		},
@@ -337,23 +345,23 @@
 			"file": "assets/bootstrap/css/bootstrap.css",
 			"settings":
 			{
-				"buffer_size": 127352,
-				"line_ending": "Windows"
+				"buffer_size": 82783,
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "assets/bootstrap/js/bootstrap.js",
 			"settings":
 			{
-				"buffer_size": 61962,
-				"line_ending": "Windows"
+				"buffer_size": 57269,
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "assets/js/main.js",
 			"settings":
 			{
-				"buffer_size": 692,
+				"buffer_size": 951,
 				"line_ending": "Unix"
 			}
 		}
@@ -542,6 +550,9 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"}\n",
+			"red",
+			"50px",
 			">\n",
 			"}\n",
 			"fade",
@@ -657,15 +668,15 @@
 					"file": "assets/css/style.css",
 					"settings":
 					{
-						"buffer_size": 7344,
+						"buffer_size": 1887,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3435,
-								3435
+								1268,
+								1268
 							]
 						],
 						"settings":
@@ -763,8 +774,8 @@
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 0.0,
-						"translation.y": 3600.0,
+						"translation.x": 333.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -774,15 +785,15 @@
 					"file": "home.html",
 					"settings":
 					{
-						"buffer_size": 18609,
+						"buffer_size": 16448,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								18226,
-								18226
+								1985,
+								1985
 							]
 						],
 						"settings":
@@ -881,7 +892,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 8471.0,
+						"translation.y": 540.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1241,15 +1252,15 @@
 					"file": "assets/bootstrap/css/bootstrap.css",
 					"settings":
 					{
-						"buffer_size": 127352,
+						"buffer_size": 82783,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								124611,
-								124611
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1348,7 +1359,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 120065.0,
+						"translation.y": 93820.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1358,15 +1369,15 @@
 					"file": "assets/bootstrap/js/bootstrap.js",
 					"settings":
 					{
-						"buffer_size": 61962,
+						"buffer_size": 57269,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								59609,
-								59609
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1465,7 +1476,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 43360.0,
+						"translation.y": 39320.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1475,15 +1486,15 @@
 					"file": "assets/js/main.js",
 					"settings":
 					{
-						"buffer_size": 692,
+						"buffer_size": 951,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								669,
-								669
+								934,
+								934
 							]
 						],
 						"settings":
@@ -1582,7 +1593,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 143.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
