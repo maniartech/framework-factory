@@ -177,6 +177,16 @@
 
         };
 
+        /**
+         * Creates a new class for $f.
+         * @function Class(o)
+         * @param {object} o The class definition object.
+         * @example
+         * $f.Test = $f.Class()
+         *
+         * @public
+         * @version 1.0
+         **/
         $f.Class = Class;
 
     }
