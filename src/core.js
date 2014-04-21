@@ -8,18 +8,20 @@
         environment; //Environement - node, requirejs or browser
 
     /**
-     * FrameworkFactory contains members useful members for generating and managing
-     * your very own modern frameworks and framework factory plugins.
+     * FrameworkFactory is a main object in framework-factory. It contains members
+     * useful for generating and managing your very own modern frameworks
+     * and framework factory plugins.
      *
-     * @Class FrameworkFactory
+     * @object FrameworkFactory
+     *
      * @example
      * var myFramework = FrameworkFactory.create({
      *     name: "myFramework",
      *     version: "1.0"
      * });
      *
-     * //Create a new Class called
-     * myFramework. = myFramework
+     * //Creates a new Class called Base
+     * myFramework.Base = myFramework.Class();
      *
      * @public
      * @version 1.0
@@ -39,7 +41,9 @@
      * @version 1.0
      */
     FrameworkFactory.environment = environment = (function (){
-        function Environement() {}
+        function Environement() {
+
+        }
         return new Environement();
     })();
 
