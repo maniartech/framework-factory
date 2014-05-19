@@ -10,7 +10,8 @@ tests = [
     'is',
     'classes',
     'attributes',
-    'events'
+    'events',
+    'callbacks'
 ];
 
 for (i=0, iLen=tests.length; i<iLen; i+=1) {tests[i] = "order!tests/" + tests[i];}

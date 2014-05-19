@@ -40,6 +40,12 @@ membership.Employee = membership.Class({
         return 'Employee';
     },
 
+    onUpdate: membership.callback(),
+
+    update: function() {
+        if (this.onUpdate) this.onUpdate();
+    },
+
     startWork: function(work) {
         this.trigger('start', {
             work: work

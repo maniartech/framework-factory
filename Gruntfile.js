@@ -17,7 +17,8 @@ var srcLegacy = [
         'src/is.js',
         'src/classes.js',
         'src/attributes.js',
-        'src/events.js'
+        'src/events.js',
+        'src/callbacks.js'
     ],
 
     src = srcLegacy.concat([
