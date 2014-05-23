@@ -50,7 +50,7 @@
         /**
          * Attaches readonly member to associated class.
          */
-        readonly = function readonly(options) {
+        readonly = function readonly(options, config) {
             var get, value;
 
             if ($f.is.plainObject(options)) {
@@ -68,7 +68,8 @@
                 value           : value,
                 readonly        : true,
                 get             : get,
-                set             : undefined
+                set             : undefined,
+                config: config
             };
         };
 

@@ -6,10 +6,11 @@
 
     function plugin($f) {
 
-        var attribute = function (defaultValue) {
+        var attribute = function (defaultValue, meta) {
                 return {
                     type: 'attribute',
-                    defaultValue: defaultValue
+                    defaultValue: defaultValue,
+                    meta: meta
                 };
             };
 
@@ -17,7 +18,7 @@
          * Helper function to create attribute members for class.
          * @function
          * @param defaultValue The default value of the attribute.
-         * @option [options] Additional options for attribute member.
+         * @option [meta] Additional meta parameter for attribute member.
          * @public
          * @version 1.0.0
          **/

@@ -6,9 +6,10 @@
 
     function plugin($f) {
 
-        $f.event = function () {
+        $f.event = function (config) {
             return {
-                type: 'event'
+                type: 'event',
+                config: config
             };
         };
 

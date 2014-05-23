@@ -22,10 +22,11 @@
         }
     }
 
-    function observable (value) {
+    function observable (value, config) {
         return {
             type: 'observable',
-            value: value
+            value: value,
+            config: config
         };
     }
 

@@ -6,17 +6,17 @@
 
     function plugin($f) {
 
-        var callback = function (config) {
+        var callback = function (meta) {
                 return {
                     type: 'callback',
-                    config: config
+                    meta: meta
                 };
             };
 
         /**
          * Helper function to create a callback member for class.
          * @function
-         * @param [config] Additional configuration options for callback.
+         * @param [meta] Additional meta parameter for callback.
          * @public
          * @version 1.0.0
          **/
