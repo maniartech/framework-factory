@@ -62,9 +62,9 @@
     }
 
     /**
-     * Tells whether current environment is RequireJS or not.
+     * Tells whether RequireJS detected or no.
      *
-     * @field { boolean } Returns `true` if framework factory is executing under the RequireJS environment otherwise
+     * @field { boolean } Returns `true` if RequireJS environment is detected otherwise
      * `false`.
      *
      * @public
