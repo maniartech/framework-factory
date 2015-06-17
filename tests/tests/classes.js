@@ -67,6 +67,11 @@ test ('Inheritance Tests', function() {
         consumer = new membership.Consumer('Consumer'),
         salesGuy = new membership.SalesGuy("Sales");
 
+    neq(membership.User.extend, undefined);
+    neq(membership.Employee.extend, undefined);
+    neq(membership.Consumer.extend, undefined);
+    neq(membership.SalesGuy.extend, undefined);
+
     user.age = 10;
     consumer.age = 20;
 
