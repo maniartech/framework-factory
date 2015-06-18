@@ -51,7 +51,7 @@ _myFramework.Person_.
 
 
 ```js
-myFramework.Employee = myFramework.Class({
+myFramework.Employee = myFramework.Person.extend({
 
     department: myFramework.readonly(),
 
@@ -97,7 +97,7 @@ myFramework.Employee = myFramework.Class({
         this.base();
     }
 
-}, myFramework.Person);
+});
 
 ```
 
@@ -122,4 +122,4 @@ console.log(e1.fullName); //Prints the fullName loaded from the database.
 
 ##Licence and Copyright ##
 
-© 2011-2013 Maniar Technologies Private Limited, MIT license
+© 2011-2015 Maniar Technologies Private Limited, MIT license
