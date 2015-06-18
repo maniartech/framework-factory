@@ -66,7 +66,7 @@ membership.SalesGuy = membership.Employee.extend({
 });
 
 //Consumer Class
-membership.Consumer = membership.Employee.extend({
+membership.Consumer = membership.User.extend({
     company: membership.attribute()
 });
 
