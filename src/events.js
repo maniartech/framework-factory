@@ -27,7 +27,7 @@
                  * var btn = new Button();
                  * btn.on('mousemove mouseout mouseup', function() {});
                  **/
-                proto.on = function (eventNames, eventHandler) {
+                proto.on = function on (eventNames, eventHandler) {
                     //Conver the event names to lower case.
                     var names = eventNames.toLowerCase().split(' '),
                         i, iLen, eventName,
@@ -63,7 +63,7 @@
                  * it will be created having a field 'eventName' which will help identify
                  * the name of the event which triggered.
                  **/
-                proto.trigger = function (eventName, args) {
+                proto.trigger = function trigger (eventName, args) {
 
                     var subscribers = this['_' + eventName.toLowerCase()],
                             callback,
@@ -86,7 +86,7 @@
                 /**
                  * Disassociate the handler from the trigger.
                  **/
-                proto.off = function (eventName, handler) {
+                proto.off = function off(eventName, handler) {
                     var subscribers = this['_' + eventName.toLowerCase()],
                         index;
 
@@ -145,7 +145,7 @@
                  * @function
                  * @param {function} handler The handler function which should be invoked on event.
                  * @returns The current object.
-                 * @example
+                 * @example=
                  * var btn = new Button();
                  * btn.mouseMove(function(){
                  *     console.log('mouse is moving');
@@ -156,9 +156,7 @@
                     return this;
                 };
 
-                proto[key].importObject = function (o, k, v) {
-                    o[k].call(o, v);
-                };
+                proto[key].event = true;
             }
         });
     }
