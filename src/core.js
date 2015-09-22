@@ -41,9 +41,7 @@
      * @version 1.0
      */
     FrameworkFactory.environment = environment = (function (){
-        function Environement() {
-
-        }
+        function Environement() {}
         return new Environement();
     })();
 
