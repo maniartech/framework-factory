@@ -59,18 +59,15 @@ membership.Employee = membership.Class({
 }, membership.User);
 
 
-membership.SalesGuy = membership.Class({
+membership.SalesGuy = membership.Employee.extend({
     init: function (n) {
         this.base(n);
     }
-}, membership.Employee);
+});
 
 //Consumer Class
-membership.Consumer = membership.Class({
-
+membership.Consumer = membership.User.extend({
     company: membership.attribute()
-
-}, membership.User);
-
+});
 
 

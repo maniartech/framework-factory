@@ -36,7 +36,6 @@ components.ReadonlyClass = components.Class({
     init: function(v) {
         this._readonly3 = v;
     }
-
 });
 
 //Helper class for testing readonly properties

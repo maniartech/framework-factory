@@ -120,6 +120,8 @@
             Constructor.prototype.constructor = Constructor;
             Constructor.__base__ = __base__;
 
+            // Attaches the new member to the
+            // Constructor prototype.
             Constructor.attach = function attach(prop) {
 
                 var item, type, val, processed,
@@ -167,6 +169,11 @@
                 _updateMeta(Constructor);
             };
 
+            // Returns the extended class.
+            Constructor.extend = function extend(o) {
+                return $f.Class(o, Constructor);
+            };
+
             Constructor.__meta__ = {};
             Constructor.__baseMeta__ = __base__.constructor.__meta__;
             _initTypeHandlers(Constructor);
@@ -188,6 +195,7 @@
          * @version 1.0
          **/
         $f.Class = Class;
+
 
     }
 
