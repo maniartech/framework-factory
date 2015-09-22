@@ -18,7 +18,7 @@
  * Twitter: @aamironline
  * Facebook: http://www.facebook.com/aamironline
  *
- * Copyright (c) 2010 - 2013 - Maniar Technologies Private Limited - India
+ * Copyright (c) 2010 - 2015 - Maniar Technologies Private Limited - India
  * http://www.maniartech.com
  * Twitter: @maniartech
  *
