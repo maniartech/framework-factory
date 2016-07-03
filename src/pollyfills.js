@@ -1,5 +1,5 @@
 
-Object.create = Object.create ||
+var createObject = Object.create ||
 function create(o) {
     "use strict";
 
@@ -9,7 +9,7 @@ function create(o) {
 };
 
 
-Object.getPrototypeOf = Object.getPrototypeOf ||
+var getPrototypeOf = Object.getPrototypeOf ||
 function getPrototypeOf() {
     "use strict";
 
@@ -25,7 +25,7 @@ function getPrototypeOf() {
     }
 };
 
-Array.prototype.indexOf = Array.prototype.indexOf ||
+var indexOf = Array.prototype.indexOf ||
 function indexOf(obj, start) {
     "use strict";
 
@@ -38,7 +38,7 @@ function indexOf(obj, start) {
 };
 
 
-String.trim = String.trim ||
+var trim = String.trim ||
 function trim(s) {
     "use strict";
     return s.replace(/^\s\s*/, '').replace(/\s\s*$/, '');

@@ -1,85 +1,98 @@
 
+function main(FrameworkFactory) {
 
-var components = FrameworkFactory.create({
-    name: "components",
-    version: "1.0"
-});
+    var components = FrameworkFactory.create({
+        name: "components",
+        version: "1.0"
+    });
 
-//Helper class for testing readonly properties
-components.ReadonlyClass = components.Class({
+    //Helper class for testing readonly properties
+    components.ReadonlyClass = components.Class({
 
-    readonly: components.readonly(true),
+        readonly: components.readonly(true),
 
-    readonly2: components.readonly({
-        value: 10,
-        get: function() {
-            return this._readonly2;
+        readonly2: components.readonly({
+            value: 10,
+            get: function() {
+                return this._readonly2;
+            }
+        }),
+
+        readonly3: components.readonly({
+            get: function() {
+                return this._readonly3;
+            }
+        }),
+
+        readonly4: components.readonly({
+            value: false,
+            get: function() {
+                return this._readonly4;
+            },
+            set: function(v) {
+                console.log("This function should never be called.");
+            }
+        }),
+
+        init: function(v) {
+            this._readonly3 = v;
         }
-    }),
+    });
 
-    readonly3: components.readonly({
-        get: function() {
-            return this._readonly3;
-        }
-    }),
+    //Helper class for testing readonly properties
+    components.PropertyClass = components.Class({
 
-    readonly4: components.readonly({
-        value: false,
-        get: function() {
-            return this._readonly4;
-        },
-        set: function(v) {
-            console.log("This function should never be called.");
-        }
-    }),
+        p1: components.property(10),
 
-    init: function(v) {
-        this._readonly3 = v;
-    }
-});
+        p2: components.property({
+            value: 20,
+            get: function() {
+                return this._p2;
+            },
+            set: function (v) {
+                this._p2 = v;
+            }
+        }),
 
-//Helper class for testing readonly properties
-components.PropertyClass = components.Class({
+        p3: components.property({
+            get: function() {
+                return this._p3;
+            },
+            set: function(v) {
+                this._p3 = v;
+            }
+        }),
 
-    p1: components.property(10),
+        p4: components.property({
+            get: function() {
+                return true;
+            }
+        }),
 
-    p2: components.property({
-        value: 20,
-        get: function() {
-            return this._p2;
-        },
-        set: function (v) {
-            this._p2 = v;
-        }
-    }),
 
-    p3: components.property({
-        get: function() {
-            return this._p3;
-        },
-        set: function(v) {
+        init: function(v) {
             this._p3 = v;
         }
-    }),
 
-    p4: components.property({
-        get: function() {
-            return true;
-        }
-    }),
+    });
 
+    components.ObservableClass = components.Class({
 
-    init: function(v) {
-        this._p3 = v;
-    }
+        name: components.observable("buddy"),
 
-});
+        age: components.observable(30)
 
-components.ObservableClass = components.Class({
+    });
 
-    name: components.observable("buddy"),
+    window.components = components;
+    return components;
 
-    age: components.observable(30)
+}
 
-});
-
+//Load environment
+if (typeof module !== "undefined" && typeof module.exports === "object") {
+    module.exports = main;
+}
+else {
+    main(this.FrameworkFactory);
+}

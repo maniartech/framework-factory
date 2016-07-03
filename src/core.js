@@ -27,8 +27,7 @@
      * @version 1.0
      **/
     FrameworkFactory = (function () {
-        function FrameworkFactory() {}
-        return new FrameworkFactory();
+        return new (function FrameworkFactory() {});
     })();
 
     /**
@@ -41,53 +40,47 @@
      * @version 1.0
      */
     FrameworkFactory.environment = environment = (function (){
-        function Environement() {}
+
+        function Environement() {
+
+            /**
+             * Returns `true` if code is running under commonJS environment such as Node otherwise `false`.
+             *
+             * @field { boolean } Returns `true` if framework factory is executing under the NodeJS environment otherwise
+             * `false`.
+             *
+             * @public
+             * @version 1.0
+             **/
+            this.commonJS = typeof module !== "undefined" && typeof module.exports === "object";
+
+            /**
+             * Returns whether code is running under the AMD environment such as RequireJS or not.
+             *
+             * @field { boolean } Returns `true` if RequireJS environment is detected otherwise
+             * `false`.
+             *
+             * @public
+             * @version 1.0
+             **/
+            this.amd = typeof define !== "undefined" && typeof define.amd === "object";
+
+            /**
+             * Returns whether code is running withing browser or not.
+             *
+             * @field { boolean } Returns `true` if framework factory is executing under the Browser environment otherwise
+             * `false`.
+             *
+             * @public
+             * @version 1.0
+             **/
+            this.browser = typeof window !== "undefined" && typeof window.document === "object";
+
+        }
+
         return new Environement();
+
     })();
-
-    /**
-     * Tells whether current environment is NodeJS or not.
-     *
-     * @field { boolean } Returns `true` if framework factory is executing under the NodeJS environment otherwise
-     * `false`.
-     *
-     * @public
-     * @version 1.0
-     **/
-    environment.node = typeof module !== "undefined" && typeof module.exports === "object";
-    if (environment.node) {
-        module.exports = FrameworkFactory;
-    }
-
-    /**
-     * Tells whether RequireJS detected or no.
-     *
-     * @field { boolean } Returns `true` if RequireJS environment is detected otherwise
-     * `false`.
-     *
-     * @public
-     * @version 1.0
-     **/
-    environment.requirejs = typeof define !== "undefined" && typeof define.amd === "object";
-    if (environment.requirejs) {
-        define(function() {
-            return FrameworkFactory;
-        });
-    }
-
-    /**
-     * Tells whether current environment is Browser or not.
-     *
-     * @field { boolean } Returns `true` if framework factory is executing under the Browser environment otherwise
-     * `false`.
-     *
-     * @public
-     * @version 1.0
-     **/
-    environment.browser = typeof window !== "undefined" && typeof window.document === "object";
-
-    //Indentify global object
-    FrameworkFactory.global = environment.node ? global : root;
 
     /**
      * The current version of framework factory.
@@ -98,7 +91,7 @@
      * @public
      * @version 1.0
      **/
-    FrameworkFactory.version = '1.0.0';
+    FrameworkFactory.version = '1.1.0';
 
     /**
      * Factory function which creates the core framework based on specified configuration
@@ -132,7 +125,7 @@
      * @public
      * @version 1.0
      **/
-    FrameworkFactory.create = function create(c) {
+    function _c(c) {
 
         var _config = {},
             $f,
@@ -140,6 +133,9 @@
             plugin,
             name,
             key;
+
+        // Create Framework
+
 
         if (typeof c === "string") {
             _config.name = c;
@@ -162,6 +158,8 @@
                 }
             }
         }
+
+        // Update Configuration
 
         /**
          * The current version of $f.
@@ -228,6 +226,8 @@
             plugin = plugins[i];
             name = plugin.info.name;
 
+
+
             //Checks if plugin loaded
             if ($f[name] !== undefined) {
                 throw new Error('Plugin with the name "' + name + '" already loaded.');
@@ -238,12 +238,14 @@
                 plugin($f);
             }
             else if(typeof plugin === 'object') {
-                plugin.load($f);
+                plugin.load($f, FrameworkFactory);
             }
         }
 
         return $f;
     };
+
+    FrameworkFactory.create = function create(c) { return _c(c); }
 
     /**
      * Represents the plugins registry object.
@@ -387,6 +389,18 @@
 
     })();
 
-    root.FrameworkFactory = FrameworkFactory;
+    if (environment.commonJS) {
+        module.exports = FrameworkFactory;
+    }
+    else if (environment.amd) {
+        define(function() {
+            return FrameworkFactory;
+        });
+    }
+
+    else {
+        root.FrameworkFactory = FrameworkFactory;
+    }
+
 
 })(this);

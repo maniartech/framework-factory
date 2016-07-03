@@ -2,9 +2,7 @@
 (function (root, undefined) {
     "use strict";
 
-    var FrameworkFactory = root.FrameworkFactory;
-
-    function plugin($f) {
+    function attributes($f) {
 
         var attribute = function (defaultValue, meta) {
                 return {
@@ -37,13 +35,8 @@
                 proto[key] = options.defaultValue;
             }
         });
-
     }
 
-    plugin.info = {
-        name: 'attributes'
-    };
-
-    FrameworkFactory.plugins.register(plugin);
+    FrameworkFactory.plugins.register(attributes);
 
 })(this);

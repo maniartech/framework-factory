@@ -2,13 +2,25 @@ var eq = strictEqual;
 var neq = notStrictEqual;
 var source, tests, i, iLen;
 
-sources = [ "order!../lib/framework-factory"];
+sources = [ ];
 
 tests = [
-    'test-frameworks/component-lib',
-    'properties',
-    'observables'
+    ,
+    'order!tests/test-frameworks/component-lib',
+    'order!tests/properties',
+    'order!tests/observables'
 ];
 
-for (i=0, iLen=tests.length; i<iLen; i+=1) {tests[i] = "order!tests/" + tests[i];}
-require({urlArgs: Number(new Date())}, sources.concat(tests));
+//for (i=0, iLen=tests.length; i<iLen; i+=1) {tests[i] = "order!tests/" + tests[i];}
+
+require({
+    urlArgs: Number(new Date()),
+}, ['order!../lib/framework-factory'], function (FrameworkFactory) {
+
+    window.FrameworkFactory = FrameworkFactory;
+
+    require({
+        urlArgs: Number(new Date()),
+    }, tests);
+
+});

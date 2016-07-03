@@ -8,7 +8,7 @@
  *                                                                                      __/ |
  *                                                                                     |___/
  *
- * version: 1.0
+ * version: 1.1
  * Framework Factory - A JavaScript factory framework for developing class libraries,
  * apps and frameworks
  * http://www.framework-factory.com
@@ -18,7 +18,7 @@
  * Twitter: @aamironline
  * Facebook: http://www.facebook.com/aamironline
  *
- * Copyright (c) 2010 - 2015 - Maniar Technologies Private Limited - India
+ * Copyright (c) 2010 - 2016 - Maniar Technologies Private Limited - India
  * http://www.maniartech.com
  * Twitter: @maniartech
  *
@@ -36,4 +36,3 @@
  * limitations under the License.
  *
  **/
-

@@ -1,8 +1,6 @@
 (function (root, undefined) {
     "use strict";
 
-    var FrameworkFactory = root.FrameworkFactory;
-
     function _attachProperty(obj, key, getter, setter) {
 
         if (Object.defineProperty) {
@@ -31,7 +29,7 @@
     }
 
 
-    function plugin($f) {
+    function observables($f) {
 
         $f.observable = observable;
 
@@ -119,10 +117,6 @@
 
     }
 
-    plugin.info = {
-        name: 'observables'
-    };
-
-    FrameworkFactory.plugins.register(plugin);
+    FrameworkFactory.plugins.register(observables);
 
 })(this);

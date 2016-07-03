@@ -2,9 +2,7 @@
 (function (root, undefined) {
     "use strict";
 
-    var FrameworkFactory = root.FrameworkFactory;
-
-    function plugin($f) {
+    function events($f) {
 
         $f.event = function (config) {
             return {
@@ -38,7 +36,7 @@
                     }
 
                     for (i = 0, iLen = names.length; i < iLen; i += 1) {
-                        eventName = String.trim(names[i]);
+                        eventName = trim(names[i]);
 
                         privKey = '_' + eventName;
                         if (this[privKey] === undefined) {
@@ -104,6 +102,7 @@
                     index = subscribers.indexOf(handler);
                     if (index !== -1) {
                         subscribers.splice(index, 1);
+                        //TODO: Update subscribedEvents and subscribedEventKeys
                     }
                     return this;
                 };
@@ -159,12 +158,9 @@
                 proto[key].event = true;
             }
         });
+
     }
 
-    plugin.info = {
-        name: 'attributes'
-    };
-
-    FrameworkFactory.plugins.register(plugin);
+    FrameworkFactory.plugins.register(events);
 
 })(this);

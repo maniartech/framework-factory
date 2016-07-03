@@ -2,9 +2,7 @@
 (function (root, undefined) {
     "use strict";
 
-    var FrameworkFactory = root.FrameworkFactory;
-
-    function plugin($f) {
+    function callbacks ($f) {
 
         var callback = function (meta) {
                 return {
@@ -26,15 +24,11 @@
             type: "callback",
             handler: function handler(Class, key, options) {
                 var proto = Class.prototype;
-                proto[key] = false;
+                proto[key] = null;
             }
         });
     }
 
-    plugin.info = {
-        name: 'callbacks'
-    };
-
-    FrameworkFactory.plugins.register(plugin);
+    FrameworkFactory.plugins.register(callbacks);
 
 })(this);

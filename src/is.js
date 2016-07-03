@@ -1,9 +1,7 @@
 (function (root, undefined) {
     "use strict";
 
-    var FrameworkFactory = root.FrameworkFactory;
-
-    function plugin($f) {
+    function is($f, FrameworkFactory) {
 
         var _is = {
 
@@ -136,12 +134,10 @@
         };
 
         $f.is = _is;
+
     }
 
-    plugin.info = {
-        name: 'is'
-    };
+    FrameworkFactory.plugins.register(is);
 
-    FrameworkFactory.plugins.register(plugin);
 
 })(this);

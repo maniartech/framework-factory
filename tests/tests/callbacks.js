@@ -7,7 +7,7 @@ test ('Callback Tests', function() {
         updateCount = 0;
 
     neq(user1.onUpdate, undefined);
-    eq(user1.onUpdate, false);
+    eq(user1.onUpdate, null);
 
 
     user1.onUpdate = function() {
@@ -19,7 +19,7 @@ test ('Callback Tests', function() {
     eq(updateCount, 1);
     user1.update();
     eq(updateCount, 2);
-    user1.onUpdate = false;
+    user1.onUpdate = null;
     user1.update();
     eq(updateCount, 2);
 });

@@ -1,36 +1,29 @@
-/**
- * framework-factory
- * http://framework-factory.com/
- *
- * Copyright (c) 2013 Maniar Technologies Private Limited
- * Author Mohamed Aamir Maniar
- * Licensed under the MIT license.
- * https://framework-factory.com/LICENSE-MIT
- *
- **/
-
 'use strict';
 
-var srcLegacy = [
+var src = [
+
+        // Start
+        'src/(open).js',
         'src/pollyfills.js',
-        'src/core.js',
+
+        // Core Files
+        'src/framework-factory.js',
+        'src/environment.js',
+        'src/plugins.js',
+        'src/type-handlers.js',
         'src/is.js',
-        'src/classes.js',
+        'src/classes-2.js',
+
+        // Type Handlers
         'src/attributes.js',
         'src/events.js',
-        'src/callbacks.js'
-    ],
-
-    src = srcLegacy.concat([
+        'src/callbacks.js',
         'src/properties.js',
-        'src/observables.js'
-    ]),
+        'src/observables.js',
 
-    plugins = [
-        'src/plugins/deep-copy.js',
-        'src/plugins/utils.js'
+        // End
+        'src/(close).js'
     ];
-
 
 module.exports = function (grunt) {
 
@@ -45,14 +38,16 @@ module.exports = function (grunt) {
             main: {
                 src: src,
                 dest: 'lib/framework-factory.js'
+            }
+        },
+        uglify: {
+            options: {
+                banner: '<%= license %>'
             },
-            legacy: {
-                src: srcLegacy,
-                dest: 'lib/framework-factory-legacy.js'
-            },
-            all: {
-                src: src.concat(plugins),
-                dest: 'lib/framework-factory-all.js'
+            main: {
+                files: {
+                    'lib/framework-factory.min.js': ['lib/framework-factory.js'],
+                }
             }
         },
         copy: {
@@ -67,20 +62,6 @@ module.exports = function (grunt) {
                     dest: 'lib/plugins/',
                     filter: 'isFile'
                 }]
-            }
-        },
-        uglify: {
-            options: {
-                banner: '<%= license %>'
-            },
-            main: {
-                files: {
-                    'lib/framework-factory.min.js': ['lib/framework-factory.js'],
-                    'lib/framework-factory.legacy.min.js': ['lib/framework-factory-legacy.js'],
-                    'lib/framework-factory-all.min.js': ['lib/framework-factory-all.js'],
-                    'lib/plugins/deep-copy.min.js': ['lib/plugins/deep-copy.js'],
-                    'lib/plugins/utils.min.js': ['lib/plugins/utils.js']
-                }
             }
         },
         watch: {
@@ -102,5 +83,5 @@ module.exports = function (grunt) {
 
 
     // Default task(s).
-    grunt.registerTask('default', ['concat:main', 'concat:legacy', 'concat:all', 'copy:main', 'uglify']);
+    grunt.registerTask('default', ['concat', 'copy', 'uglify']);
 };

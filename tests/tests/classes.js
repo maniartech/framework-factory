@@ -72,9 +72,12 @@ test ('Inheritance Tests', function() {
     neq(membership.Consumer.extend, undefined);
     neq(membership.SalesGuy.extend, undefined);
 
+    console.log(consumer);
+
     user.age = 10;
     consumer.age = 20;
-
+    eq(salesGuy.name, "Sales");
+    console.log(salesGuy);
     neq(consumer.age, user.age);
     eq (consumer.name, 'Consumer', 'Should call base class\' init method if ' +
         'init in not defined in derived class');

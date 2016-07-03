@@ -73,52 +73,76 @@
                 parent = parent || Object;
             }
             prop    = prop || {};
-            proto = create(parent.prototype);
+            // proto = create(parent.prototype);
 
-            if (requireNew) {
-                Constructor = function Object() {
-                    if (this instanceof Constructor === false) {
-                        throw new Error('Constructor used as function.');
-                    }
-                    //this.constructor = Constructor;
-                    if (initializing === false && this.init !== undefined) {
-                        this.init.apply(this, arguments);
-                    }
-                };
+            // Setup Constructor
+            // console.log(hasProp.call(prop, "init"));
+            if (hasProp.call(prop, "init")) {
+                Constructor = prop.init;
+                delete prop.init;
             }
             else {
-                Constructor = function Object() {
-                    var inst = null;
-
-                    // Constructor is called as function,
-                    // instanciate it and return instance object.
-                    if(this instanceof Constructor === false) {
-                        inst = create(Constructor.prototype);
-                        if (inst.init !== undefined) {
-                            inst.init.apply(inst, arguments);
-                        }
-                        return inst;
-                    }
-                    //this.constructor = Constructor;
-                    if (this.init !== undefined) {
-                        this.init.apply(this, arguments);
-                    }
-                };
+                Constructor = function Object () {}
             }
 
-            //for each static members in parents, copy'em to child
-            for (key in parent) {
-                //if parent owns the key, set child item = parent item
-                if (hasProp.call(parent, key)) {
-                    Constructor[key] = parent[key];
-                }
-            }
+            //For each static members in parents, copy'em to child
+            // for (key in parent) {
+            //     //if parent owns the key, set child item = parent item
+            //     if (hasProp.call(parent, key)) {
+            //         Constructor[key] = parent[key];
+            //     }
+            // }
 
-            __base__ = parent.prototype;
+            // Setup Inheritance
+            // function Ctor () {
+            //     this.constructor = Constructor;
+            // }
+            // Ctor.prototype = parent.prototype;
+            // Constructor.prototype = new Ctor();
 
-            Constructor.prototype = proto;
-            Constructor.prototype.constructor = Constructor;
-            Constructor.__base__ = __base__;
+            // // Setup __base__
+            // __base__ = parent.prototype;
+            // Constructor.__base__ = parent.prototype;
+
+            proto = Constructor.prototype;
+
+            // if (requireNew) {
+            //     Constructor = function Object() {
+            //         if (this instanceof Constructor === false) {
+            //             throw new Error('Constructor used as function.');
+            //         }
+            //         //this.constructor = Constructor;
+            //         if (initializing === false && this.init !== undefined) {
+            //             this.init.apply(this, arguments);
+            //         }
+            //     };
+            // }
+            // else {
+            //     Constructor = function Object() {
+            //         var inst = null;
+
+            //         // Constructor is called as function,
+            //         // instanciate it and return instance object.
+            //         if(this instanceof Constructor === false) {
+            //             inst = create(Constructor.prototype);
+            //             if (inst.init !== undefined) {
+            //                 inst.init.apply(inst, arguments);
+            //             }
+            //             return inst;
+            //         }
+            //         //this.constructor = Constructor;
+            //         if (this.init !== undefined) {
+            //             this.init.apply(this, arguments);
+            //         }
+            //     };
+            // }
+
+
+            // __base__ = parent.prototype;
+
+            // Constructor.prototype = proto;
+            // Constructor.prototype.constructor = Constructor;
+            // Constructor.__base__ = __base__;
 
             // Attaches the new member to the
             // Constructor prototype.
@@ -196,12 +220,12 @@
         $f.Class = Class;
 
         FrameworkFactory.plugins.register(this.constructor);
-
     }
 
     plugin.info = {
         name: "classes"
     };
+
 
 
 })(this);

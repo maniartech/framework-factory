@@ -104,5 +104,4 @@ test ('Event Tests', function() {
     }, "Only functions can be registered as event handler");
 
 
-
 });

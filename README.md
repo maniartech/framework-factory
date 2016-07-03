@@ -117,9 +117,8 @@ console.log(e1.department); //Prints Sales
 console.log(e1 instanceof Employee) //Prints true
 console.log(e1 instanceof Person) //Prints true
 console.log(e1.fullName); //Prints the fullName loaded from the database.
-
 ```
 
 ##Licence and Copyright ##
 
-© 2011-2015 Maniar Technologies Private Limited, MIT license
+&copy; 2011-2015 Maniar Technologies Private Limited, MIT license

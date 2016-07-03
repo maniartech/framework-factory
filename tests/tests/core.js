@@ -11,7 +11,7 @@ test("Framework Basic", function () {
 });
 
 test('Custom Config Tests', function() {
-
+    
     var ns = FrameworkFactory.create({
         version: '1.0.1',
         name: 'MyFramework',

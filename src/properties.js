@@ -2,9 +2,7 @@
 (function (root, undefined) {
     "use strict";
 
-    var FrameworkFactory = root.FrameworkFactory;
-
-    function plugin($f) {
+    function properties($f) {
 
         var readonly, property, handler;
 
@@ -166,10 +164,6 @@
 
     }
 
-    plugin.info = {
-        name: 'properties'
-    };
-
-    FrameworkFactory.plugins.register(plugin);
+    FrameworkFactory.plugins.register(properties);
 
 })(this);
