@@ -128,8 +128,8 @@
                 return val instanceof Array;
             },
 
-            inBrowser: function browser() {
-                return window !== undefined && root === window;
+            inBrowser: function () {
+                return $f.environment.browser;
             }
         };
 

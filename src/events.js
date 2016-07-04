@@ -13,7 +13,7 @@
 
         FrameworkFactory.typeHandlers.register({
             type: "event",
-            init: function init(Class) {
+            setup: function(Class) {
                 var proto = Class.prototype,
                     subscribedEventKeys = {},
                     subscribedEvents = [];

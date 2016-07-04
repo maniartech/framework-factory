@@ -35,7 +35,7 @@
 
         FrameworkFactory.typeHandlers.register({
             type: "observable",
-            init: function (Class) {
+            setup: function (Class) {
                 var proto = Class.prototype;
 
                 proto.set = function set() {

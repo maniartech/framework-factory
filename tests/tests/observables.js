@@ -17,7 +17,6 @@ test ('observable', function() {
     observable.change(function(e) {
         lastEventArg = e;
         changeCount += 1;
-        console.log(e);
     });
 
     observable.name = "guy";

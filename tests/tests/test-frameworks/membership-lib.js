@@ -20,6 +20,10 @@ function main(FrameworkFactory) {
 
         info: function() {
             return 'User';
+        },
+
+        testLevelSkip: function () {
+            return "User";
         }
 
     });
@@ -70,6 +74,14 @@ function main(FrameworkFactory) {
             var name = this.base();
             return "SalesGuy: " + name;
         },
+
+        testLevelSkip: function () {
+            return "Sales " + this.base();
+        },
+
+        noBase: function () {
+            return this.base();
+        }
     });
 
     //Consumer Class

@@ -72,12 +72,9 @@ test ('Inheritance Tests', function() {
     neq(membership.Consumer.extend, undefined);
     neq(membership.SalesGuy.extend, undefined);
 
-    console.log(consumer);
-
     user.age = 10;
     consumer.age = 20;
     eq(salesGuy.name, "Sales");
-    console.log(salesGuy);
     neq(consumer.age, user.age);
     eq (consumer.name, 'Consumer', 'Should call base class\' init method if ' +
         'init in not defined in derived class');
@@ -87,6 +84,8 @@ test ('Inheritance Tests', function() {
     ok (employee instanceof membership.User, 'Must be true because employee is instance of Employee and Employee derived from user');
     eq (user.info(), 'User', 'Must return "User"');
     eq (employee.info(), 'Employee', 'Must return "Employee"');
+
+    eq(salesGuy.testLevelSkip(), "Sales User");
 
 });
 

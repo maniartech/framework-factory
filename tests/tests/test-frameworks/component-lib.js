@@ -9,6 +9,8 @@ function main(FrameworkFactory) {
     //Helper class for testing readonly properties
     components.ReadonlyClass = components.Class({
 
+        type: 'ReadonlyClass',
+
         readonly: components.readonly(true),
 
         readonly2: components.readonly({
@@ -72,7 +74,7 @@ function main(FrameworkFactory) {
 
         init: function(v) {
             this._p3 = v;
-        }
+        },
 
     });
 

@@ -2,7 +2,7 @@ module("core");
 
 test("Framework Basic", function () {
     eq(typeof FrameworkFactory, 'object');
-    eq(FrameworkFactory.version, '1.0.0');
+    eq(FrameworkFactory.version, '1.1.0');
     var ns = FrameworkFactory.create();
     neq(ns, undefined, 'The namespace ns must not be undefined.');
     neq(ns, null, 'The namespace ns must not be null.');
@@ -11,9 +11,9 @@ test("Framework Basic", function () {
 });
 
 test('Custom Config Tests', function() {
-    
+
     var ns = FrameworkFactory.create({
-        version: '1.0.1',
+        version: '1.0.0',
         name: 'MyFramework',
         defaultBaseClass: "BaseObject"
     });
@@ -34,7 +34,7 @@ test('Custom Config Tests', function() {
 
     neq (ns, undefined, 'The namespace ns must not be undefined.');
     neq (ns, null, 'The namespace ns must not be null.');
-    eq (ns.version, '1.0.1', "Default version must be 1.0.1");
+    eq (ns.version, '1.0.0', "Default version must be 1.1.0");
     eq (ns.name, 'MyFramework', 'The default framework full name must be "MyFramework"');
 
     var Cls = ns.Class({});
