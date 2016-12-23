@@ -32,7 +32,7 @@
                         privKey;
 
                     if (!$f.is.func(eventHandler)) {
-                        throw new Error('Only functions can be registered as event handler');
+                        throw new Error('Invalid handler!');
                     }
 
                     for (i = 0, iLen = names.length; i < iLen; i += 1) {

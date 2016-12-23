@@ -39,7 +39,7 @@
             var prototype,
                 key,
                 constructorFn,
-                meta,
+                meta = {},
                 create = Object.create,
                 hasProp = Object.prototype.hasOwnProperty;
 
@@ -50,9 +50,6 @@
             else {
                 parent = parent || Object;
             }
-
-            // Setup meta
-            meta = {}
 
             // Setup prop
             prop    = prop || {};
@@ -91,8 +88,7 @@
             }
 
             // Setup Inheritance
-            _extendClass(constructorFn, parent);
-            prototype = constructorFn.prototype;
+            prototype = _extendClass(constructorFn, parent);
 
             // Attaches the new member to the
             // constructorFn prototype.
@@ -119,23 +115,14 @@
                                 typeof parent.prototype[key] === 'function' &&
                                 fnTest.test(item)) {
                             prototype[key] = (function (key, fn) {
-                                var baseFn, wrapperFn;
-                                // baseFn = function base () {
-                                //     return __base__[key].apply(this, arguments);
-                                // };
-                                //
+                                var parentFn = parent;
 
-                                //baseFn = __base__[key];
-                                var parentClass = parent;
-
-                                wrapperFn = function () {
-                                    this.base =  parentClass.prototype[key];
+                                return function () {
+                                    this.base =  parentFn.prototype[key];
                                     var ret = fn.apply(this, arguments);
                                     this.base = undefined;
                                     return ret;
                                 }
-
-                                return wrapperFn;
                             })(key, item);
                             processed = true;
                         }
@@ -143,26 +130,71 @@
                         if (!processed) {
                             prototype[key] = val;
                         }
-                        constructorFn.__meta__[key] = item;
                     }
+
+                    meta[key] = item;
                 }
-                _updateMeta(constructorFn, meta);
 
             };
 
             // Returns the extended class.
-            constructorFn.extend = function extend(o) {
-                return _createClass(o, constructorFn);
-            };
+            constructorFn.extend = function extend(o) { return _createClass(o, constructorFn); };
 
             constructorFn.getMemberInfo = function getMemberInfo(member) {
-                if (member in )
+                if (member in metaObj) {
+                    return;
+                }
             };
 
-            constructorFn.__meta__ = {};
-            constructorFn.__baseMeta__ = parent.__meta__;
-            _initializeTypeHandlers(constructorFn);
+            _setupTypeHandlers(constructorFn);
+
             constructorFn.attach(prop);
+
+            // Setup Meta Framework
+
+            function _gmn(ownMembersOnly) {
+                var keys = Object.keys(meta);
+
+                if (!ownMembersOnly && $f.is.func(parent.getMembers)) {
+                    return keys.concat(parent.getMembers());
+                }
+                return keys;
+            }
+
+            function _gm (member) {
+                var info;
+                if (member in meta) {
+                    info = meta[member];
+                }
+                else if($f.is.func(parent.getMemberInfo)) {
+                    info = parent.getMemberInfo(member);
+                }
+
+                if (wd.is.plainObject(info) && "type" in info) {
+                    return info;
+                }
+
+                return null;
+            }
+
+
+
+            /**
+             * Returns the detail about registered member in the specified class
+             * @function $f.getMemberInfo( member)
+             * @param  {string} member The name of the member
+             * @returns {any} An object describing member detail.
+             **/
+            constructorFn.getMember = function (member) { return _gm(member); };
+
+            /**
+             * Returns an array of all the registered member keys including members of base class. If ownMemberOnly is
+             * passed as true,
+             * @function $f.getMembers( ownMembersOnly )
+             * @param  {string} ownMembersOnly The name of the member
+             * @returns {Array(string)} An array of string having all the registed member keys.
+             **/
+            constructorFn.getMemberNames = function (ownMembersOnly) { return _gmn(ownMembersOnly); };
 
             //return
             return constructorFn;
@@ -195,11 +227,11 @@
             subClass.prototype              = createObject(superClass.prototype);
             subClass.prototype.constructor  = subClass;
 
-            return subClass;
+            return subClass.prototype;
         }
 
         // Initializes the type handlers for specified class.
-        function _initializeTypeHandlers(Class) {
+        function _setupTypeHandlers(constructorFn) {
             var types = FrameworkFactory.typeHandlers.getTypes(),
                 type, typeHandler,
                 i, iLen;
@@ -208,44 +240,10 @@
                 type = types[i];
                 typeHandler = FrameworkFactory.typeHandlers.get(type);
                 if (typeHandler.setup) {
-                    typeHandler.setup(Class);
+                    typeHandler.setup(constructorFn);
                 }
             }
         }
-
-        // Copies attributes from an sourceObj to destinationObj.
-        // If override is set to false, does not copy attribute into new object
-        // when new object already has said attribute.
-        function _copyKeys(sourceObj, destinationObj, override) {
-            var key, val;
-
-            override = (override === undefined) ? true : override;
-
-            for(key in sourceObj) {
-                if (sourceObj.hasOwnProperty(key)) {
-                    val = sourceObj[key];
-                    if (override) {
-                        destinationObj[key] = val;
-                    }
-                    else {
-                        if(key in destinationObj === false) {
-                            destinationObj[key] = val;
-                        }
-                    }
-                }
-            }
-        }
-
-        function _updateMeta(constructorFn, metaObj) {
-            var parentMeta = {};
-
-            if(constructorFn.constructor.__baseMeta__) {
-                _copyKeys(constructorFn.constructor.__baseMeta__, parentMeta);
-            }
-
-            _copyKeys(parentMeta, metaObj, false);
-        }
-
     }
 
     FrameworkFactory.plugins.register(classes);

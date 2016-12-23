@@ -121,4 +121,4 @@ console.log(e1.fullName); //Prints the fullName loaded from the database.
 
 ##Licence and Copyright ##
 
-&copy; 2011-2015 Maniar Technologies Private Limited, Apache V2.0 license
+&copy; 2011-2016 Maniar Technologies Private Limited, MIT license

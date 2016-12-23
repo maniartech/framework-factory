@@ -11,4 +11,6 @@ else {
     root.FrameworkFactory = FrameworkFactory;
 }
 
+return FrameworkFactory;
+
 })(this);

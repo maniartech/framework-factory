@@ -1,8 +1,7 @@
 (function (root, undefined) {
     "use strict";
 
-    var FrameworkFactory,
-        plugins = [],
+    var plugins = [],
         typeHandlers = {},
         i, iLen,
         environment; //Environement - node, requirejs or browser
@@ -389,18 +388,18 @@
 
     })();
 
-    if (environment.commonJS) {
-        module.exports = FrameworkFactory;
-    }
-    else if (environment.amd) {
-        define(function() {
-            return FrameworkFactory;
-        });
-    }
+    // if (environment.commonJS) {
+    //     module.exports = FrameworkFactory;
+    // }
+    // else if (environment.amd) {
+    //     define(function() {
+    //         return FrameworkFactory;
+    //     });
+    // }
 
-    else {
-        root.FrameworkFactory = FrameworkFactory;
-    }
+    // else {
+    //     root.FrameworkFactory = FrameworkFactory;
+    // }
 
 
 })(this);

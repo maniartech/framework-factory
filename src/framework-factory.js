@@ -78,7 +78,7 @@ var FrameworkFactory;
             plugins = FrameworkFactory.plugins.toArray(),
             plugin,
             name,
-            key;
+            key, i, iLen;
 
         // Create Framework
 

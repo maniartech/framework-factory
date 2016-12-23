@@ -9,7 +9,7 @@
     "class",
     "library"
   ],
-  "description": "Wonderful factory framwork for creating modern object oriented javascript libraries.",
+  "description": "A wonderful factory framwork for creating modern object oriented javascript libraries.",
   "main": "lib/framework-factory.js",
   "directories": {
     "test": "tests"
@@ -24,15 +24,12 @@
     "grunt-contrib-uglify": "^0.9.2",
     "grunt-contrib-watch": "^0.6.1"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/maniartech/framework-factory.git"
   },
   "author": "M. Aamir Maniar, @aamironline - www.maniartech.com",
-  "license": "Apache V2",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/maniartech/framework-factory/issues"
   },
