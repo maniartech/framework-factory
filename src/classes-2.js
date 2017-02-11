@@ -170,7 +170,7 @@
                     info = parent.getMemberInfo(member);
                 }
 
-                if (wd.is.plainObject(info) && "type" in info) {
+                if ($f.is.plainObject(info) && "type" in info) {
                     return info;
                 }
 

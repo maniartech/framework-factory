@@ -48,7 +48,7 @@
         /**
          * Attaches readonly member to associated class.
          */
-        readonly = function readonly(options, config) {
+        readonly = function readonly(options, meta) {
             var get, value;
 
             if ($f.is.plainObject(options)) {
@@ -67,7 +67,7 @@
                 readonly        : true,
                 get             : get,
                 set             : undefined,
-                config: config
+                meta            : meta
             };
         };
 
@@ -80,7 +80,7 @@
          * @public
          * @version 1.0.0
          **/
-        property = function property(options) {
+        property = function property(options, meta) {
 
             var valueOf,
                 value,
@@ -101,11 +101,12 @@
             }
 
             return {
-                type : 'property',
-                readonly : false,
-                value : value,
-                get : get,
-                set : set
+                type        : 'property',
+                readonly    : false,
+                value       : value,
+                get         : get,
+                set         : set,
+                meta        : meta
             };
         };
 
