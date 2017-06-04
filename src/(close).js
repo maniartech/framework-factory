@@ -1,8 +1,10 @@
 
-if (FrameworkFactory.environment.commonJS) {
+// CommonJS (Node)
+if (typeof module !== "undefined" && typeof module.exports === "object") {
     module.exports = FrameworkFactory;
 }
-else if (FrameworkFactory.environment.amd) {
+// AMD (RequireJS)
+else if (typeof define !== "undefined" && typeof define.amd === "object") {
     define(function() {
         return FrameworkFactory;
     });

@@ -78,13 +78,13 @@ function main(FrameworkFactory) {
 
     });
 
-    components.ObservableClass = components.Class({
+    // components.ObservableClass = components.Class({
 
-        name: components.observable("buddy"),
+    //     name: components.observable("buddy"),
 
-        age: components.observable(30)
+    //     age: components.observable(30)
 
-    });
+    // });
 
     window.components = components;
     return components;

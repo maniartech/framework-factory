@@ -8,18 +8,16 @@ var src = [
 
         // Core Files
         'src/framework-factory.js',
-        'src/environment.js',
         'src/plugins.js',
         'src/type-handlers.js',
         'src/is.js',
-        'src/classes-2.js',
+        'src/classes.js',
 
         // Type Handlers
         'src/attributes.js',
         'src/events.js',
         'src/callbacks.js',
         'src/properties.js',
-        'src/observables.js',
 
         // End
         'src/(close).js'
@@ -67,7 +65,7 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: ['src/**/*.js'],
-                tasks: ['concat', 'uglify'],
+                tasks: ['concat'],
                 options: {
                     nospawn: true
                 }

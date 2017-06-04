@@ -14,8 +14,7 @@ tests = [
     'order!tests/attributes',
     'order!tests/events',
     'order!tests/callbacks',
-    'order!tests/properties',
-    'order!tests/observables'
+    'order!tests/properties'
 ];
 
 //for (i=0, iLen=tests.length; i<iLen; i+=1) {tests[i] = "order!tests/" + tests[i];}

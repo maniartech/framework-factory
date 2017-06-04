@@ -93,8 +93,4 @@ test('Is of Type Tests', function() {
         eq(is.array(new Date()), false);
         eq(is.array(new membership.Employee()), false);
 
-        //In Browser
-        eq(is.inBrowser(), true);
-
-
 });
