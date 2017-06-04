@@ -1,128 +1,98 @@
 (function (root, undefined) {
     "use strict";
 
-    var FrameworkFactory = root.FrameworkFactory;
+    function classes($f) {
 
-    function _initTypeHandlers(Class) {
-        var types = FrameworkFactory.typeHandlers.getTypes(),
-            type, typeHandler,
-            i, iLen;
-
-        for (i=0, iLen=types.length; i < iLen; i += 1) {
-            type = types[i];
-            typeHandler = FrameworkFactory.typeHandlers.get(type);
-            if (typeHandler.init) {
-                typeHandler.init(Class);
-            }
-        }
-    }
-
-    function _plainObject (val) {
-        if (val === undefined || val === null) { return false; }
-        return ((typeof val === 'object') && (val.constructor === Object));
-    }
-
-    function _copyKeys(o, newO, overrideExisting) {
-        var key, val;
-
-        overrideExisting = (overrideExisting === undefined) ? true : overrideExisting;
-
-        for(key in o) {
-            if (o.hasOwnProperty(key)) {
-                val = o[key];
-                if (overrideExisting) {
-                    newO[key] = val;
-                }
-                else {
-                    if(key in newO === false) {
-                        newO[key] = val;
-                    }
-                }
-            }
-        }
-    }
-
-    function _updateMeta(Class) {
-        var meta = Class.__meta__,
-            parentMeta = {};
-
-        if(Class.constructor.__baseMeta__) {
-            _copyKeys(Class.constructor.__baseMeta__, parentMeta);
-        }
-
-        _copyKeys(parentMeta, meta, false);
-    }
-
-    function plugin($f, FrameworkFactory) {
-
-        var initializing = true,
-            fnTest = /xyz/.test(function (){xyz;}) ? /\bbase\b/ : /.*/,
+        var fnTest = /xyz/.test(function (){xyz;}) ? /\bbase\b/ : /.*/,
             defaultBaseClass = $f.config('defaultBaseClass'),
             requireNew = $f.config('requireNew', false),
-            Class;
+            _createClass;
 
-        Class = function Class(prop, parent) {
-            var hasProp = Object.prototype.hasOwnProperty,
-                proto, key, Constructor, __base__, funcString,
-                create = Object.create;
+        /**
+         * Define a new class.
+         *
+         * @function $f.Class(prop, [parent])
+         * @param {Object}      prop   [description]
+         * @param {[BaseClas}   parent [description]
+         *
+         * @example
+         * $f.Test = $f.Class({
+         *
+         *     // constructorFn for $f.Test class.
+         *     init: (name) {
+         *         this.name = name;
+         *     },
+         *
+         *     // Returns currently set name.
+         *     getName: function getName() {
+         *         return this.name;
+         *     }
+         *
+         * });
+         *
+         * @returns {Function}  Returns a constructor function.
+         *
+         * @memberof $f
+         * @public
+         */
+        _createClass = function (prop, parent) {
+            var prototype,
+                key,
+                constructorFn,
+                meta = {},
+                create = Object.create,
+                hasProp = Object.prototype.hasOwnProperty;
 
+            // Setup parent.
             if ($f[defaultBaseClass] !== undefined) {
                 parent  = parent || $f[defaultBaseClass];
             }
             else {
                 parent = parent || Object;
             }
-            prop    = prop || {};
-            proto = create(parent.prototype);
 
+            // Setup prop
+            prop    = prop || {};
+
+            // Setup constructorFn
             if (requireNew) {
-                Constructor = function Object() {
-                    if (this instanceof Constructor === false) {
-                        throw new Error('Constructor used as function.');
+                constructorFn = function Object() {
+                    if (this instanceof constructorFn === false) {
+                        throw new Error('constructorFn used as function.');
                     }
-                    //this.constructor = Constructor;
-                    if (initializing === false && this.init !== undefined) {
+                    //this.constructor = constructorFn;
+                    if (this.init !== undefined) {
                         this.init.apply(this, arguments);
                     }
                 };
             }
             else {
-                Constructor = function Object() {
+
+                constructorFn = function Object () {
                     var inst = null;
 
-                    // Constructor is called as function,
+                    // constructorFn is called as function,
                     // instanciate it and return instance object.
-                    if(this instanceof Constructor === false) {
-                        inst = create(Constructor.prototype);
+                    if(this instanceof constructorFn === false) {
+                        inst = create(constructorFn.prototype);
                         if (inst.init !== undefined) {
                             inst.init.apply(inst, arguments);
                         }
                         return inst;
                     }
-                    //this.constructor = Constructor;
+                    //this.constructor = constructorFn;
                     if (this.init !== undefined) {
                         this.init.apply(this, arguments);
                     }
                 };
             }
 
-            //for each static members in parents, copy'em to child
-            for (key in parent) {
-                //if parent owns the key, set child item = parent item
-                if (hasProp.call(parent, key)) {
-                    Constructor[key] = parent[key];
-                }
-            }
-
-            __base__ = parent.prototype;
-
-            Constructor.prototype = proto;
-            Constructor.prototype.constructor = Constructor;
-            Constructor.__base__ = __base__;
+            // Setup Inheritance
+            prototype = _extendClass(constructorFn, parent);
 
             // Attaches the new member to the
-            // Constructor prototype.
-            Constructor.attach = function attach(prop) {
+            // constructorFn prototype.
+            constructorFn.attach = function attach(prop) {
                 var item, type, val, processed,
                     key,
                     typeHandler;
@@ -137,49 +107,95 @@
                         if ($f.is.plainObject(item)) {
                             typeHandler = FrameworkFactory.typeHandlers.get(item.type);
                             if (typeHandler !== undefined && typeHandler.handler !== undefined) {
-                                typeHandler.handler(Constructor, key, item);
+                                typeHandler.handler(constructorFn, key, item);
                                 processed = true;
                             }
                         }
                         else if (type === 'function' &&
-                                typeof __base__[key] === 'function' &&
+                                typeof parent.prototype[key] === 'function' &&
                                 fnTest.test(item)) {
-                            proto[key] = (function (key, fn) {
-                                var baseFunc = function () {
-                                        __base__[key].apply(this, arguments);
-                                    },
-                                    wrapper = function () {
-                                        this.base =  baseFunc;
-                                        var ret = fn.apply(this, arguments);
-                                        this.base = null;
-                                        return ret;
-                                    };
-                                return wrapper;
+                            prototype[key] = (function (key, fn) {
+                                var parentFn = parent;
+
+                                return function () {
+                                    this.base =  parentFn.prototype[key];
+                                    var ret = fn.apply(this, arguments);
+                                    this.base = undefined;
+                                    return ret;
+                                }
                             })(key, item);
                             processed = true;
                         }
 
                         if (!processed) {
-                            proto[key] = val;
+                            prototype[key] = val;
                         }
-                        Constructor.__meta__[key] = item;
                     }
+
+                    meta[key] = item;
                 }
-                _updateMeta(Constructor);
+
             };
 
             // Returns the extended class.
-            Constructor.extend = function extend(o) {
-                return $f.Class(o, Constructor);
+            constructorFn.extend = function extend(o) { return _createClass(o, constructorFn); };
+
+            constructorFn.getMemberInfo = function getMemberInfo(member) {
+                if (member in metaObj) {
+                    return;
+                }
             };
 
-            Constructor.__meta__ = {};
-            Constructor.__baseMeta__ = __base__.constructor.__meta__;
-            _initTypeHandlers(Constructor);
-            Constructor.attach(prop);
+            _setupTypeHandlers(constructorFn);
+
+            constructorFn.attach(prop);
+
+            // Setup Meta Framework
+
+            function _gmn(ownMembersOnly) {
+                var keys = Object.keys(meta);
+
+                if (!ownMembersOnly && $f.is.func(parent.getMembers)) {
+                    return keys.concat(parent.getMembers());
+                }
+                return keys;
+            }
+
+            function _gm (member) {
+                var info;
+                if (member in meta) {
+                    info = meta[member];
+                }
+                else if($f.is.func(parent.getMemberInfo)) {
+                    info = parent.getMemberInfo(member);
+                }
+
+                if ($f.is.plainObject(info) && "type" in info) {
+                    return info;
+                }
+
+                return null;
+            }
+
+            /**
+             * Returns the detail about registered member in the specified class
+             * @function $f.getMemberInfo( member)
+             * @param  {string} member The name of the member
+             * @returns {any} An object describing member detail.
+             **/
+            constructorFn.getMember = function (member) { return _gm(member); };
+
+            /**
+             * Returns an array of all the registered member keys including members of base class. If ownMemberOnly is
+             * passed as true,
+             * @function $f.getMembers( ownMembersOnly )
+             * @param  {string} ownMembersOnly The name of the member
+             * @returns {Array(string)} An array of string having all the registed member keys.
+             **/
+            constructorFn.getMemberNames = function (ownMembersOnly) { return _gmn(ownMembersOnly); };
 
             //return
-            return Constructor;
+            return constructorFn;
 
         };
 
@@ -193,15 +209,44 @@
          * @public
          * @version 1.0
          **/
-        $f.Class = Class;
+        $f.Class = function () { return _createClass.apply(null, arguments) };
 
-        FrameworkFactory.plugins.register(this.constructor);
+        // Extends subClass with superClass
+        function _extendClass(subClass, superClass) {
 
+            // Coopy static members from superClass to subClass
+            for (var key in superClass) {
+                if (Object.prototype.hasOwnProperty.call(superClass, key)) {
+                    subClass[key] = superClass[key];
+                }
+            }
+
+            // Inherit
+            subClass.prototype              = createObject(superClass.prototype);
+            subClass.prototype.constructor  = subClass;
+
+            return subClass.prototype;
+        }
+
+        // Initializes the type handlers for specified class.
+        function _setupTypeHandlers(constructorFn) {
+            var types = FrameworkFactory.typeHandlers.getTypes(),
+                type, typeHandler,
+                i, iLen;
+
+            for (i=0, iLen=types.length; i < iLen; i += 1) {
+                type = types[i];
+                typeHandler = FrameworkFactory.typeHandlers.get(type);
+                if (typeHandler.setup) {
+                    typeHandler.setup(constructorFn);
+                }
+            }
+        }
     }
 
-    plugin.info = {
-        name: "classes"
-    };
+    FrameworkFactory.plugins.register({
+        name: 'classes',
+        load: classes
+    });
 
-
-})(this);
+})(root);
