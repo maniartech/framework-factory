@@ -50,6 +50,7 @@
          */
         readonly = function readonly(options, meta) {
             var get, value;
+            // TODO: Change value to 'default'
 
             if ($f.is.plainObject(options)) {
                 value = options.value;
@@ -60,6 +61,9 @@
             else {
                 value = options;
             }
+
+            meta = meta || {};
+            meta.default = value;
 
             return {
                 type            : 'readonly',
@@ -99,6 +103,9 @@
             else {
                 value = options;
             }
+
+            meta = meta || {};
+            meta.default = value;
 
             return {
                 type        : 'property',
@@ -162,9 +169,11 @@
             type: "readonly",
             handler: handler
         });
-
     }
 
-    FrameworkFactory.plugins.register(properties);
+    FrameworkFactory.plugins.register({
+        name: "properties",
+        load: properties
+    });
 
 })(this);

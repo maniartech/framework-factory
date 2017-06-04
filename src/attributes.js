@@ -5,12 +5,15 @@
     function attributes($f) {
 
         var attribute = function (defaultValue, meta) {
-                return {
-                    type: 'attribute',
-                    defaultValue: defaultValue,
-                    meta: meta
-                };
+            meta = meta || {};
+            meta.default = defaultValue;
+
+            return {
+                type: 'attribute',
+                defaultValue: defaultValue,
+                meta: meta
             };
+        };
 
         /**
          * Helper function to create attribute members for class.
@@ -37,6 +40,9 @@
         });
     }
 
-    FrameworkFactory.plugins.register(attributes);
+    FrameworkFactory.plugins.register({
+        name: 'attributes',
+        load: attributes
+    });
 
 })(this);

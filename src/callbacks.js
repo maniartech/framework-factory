@@ -29,6 +29,9 @@
         });
     }
 
-    FrameworkFactory.plugins.register(callbacks);
+    FrameworkFactory.plugins.register({
+        name: 'callbacks',
+        load: callbacks
+    });
 
 })(this);

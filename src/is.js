@@ -133,11 +133,16 @@
             }
         };
 
+        _is.name = "is";
+
         $f.is = _is;
 
     }
 
-    FrameworkFactory.plugins.register(is);
+    FrameworkFactory.plugins.register({
+        name: 'is',
+        load: is
+    });
 
 
 })(this);

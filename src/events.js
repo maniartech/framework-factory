@@ -161,6 +161,9 @@
 
     }
 
-    FrameworkFactory.plugins.register(events);
+    FrameworkFactory.plugins.register({
+        name: 'events',
+        load: events
+    });
 
 })(this);
