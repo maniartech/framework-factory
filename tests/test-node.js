@@ -2,7 +2,7 @@
 //Tests loading of FrameworkFactory in node environment.
 
 var assert = require("assert"),
-    FrameworkFactory = require("../lib/framework-factory-x.js");
+    FrameworkFactory = require("../lib/framework-factory.js");
 
 
 assert.notEqual(FrameworkFactory, undefined, "FrameworkFactory should not be undefined");
