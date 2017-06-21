@@ -90,10 +90,13 @@ test ('Event Tests', function() {
 
     emp1.unsubscribeAll();
     eq(emp1.subscribers("start").length, 0);
+    eq(emp1._events, undefined);
 
     eq(emp2.subscribers("start").length, 1);
+
     emp2.unsubscribeAll();
     eq(emp2.subscribers("start").length, 0);
+    eq(emp2._events, undefined);
 
     raises(function () {
         emp1.on("wow", false);
