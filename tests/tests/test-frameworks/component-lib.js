@@ -14,7 +14,7 @@ function main(FrameworkFactory) {
         readonly: components.readonly(true),
 
         readonly2: components.readonly({
-            value: 10,
+            default: 10,
             get: function() {
                 return this._readonly2;
             }
@@ -27,7 +27,7 @@ function main(FrameworkFactory) {
         }),
 
         readonly4: components.readonly({
-            value: false,
+            default: false,
             get: function() {
                 return this._readonly4;
             },
@@ -47,7 +47,7 @@ function main(FrameworkFactory) {
         p1: components.property(10),
 
         p2: components.property({
-            value: 20,
+            default: 20,
             get: function() {
                 return this._p2;
             },

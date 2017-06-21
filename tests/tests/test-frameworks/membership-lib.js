@@ -31,7 +31,7 @@ function main(FrameworkFactory) {
     //Employey Class
     membership.Employee = membership.Class({
 
-        age: 20,
+        // age: 20,
 
         start: membership.event(),
 
