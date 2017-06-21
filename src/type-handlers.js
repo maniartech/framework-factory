@@ -28,7 +28,7 @@ FrameworkFactory.typeHandlers = (function(){
         register: function register(o) {
 
             if (typeof o === 'object') {
-                typeHandlers[o.type] = o;
+                typeHandlers[o.typeHandler] = o;
                 return;
             }
             throw new Error('Invalid typeHandler.');
@@ -45,8 +45,8 @@ FrameworkFactory.typeHandlers = (function(){
          * @public
          * @version 1.0
          **/
-        get: function get(type) {
-            return typeHandlers[type];
+        get: function get(typeHandler) {
+            return typeHandlers[typeHandler];
         },
 
         /**
@@ -59,15 +59,15 @@ FrameworkFactory.typeHandlers = (function(){
          * @public
          * @version 1.0
          **/
-        getTypes: function getTypes() {
-            var types = [],
-                type;
-            for (type in typeHandlers) {
-                if (typeHandlers.hasOwnProperty(type)) {
-                    types.push(type);
+        getTypeHandlers: function getTypeHandlers() {
+            var handlers = [],
+                typeHandler;
+            for (typeHandler in typeHandlers) {
+                if (typeHandlers.hasOwnProperty(typeHandler)) {
+                    handlers.push(typeHandler);
                 }
             }
-            return types;
+            return handlers;
         }
     };
 

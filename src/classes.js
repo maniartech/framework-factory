@@ -105,7 +105,7 @@
                         processed = false;
 
                         if ($f.is.plainObject(item)) {
-                            typeHandler = FrameworkFactory.typeHandlers.get(item.type);
+                            typeHandler = FrameworkFactory.typeHandlers.get(item.typeHandler);
                             if (typeHandler !== undefined && typeHandler.handler !== undefined) {
                                 typeHandler.handler(constructorFn, key, item);
                                 processed = true;
@@ -217,13 +217,12 @@
 
         // Initializes the type handlers for specified class.
         function _setupTypeHandlers(constructorFn) {
-            var types = FrameworkFactory.typeHandlers.getTypes(),
-                type, typeHandler,
+            var typeHandlers = FrameworkFactory.typeHandlers.getTypeHandlers(),
+                typeHandler,
                 i, iLen;
 
-            for (i=0, iLen=types.length; i < iLen; i += 1) {
-                type = types[i];
-                typeHandler = FrameworkFactory.typeHandlers.get(type);
+            for (i=0, iLen=typeHandlers.length; i < iLen; i += 1) {
+                typeHandler = FrameworkFactory.typeHandlers.get(typeHandlers[i]);
                 if (typeHandler.setup) {
                     typeHandler.setup(constructorFn);
                 }

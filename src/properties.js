@@ -63,14 +63,12 @@
             }
 
             meta = meta || {};
-            meta.default = value;
 
             return {
-                type            : 'readonly',
+                typeHandler     : 'readonly',
                 default         : value,
                 readonly        : true,
                 get             : get,
-                set             : undefined,
                 meta            : meta
             };
         };
@@ -105,10 +103,9 @@
             }
 
             meta = meta || {};
-            meta.default = value;
 
             return {
-                type        : 'property',
+                typeHandler : 'property',
                 readonly    : false,
                 default     : value,
                 get         : get,
@@ -134,6 +131,7 @@
                     _get = function () {
                         return this[privateKey];
                     };
+                    options.get = _get;
                 }
             }
             else {
@@ -145,7 +143,8 @@
                 _set = setter || function (v) {
                     this[privateKey] = v;
                 };
-
+                options.get = _get;
+                options.set = _set;
             }
 
             if (value !== undefined) {
@@ -161,12 +160,12 @@
         $f.readonly     = readonly;
 
         FrameworkFactory.typeHandlers.register({
-            type: "property",
+            typeHandler: "property",
             handler: handler
         });
 
         FrameworkFactory.typeHandlers.register({
-            type: "readonly",
+            typeHandler: "readonly",
             handler: handler
         });
     }

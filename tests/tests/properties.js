@@ -9,14 +9,13 @@ test ('readonly', function() {
             get: function() {}
         });
 
-    eq(readonly.type, "readonly");
+    eq(readonly.typeHandler, "readonly");
     eq(readonly.default, 20);
     eq(readonly.readonly, true);
     eq(typeof readonly.get, "function");
     eq(typeof readonly.set, "undefined");
 
     neq(components.readonly, undefined);
-
     eq(ro.readonly, true);
     eq(ro._readonly, true);
 

@@ -6,13 +6,13 @@
 
         $f.event = function (meta) {
             return {
-                type: 'event',
+                typeHandler: 'event',
                 meta: meta || {}
             };
         };
 
         FrameworkFactory.typeHandlers.register({
-            type: "event",
+            typeHandler: "event",
             setup: function(Class) {
                 var proto = Class.prototype,
                     subscribedEventKeys = {},
@@ -160,7 +160,6 @@
             },
 
             handler: function handler(Class, key) {
-
                 var proto = Class.prototype;
 
                 /**
