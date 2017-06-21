@@ -140,12 +140,6 @@
             // Returns the extended class.
             constructorFn.extend = function extend(o) { return _createClass(o, constructorFn); };
 
-            constructorFn.getMemberInfo = function getMemberInfo(member) {
-                if (member in metaObj) {
-                    return;
-                }
-            };
-
             _setupTypeHandlers(constructorFn);
 
             constructorFn.attach(prop);
@@ -162,19 +156,12 @@
             }
 
             function _gm (member) {
-                var info;
                 if (member in meta) {
-                    info = meta[member];
+                    return meta[member];
                 }
-                else if($f.is.func(parent.getMemberInfo)) {
-                    info = parent.getMemberInfo(member);
+                else if ($f.is.func(parent.getMember)) {
+                    return parent.getMember(member);
                 }
-
-                if ($f.is.plainObject(info) && "type" in info) {
-                    return info;
-                }
-
-                return null;
             }
 
             /**
@@ -222,7 +209,7 @@
             }
 
             // Inherit
-            subClass.prototype              = createObject(superClass.prototype);
+            subClass.prototype              = Object.create(superClass.prototype);
             subClass.prototype.constructor  = subClass;
 
             return subClass.prototype;
