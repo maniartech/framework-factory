@@ -53,7 +53,7 @@
             // TODO: Change value to 'default'
 
             if ($f.is.plainObject(options)) {
-                value = options.value;
+                value = options.default;
                 if ($f.is.func(options.get)) {
                     get = options.get;
                 }
@@ -67,7 +67,7 @@
 
             return {
                 type            : 'readonly',
-                value           : value,
+                default         : value,
                 readonly        : true,
                 get             : get,
                 set             : undefined,
@@ -91,7 +91,7 @@
                 get, set;
 
             if ($f.is.plainObject(options)) {
-                value = options.value;
+                value = options.default;
                 get = options.get;
                 set = options.set;
 
@@ -110,7 +110,7 @@
             return {
                 type        : 'property',
                 readonly    : false,
-                value       : value,
+                default     : value,
                 get         : get,
                 set         : set,
                 meta        : meta
@@ -123,8 +123,8 @@
                 readonly    = options.readonly,
                 getter      = options.get,
                 setter      = options.set,
-                privateKey     = '_' + key,
-                value       = options.value;
+                privateKey  = '_' + key,
+                value       = options.default;
 
             if (readonly) {
                 if (getter !== undefined) {

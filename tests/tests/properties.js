@@ -5,12 +5,12 @@ test ('readonly', function() {
     var ro = new components.ReadonlyClass("wow"),
         ro2 = new components.ReadonlyClass("Amazing"),
         readonly = components.readonly({
-            value: 20,
+            default: 20,
             get: function() {}
         });
 
     eq(readonly.type, "readonly");
-    eq(readonly.value, 20);
+    eq(readonly.default, 20);
     eq(readonly.readonly, true);
     eq(typeof readonly.get, "function");
     eq(typeof readonly.set, "undefined");
@@ -64,24 +64,24 @@ test ('property', function() {
     var po1 = components.PropertyClass("one"),
         po2 = components.PropertyClass("two"),
         pa = components.property(10),
-        pb = components.property({ value: 10, get: function () {}, set: function () {} }),
-        pc = components.property({ value: 10, get: function () {} });
+        pb = components.property({ default: 10, get: function () {}, set: function () {} }),
+        pc = components.property({ default: 10, get: function () {} });
 
     eq(pa.type, "property");
     eq(pa.readonly, false);
-    eq(pa.value, 10);
+    eq(pa.default, 10);
     eq(typeof pa.get, "undefined");
     eq(typeof pa.set, "undefined");
 
     eq(pb.type, "property");
     eq(pb.readonly, false);
-    eq(pb.value, 10);
+    eq(pb.default, 10);
     eq(typeof pb.get, "function");
     eq(typeof pb.set, "function");
 
     eq(pc.type, "readonly");
     eq(pc.readonly, true);
-    eq(pc.value, 10);
+    eq(pc.default, 10);
     eq(typeof pc.get, "function");
     eq(typeof pc.set, "undefined");
 

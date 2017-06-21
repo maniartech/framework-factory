@@ -4,13 +4,13 @@
 
     function attributes($f) {
 
-        var attribute = function (defaultValue, meta) {
+        var attribute = function (value, meta) {
             meta = meta || {};
-            meta.default = defaultValue;
+            meta.default = value;
 
             return {
                 type: 'attribute',
-                defaultValue: defaultValue,
+                default: value,
                 meta: meta
             };
         };
@@ -18,7 +18,7 @@
         /**
          * Helper function to create attribute members for class.
          * @function
-         * @param defaultValue The default value of the attribute.
+         * @param value The default value of the attribute.
          * @option [meta] Additional meta parameter for attribute member.
          * @public
          * @version 1.0.0
@@ -35,7 +35,7 @@
             type: "attribute",
             handler: function handler(Class, key, options) {
                 var proto = Class.prototype;
-                proto[key] = options.defaultValue;
+                proto[key] = options.default;
             }
         });
     }
