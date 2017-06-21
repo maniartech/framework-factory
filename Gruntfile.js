@@ -4,7 +4,6 @@ var src = [
 
         // Start
         'src/(open).js',
-        'src/pollyfills.js',
 
         // Core Files
         'src/framework-factory.js',
@@ -14,10 +13,10 @@ var src = [
         'src/classes.js',
 
         // Type Handlers
+        'src/properties.js',
         'src/attributes.js',
         'src/events.js',
         'src/callbacks.js',
-        'src/properties.js',
 
         // End
         'src/(close).js'
