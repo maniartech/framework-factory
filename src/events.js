@@ -64,7 +64,11 @@
                 proto.trigger = function trigger (eventName, args, context) {
 
                     var subscribers,
-                        callback;
+                        callback, i;
+
+                    if (!this._events) {
+                        return this;
+                    }
 
                     eventName = eventName.toLowerCase();
                     subscribers = this._events[eventName];
