@@ -8,7 +8,7 @@
  *                                                                                      __/ |
  *                                                                                     |___/
  *
- * version: 1.2.0
+ * version: 1.1.2
  * Framework Factory - A JavaScript factory framework for developing class libraries,
  * apps and frameworks
  * http://www.framework-factory.com
