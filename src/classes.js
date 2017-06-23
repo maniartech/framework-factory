@@ -148,9 +148,8 @@
 
             function _gmn(ownMembersOnly) {
                 var keys = Object.keys(meta);
-
-                if (!ownMembersOnly && $f.is.func(parent.getMembers)) {
-                    return keys.concat(parent.getMembers());
+                if (!ownMembersOnly && $f.is.func(parent.getMemberNames)) {
+                    return keys.concat(parent.getMemberNames());
                 }
                 return keys;
             }
