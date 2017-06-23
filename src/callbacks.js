@@ -4,10 +4,9 @@
 
     function callbacks ($f) {
 
-        var callback = function (meta) {
+        var callback = function (tag) {
                 return {
-                    typeHandler: 'callback',
-                    meta: meta || {}
+                    typeHandler: 'callbacks'
                 };
             };
 
@@ -21,10 +20,11 @@
         $f.callback = callback;
 
         FrameworkFactory.typeHandlers.register({
-            typeHandler: "callback",
+            typeHandler: "callbacks",
             handler: function handler(Class, key, options) {
                 var proto = Class.prototype;
                 proto[key] = null;
+                options.name = key;
             }
         });
     }

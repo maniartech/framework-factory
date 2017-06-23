@@ -12,7 +12,7 @@ test ('Event Tests', function() {
     //Check whether $f.event typehandler properly attached.
     eq (typeof membership.event, "function", "Check event function attached to membership framework.");
     eq (typeof membership.event(), "object");
-    eq (membership.event().typeHandler, "event");
+    eq (membership.event().typeHandler, "events");
 
     //Check event functions properly attached.
     eq (typeof emp1.trigger, "function");

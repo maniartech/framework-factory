@@ -4,15 +4,15 @@
 
     function events($f) {
 
-        $f.event = function (meta) {
+        $f.event = function (tag) {
             return {
-                typeHandler: 'event',
-                meta: meta || {}
+                typeHandler: 'events',
+                tag: tag
             };
         };
 
         FrameworkFactory.typeHandlers.register({
-            typeHandler: "event",
+            typeHandler: "events",
             setup: function(Class) {
                 var proto = Class.prototype,
                     subscribedEventKeys = {},
@@ -161,10 +161,13 @@
                     }
                     return [];
                 };
+
             },
 
-            handler: function handler(Class, key) {
+            handler: function handler(Class, key, options) {
                 var proto = Class.prototype;
+
+                options.name = key;
 
                 /**
                  * Registers the event for particular event.

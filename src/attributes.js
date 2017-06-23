@@ -4,13 +4,12 @@
 
     function attributes($f) {
 
-        var attribute = function (value, meta) {
-            meta = meta || {};
+        var attribute = function (value, tag) {
 
             return {
-                typeHandler: 'attribute',
+                typeHandler: 'attributes',
                 default: value,
-                meta: meta
+                tag: tag
             };
         };
 
@@ -31,7 +30,7 @@
         $f.attr = attribute;
 
         FrameworkFactory.typeHandlers.register({
-            typeHandler: "attribute",
+            typeHandler: "attributes",
             handler: function handler(Class, key, options) {
                 var proto = Class.prototype;
                 proto[key] = options.default;

@@ -107,6 +107,8 @@
                         if ($f.is.plainObject(item)) {
                             typeHandler = FrameworkFactory.typeHandlers.get(item.typeHandler);
                             if (typeHandler !== undefined && typeHandler.handler !== undefined) {
+                                item.name = key;
+                                item.tag = (item.tag === undefined) ? null : item.tag;
                                 typeHandler.handler(constructorFn, key, item);
                                 processed = true;
                             }
@@ -148,10 +150,13 @@
 
             function _gmn(ownMembersOnly) {
                 var keys = Object.keys(meta);
+
                 if (!ownMembersOnly && $f.is.func(parent.getMemberNames)) {
-                    return keys.concat(parent.getMemberNames());
+                    keys = keys.concat(parent.getMemberNames());
                 }
-                return keys;
+                return keys.sort().filter(function(item, pos, ary) {
+                    return  item !== undefined && (!pos || item != ary[pos - 1]);
+                });
             }
 
             function _gm (member) {
@@ -161,6 +166,33 @@
                 else if ($f.is.func(parent.getMember)) {
                     return parent.getMember(member);
                 }
+            }
+
+            function _gms(ownMembersOnly) {
+                var memberNames = _gmn(ownMembersOnly),
+                    i = 0,
+                    iLen = memberNames.length,
+                    member = null,
+                    typeHandler = null,
+                    members = {
+                        functions: [],
+                        others: []
+                    };
+
+                for (i = 0; i < iLen; i += 1) {
+                    member = _gm(memberNames[i]);
+                    if (wd.is.func(member)) {
+                        members.functions.push(member);
+                    }
+                    else if (member.typeHandler !== undefined) {
+                        members[member.typeHandler] = members[member.typeHandler] || [];
+                        members[member.typeHandler].push(member);
+                    }
+                    else {
+                        members.others.push(member);
+                    }
+                }
+                return members;
             }
 
             /**
@@ -179,6 +211,9 @@
              * @returns {Array(string)} An array of string having all the registed member keys.
              **/
             constructorFn.getMemberNames = function (ownMembersOnly) { return _gmn(ownMembersOnly); };
+
+
+            constructorFn.getMembers = function (ownMembersOnly) { return _gms(ownMembersOnly); };
 
             //return
             return constructorFn;

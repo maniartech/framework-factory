@@ -48,7 +48,7 @@
         /**
          * Attaches readonly member to associated class.
          */
-        readonly = function readonly(options, meta) {
+        readonly = function readonly(options, tag) {
             var get, value;
             // TODO: Change value to 'default'
 
@@ -62,14 +62,14 @@
                 value = options;
             }
 
-            meta = meta || {};
+            tag = tag || {};
 
             return {
-                typeHandler     : 'readonly',
+                typeHandler     : 'readonlies',
                 default         : value,
                 readonly        : true,
                 get             : get,
-                meta            : meta
+                tag             : tag
             };
         };
 
@@ -82,7 +82,7 @@
          * @public
          * @version 1.0.0
          **/
-        property = function property(options, meta) {
+        property = function property(options, tag) {
 
             var valueOf,
                 value,
@@ -102,15 +102,15 @@
                 value = options;
             }
 
-            meta = meta || {};
+            tag = tag || {};
 
             return {
-                typeHandler : 'property',
+                typeHandler : 'properties',
                 readonly    : false,
                 default     : value,
                 get         : get,
                 set         : set,
-                meta        : meta
+                tag        : tag
             };
         };
 
@@ -122,6 +122,8 @@
                 setter      = options.set,
                 privateKey  = '_' + key,
                 value       = options.default;
+
+            options.name = key;
 
             if (readonly) {
                 if (getter !== undefined) {
@@ -160,12 +162,12 @@
         $f.readonly     = readonly;
 
         FrameworkFactory.typeHandlers.register({
-            typeHandler: "property",
+            typeHandler: "properties",
             handler: handler
         });
 
         FrameworkFactory.typeHandlers.register({
-            typeHandler: "readonly",
+            typeHandler: "readonlies",
             handler: handler
         });
     }

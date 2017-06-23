@@ -9,7 +9,7 @@ test ('readonly', function() {
             get: function() {}
         });
 
-    eq(readonly.typeHandler, "readonly");
+    eq(readonly.typeHandler, "readonlies");
     eq(readonly.default, 20);
     eq(readonly.readonly, true);
     eq(typeof readonly.get, "function");
@@ -66,19 +66,19 @@ test ('property', function() {
         pb = components.property({ default: 10, get: function () {}, set: function () {} }),
         pc = components.property({ default: 10, get: function () {} });
 
-    eq(pa.type, "property");
+    eq(pa.typeHandler, "properties");
     eq(pa.readonly, false);
     eq(pa.default, 10);
     eq(typeof pa.get, "undefined");
     eq(typeof pa.set, "undefined");
 
-    eq(pb.type, "property");
+    eq(pb.typeHandler, "properties");
     eq(pb.readonly, false);
     eq(pb.default, 10);
     eq(typeof pb.get, "function");
     eq(typeof pb.set, "function");
 
-    eq(pc.type, "readonly");
+    eq(pc.typeHandler, "readonlies");
     eq(pc.readonly, true);
     eq(pc.default, 10);
     eq(typeof pc.get, "function");
