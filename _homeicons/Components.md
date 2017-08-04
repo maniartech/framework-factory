@@ -4,4 +4,5 @@ class_name: icon icon_puzzle_alt
 title: Components
 intro: Lorem ipsum dolor sit amet, consectetuer adipiscing elit
 link: components.html
+order : 3
 ---

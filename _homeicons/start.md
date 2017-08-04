@@ -4,4 +4,5 @@ class_name: icon fa fa-paper-plane
 title: Quick Start
 intro: Demo example, consectetuer adipiscing elit
 link: start.html
+order : 1
 ---

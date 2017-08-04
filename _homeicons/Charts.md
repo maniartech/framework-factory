@@ -4,4 +4,5 @@ class_name: icon icon_datareport_alt
 title: Help
 intro: Lorem ipsum dolor sit amet, consectetuer adipiscing elit
 link: charts.html
+order : 2
 ---

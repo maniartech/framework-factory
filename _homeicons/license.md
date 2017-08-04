@@ -4,4 +4,5 @@ class_name: icon icon_gift
 title: License &amp; Credits
 intro: Lorem ipsum dolor sit amet, consectetuer adipiscing elit
 link: license.html
+order : 5
 ---

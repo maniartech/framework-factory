@@ -4,4 +4,5 @@ class_name: icon icon_genius
 title: FAQs
 intro: Lorem ipsum dolor sit amet, consectetuer adipiscing elit
 link: faqs.html
+order : 6
 ---

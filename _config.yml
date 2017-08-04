@@ -1,4 +1,6 @@
 
+port : 4040
+
 collections:
   homeicons:
       output: true

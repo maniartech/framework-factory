@@ -48,7 +48,8 @@ classname : landing-page
                 </div><!--//cta-container-->
             </div><!--//intro-->
             <div id="cards-wrapper" class="cards-wrapper row">
-                 {% for item in site.homeicons %}
+                {% assign home_icons = site.homeicons | sort : "order" %}
+                 {% for item in home_icons %}
                  <div class="{{ item.main_class }}">
                      <div class="item-inner">
                          <div class="icon-holder">
