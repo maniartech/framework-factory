@@ -1,0 +1,6 @@
+
+collections:
+  homeicons:
+      output: true
+  menulevel1:
+      output: true

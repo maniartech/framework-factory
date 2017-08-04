@@ -1,0 +1,68 @@
+---
+layout: default
+title: FrameWork Factory
+classname : landing-page
+---
+<!--FACEBOOK LIKE BUTTON JAVASCRIPT SDK-->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="page-wrapper">
+
+    <!-- ******Header****** -->
+    <header class="header text-center">
+        <div class="container">
+            <div class="branding">
+                <h1 class="logo">
+                    <span aria-hidden="true" class="icon_documents_alt icon"></span>
+                    <span class="text-highlight">Pretty</span><span class="text-bold">Docs</span>
+                </h1>
+            </div><!--//branding-->
+            <div class="tagline">
+                <p>Free Bootstrap theme for your project documentation</p>
+                <p>Designed with <i class="fa fa-heart"></i> for developers</p>
+            </div><!--//tagline-->
+            <div class="social-container">
+                <div class="twitter-tweet">
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-text="PrettyDocs - A FREE #Bootstrap theme for project documentations #Responsive" data-via="3rdwave_themes">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                </div><!--//tweet-->
+                <div class="fb-like data-href="http://themes.3rdwavemedia.com" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+             </div><!--//social-container-->
+        </div><!--//container-->
+    </header><!--//header-->
+
+    <section class="cards-section text-center">
+        <div class="container">
+            <h2 class="title">Getting started is easy!</h2>
+            <div class="intro">
+                <p>Welcome to prettyDocs. This landing page is an example of how you can use a card view to present segments of your documentation. You can customise the icon fonts based on your needs.</p>
+                <div class="cta-container">
+                    <a class="btn btn-primary btn-cta" href="{{ site.url }}/creative-jekyll-theme-static-site.zip"><i class="fa fa-cloud-download" ></i> Download Now</a>
+                </div><!--//cta-container-->
+            </div><!--//intro-->
+            <div id="cards-wrapper" class="cards-wrapper row">
+                 {% for item in site.homeicons %}
+                 <div class="{{ item.main_class }}">
+                     <div class="item-inner">
+                         <div class="icon-holder">
+                             <i class="{{ item.class_name }}"></i>
+                         </div><!--//icon-holder-->
+                         <h3 class="title">{{ item.title }}</h3>
+                         <p class="intro">{{ item.intro }}</p>
+                         <a class="link" href="{{ item.link }}"><span></span></a>
+                     </div><!--//item-inner-->
+                 </div><!--//item-->
+                 {% endfor %}
+
+            </div><!--//cards-->
+
+        </div><!--//container-->
+    </section><!--//cards-section-->
+</div><!--//page-wrapper-->
