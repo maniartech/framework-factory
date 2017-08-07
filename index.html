@@ -48,7 +48,7 @@ classname : landing-page
                 </div><!--//cta-container-->
             </div><!--//intro-->
             <div id="cards-wrapper" class="cards-wrapper row">
-                {% assign home_icons = site.homeicons | sort : "order" %}
+                {% assign home_icons = site.subpages | sort : "order" %}
                  {% for item in home_icons %}
                  <div class="{{ item.main_class }}">
                      <div class="item-inner">

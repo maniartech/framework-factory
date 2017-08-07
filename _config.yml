@@ -2,7 +2,7 @@
 port : 4040
 
 collections:
-  homeicons:
+  subpages:
       output: true
   menulevel1:
       output: true
