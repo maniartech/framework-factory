@@ -1,4 +1,6 @@
-#Framework Factory#
+# Framework Factory
+
+> This project has been discontinued!
 
 Framework factory is a tiny, well-designed and yet powerful factory framework for developing modern Object Oriented JavaScript based class libraries, frameworks and applications. Its pluggable architecture and amazing combination of tools (configuration handling, read-only members, events, properties, class inheritance, and much more) gives you enough power to create robust applications which are compatible with your favorite JavaScript library (jQuery, mooTools, underscore), and your favorite platform (Modern Browsers, NodeJS).
 
